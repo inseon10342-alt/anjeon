@@ -809,7 +809,7 @@ img,svg,table,video{max-width:100%}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261112-1430 · 2026-11-12 H</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261112-1608 · 2026-11-12 I</b></div>
       </section>
     </main>
   </div>
@@ -1312,7 +1312,7 @@ function run(fn, ...args) {
   return apiRun(fn, args).then(v => { done(true); return v; }, e => { done(false, e); throw e; });
 }
 async function apiRun(fn, args, again) {
-  if (!API) throw new Error('서버 주소(config.js)가 설정되지 않았습니다');
+  if (!API || /여기에/.test(API)) throw new Error('서버 주소가 설정되지 않았습니다 — GitHub의 config.js에 웹 앱(/exec) 주소를 넣어 주세요');
   let code = ''; try { code = localStorage.getItem(LS_CODE) || ''; } catch (e) {}
   if (!code) code = askCode();
   if (!code) throw new Error('접속 코드를 넣어야 사용할 수 있습니다');
@@ -1389,9 +1389,27 @@ function showNewUser() {
   $('#setupPickCard').style.display = 'none'; $('#setupNewCard').style.display = '';
   setTimeout(() => $('#setupName').focus(), 50);
 }
+let usersQuick = null, usersErr = '', usersReq = null;
+/** 이름 목록만 먼저 빨리 받기 (앱 정보 전체를 기다리지 않음) */
+function loadUsersQuick() {
+  if (usersReq) return usersReq;
+  usersErr = '';
+  usersReq = run('getUsers').then(u => { usersQuick = u; }).catch(e => { usersErr = errMsg(e); })
+    .finally(() => { usersReq = null; if ($('#setup').classList.contains('on')) renderSetupPick(); });
+  return usersReq;
+}
 function renderSetupPick() {
-  const users = (boot && boot.users) || null;
-  if (!users) { $('#setupPick').innerHTML = '<div class="hint">이름 목록 불러오는 중...</div>'; return; }
+  const users = (boot && boot.users) || usersQuick;
+  if (!users) {
+    if (usersErr) {
+      const addr = GAS ? '' : `<div class="hint" style="word-break:break-all">서버 주소: ${esc(String(API || '(없음)').replace(/(\/s\/.{6}).+(.{6}\/exec)/, '$1…$2'))}</div>`;
+      $('#setupPick').innerHTML = `<div class="hint" style="color:var(--bad)"><b>이름 목록을 받지 못했습니다</b><br>${esc(usersErr)}</div>${addr}
+        <button class="btn sm" style="margin-top:8px" onclick="usersErr='';renderSetupPick()">다시 시도</button>`;
+      return;
+    }
+    $('#setupPick').innerHTML = '<div class="hint">이름 목록 불러오는 중...</div>';
+    loadUsersQuick(); return;
+  }
   $('#setupPick').innerHTML = users.length
     ? users.map(n => `<button class="ichip ${n === me() ? 'on' : ''}" data-n="${esc(n)}"><b>${esc(n)}</b></button>`).join('')
     : '<div class="hint">아직 등록된 사람이 없습니다. 아래 「처음 사용」을 누르세요.</div>';
@@ -1500,7 +1518,10 @@ function loadBoot(force) {
     if ($('#setup').classList.contains('on') && $('#setupPickCard').style.display !== 'none') renderSetupPick();
     if (force) toast('최신 정보를 불러왔습니다');
     return b;
-  }).catch(e => { if (force || !boot) toast('불러오기 실패: ' + errMsg(e)); return boot; })
+  }).catch(e => {
+    if (force || !boot) toast('불러오기 실패: ' + errMsg(e));
+    if (!boot && !usersQuick) { usersErr = errMsg(e); if ($('#setup').classList.contains('on')) renderSetupPick(); }
+    return boot; })
     .finally(() => { if (force) busy(false); });
 }
 const svcAll = () => (boot && boot.svc) || [];
@@ -4753,7 +4774,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261112-1430';
+window.APP_VER = '20261112-1608';
 </script>
 </body>
 </html>
