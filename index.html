@@ -555,6 +555,14 @@ body[data-pg="site"] .topbar,body[data-pg="sited"] .topbar{display:none}
   .dash3 .card{margin-bottom:0}
   .mchart{height:190px}
 }
+/* 휴대폰 화면에 딱 맞게: 가로 넘침 막기 · 입력칸 누를 때 자동 확대 막기(16px) · 두 번 탭 확대 막기 */
+html,body{max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html{touch-action:manipulation}
+.sheet{overflow-x:hidden}
+img,svg,table,video{max-width:100%}
+@media (max-width:1023px){
+  input,select,textarea,.g4 input,.g4 select,.mgrid input,.mgrid select{font-size:16px !important}
+}
 .okc{color:#1d7a46;font-weight:700}.noc{color:var(--muted)}.rpb{display:flex;gap:6px;justify-content:flex-end}
 @media (min-width:1024px){
   .sth{display:grid;grid-template-columns:2.2fr 1.4fr 1.4fr 1fr 90px;gap:12px;padding:10px 14px;background:#f4f7fb;font-size:12px;font-weight:700;color:var(--muted)}
@@ -794,7 +802,7 @@ body[data-pg="site"] .topbar,body[data-pg="sited"] .topbar{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261112-1414 · 2026-11-12 F</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261112-1425 · 2026-11-12 G</b></div>
       </section>
     </main>
   </div>
@@ -3093,6 +3101,14 @@ function openReportWait() {
     <h3 class="sub">작성 대기 ${w.length}건</h3>${w.map(row).join('') || '<div class="empty">없습니다</div>'}
     <h3 class="sub">작성 완료 ${d.length}건</h3>${d.map(row).join('') || '<div class="empty">없습니다</div>'}`);
 }
+/* ---- 휴대폰: 화면 확대·축소 막기 (사진 표시 화면 · 크게 보기는 그대로 허용) ---- */
+(function () {
+  const allow = t => t && t.closest && t.closest('#mk, #viewer .vimg');
+  ['gesturestart', 'gesturechange'].forEach(ev => document.addEventListener(ev, e => { if (!allow(e.target)) e.preventDefault(); }, { passive: false }));
+  document.addEventListener('touchmove', e => { if (e.touches && e.touches.length > 1 && !allow(e.target)) e.preventDefault(); }, { passive: false });
+  // 입력칸에서 나올 때 혹시 확대돼 있으면 원래 크기로
+  document.addEventListener('focusout', () => { const vv = window.visualViewport; if (vv && vv.scale > 1.01) { const m = document.querySelector('meta[name=viewport]'); if (m) { const c = m.content; m.content = c + ',maximum-scale=1'; setTimeout(() => { m.content = c; }, 300); } } });
+})();
 /* ---- 그래프 (SVG, 외부 라이브러리 없이) ---- */
 function donut(pct, sz, sub) {
   const r = 42, c = 2 * Math.PI * r, v = Math.max(0, Math.min(100, pct)) / 100 * c;
@@ -4730,7 +4746,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261112-1414';
+window.APP_VER = '20261112-1425';
 </script>
 </body>
 </html>
