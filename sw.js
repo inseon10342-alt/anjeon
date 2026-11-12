@@ -1,5 +1,5 @@
 // 화면 파일을 휴대폰에 저장해 두고 바로 열기 (데이터·사진은 매번 서버로)
-const VER = '20261112-1425';
+const VER = '20261112-1430';
 const CACHE = 'hyunjang-' + VER;
 const SHELL = ['./', './index.html', './config.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 self.addEventListener('install', e => {

@@ -563,6 +563,13 @@ img,svg,table,video{max-width:100%}
 @media (max-width:1023px){
   input,select,textarea,.g4 input,.g4 select,.mgrid input,.mgrid select{font-size:16px !important}
 }
+/* 칸 안 내용이 길어도(긴 현장명 · 긴 수정 내역) 카드 폭이 늘어나지 않게 */
+.dash3,.kpi,.quick,.menu,.frow,.shstat,.moregrid,.rpwrap{min-width:0}
+.dash3>*,.kpi>*,.quick>*,.menu>*,.frow>*,.shstat>*,.moregrid>*,.rpwrap>*,.shbody>*{min-width:0;max-width:100%}
+.dash3{grid-template-columns:minmax(0,1fr)}
+@media (min-width:1024px){.dash3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.lg div,.lg b{overflow-wrap:anywhere;word-break:keep-all}
+.drow span{overflow:hidden;text-overflow:ellipsis}
 .okc{color:#1d7a46;font-weight:700}.noc{color:var(--muted)}.rpb{display:flex;gap:6px;justify-content:flex-end}
 @media (min-width:1024px){
   .sth{display:grid;grid-template-columns:2.2fr 1.4fr 1.4fr 1fr 90px;gap:12px;padding:10px 14px;background:#f4f7fb;font-size:12px;font-weight:700;color:var(--muted)}
@@ -802,7 +809,7 @@ img,svg,table,video{max-width:100%}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261112-1425 · 2026-11-12 G</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261112-1430 · 2026-11-12 H</b></div>
       </section>
     </main>
   </div>
@@ -4746,7 +4753,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261112-1425';
+window.APP_VER = '20261112-1430';
 </script>
 </body>
 </html>
