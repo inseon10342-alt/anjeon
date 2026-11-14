@@ -443,7 +443,7 @@ body[data-pg="insp"]{padding-bottom:calc(140px + env(safe-area-inset-bottom))}
   header button.on{color:#fff}
   header #calBack{border-color:var(--navy);background:var(--navy);color:#fff}
   .savest.ing{background:#fff3e3;color:var(--acc2)}.savest.ok{background:#e6f4ec;color:var(--ok)}
-  main{max-width:1240px;padding:18px 24px;margin:0}
+  main{max-width:1680px;padding:18px 28px;margin:0 auto;width:100%;box-sizing:border-box}
   .topbar .row-s{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)}
   .topbar{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:4px 16px;align-items:end}
   .topbar .hint#svcInfo{grid-column:1;grid-row:2;margin-top:4px}
@@ -536,7 +536,7 @@ body[data-pg="site"] .topbar,body[data-pg="sited"] .topbar{display:none}
 .dash3 .card{margin-bottom:10px}
 .lgd{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px}.lgd i,.dleg i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-left:6px}
 .lgd i.p,.dleg i.p{background:#b9c6d6}.lgd i.d,.dleg i.d{background:var(--acc)}.dleg i.r{background:var(--bad)}
-.mchart{width:100%;height:150px;display:block}
+.mchart{width:100%;display:block}
 .dring{display:flex;align-items:center;gap:16px;padding:2px 0 10px;border-bottom:1px solid var(--line);margin-bottom:2px}
 .dleg{flex:1;display:grid;gap:5px;font-size:13px}.dleg div{display:flex;align-items:center;gap:6px}.dleg i{margin:0}.dleg b{margin-left:auto;font-size:15px;color:var(--navy)}
 .dleg small{color:var(--muted);font-size:11px;text-align:right}
@@ -553,7 +553,6 @@ body[data-pg="site"] .topbar,body[data-pg="sited"] .topbar{display:none}
 @media (min-width:1024px){
   .quick{grid-template-columns:repeat(6,1fr)}.quick button{height:86px;font-size:14px}
   .dash3 .card{margin-bottom:0}
-  .mchart{height:190px}
 }
 /* 휴대폰 화면에 딱 맞게: 가로 넘침 막기 · 입력칸 누를 때 자동 확대 막기(16px) · 두 번 탭 확대 막기 */
 html,body{max-width:100%;overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%}
@@ -620,6 +619,63 @@ img,svg,table,video{max-width:100%}
   .frow{grid-template-columns:repeat(4,1fr)}
   .sgal{grid-template-columns:repeat(6,1fr);gap:8px}
   .kv{grid-template-columns:120px 1fr 120px 1fr}
+}
+.ml{display:inline-flex;flex-direction:column;gap:1px;min-width:0;text-align:left}.ml small{font-size:12px;font-weight:500;color:var(--muted)}
+.pri .ml small,button.pri .ml small{color:rgba(255,255,255,.85)}
+/* ================= 전체 다듬기 (11/14) — 모든 화면 공통 ================= */
+/* 글자 안 아이콘 간격 */
+.btn .ic.sm,.acts .ic.sm,.who .ic.sm,.lrow .a .ic.sm,.links .ic.sm,.t .ic.sm,.tools .ic.sm,.st .ic.sm,.mkbadge .ic.sm,.hint .ic.sm,.fubar .ic.sm,.sheet button .ic.sm{margin-right:4px}
+.slot.add button .ic{width:26px;height:26px;color:var(--navy);margin-bottom:2px}
+/* 목록 한 줄: 상태 표시는 줄어들지 않게, 이름 · 보조 글을 두 줄로 */
+.drow .pill{flex:0 0 auto}
+.drow span.two{display:flex;flex-direction:column;white-space:normal;gap:1px}
+.drow span.two b{font-size:14px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.drow span.two small{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.drow em.two{text-align:right;line-height:1.4;flex:0 0 auto}
+/* 현장 관리 숫자 칸 */
+#siteKpi button span{padding-right:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 보조 글 · 링크 버튼 누르기 쉽게 */
+.lnk{min-height:34px;padding:6px 8px;border-radius:6px;font-weight:600;cursor:pointer}
+.lnk:hover{background:#eef2f7}
+.hint{line-height:1.55}
+/* 같은 구성 요소는 같은 모양 */
+.card>.ch:first-child{margin-top:-2px}
+.empty{padding:22px 12px;line-height:1.6}
+
+@media (max-width:1023px){
+  /* 위 현장 고르기 칸: 휴대폰에서는 한 덩어리로 작게 */
+  .topbar{padding:10px;margin-bottom:12px}
+  .topbar .row-s{grid-template-columns:minmax(0,1fr);gap:6px}
+  .topbar .srch input,.topbar select,.tb2 input,.tb2 .who-box{min-height:42px;height:42px;padding-top:0;padding-bottom:0}
+  .topbar .srch .ic{top:13px}
+  .topbar .hint#svcInfo{margin:6px 2px 0;font-size:12px}
+  .tb2{margin-top:6px;gap:6px}.tb2 label{display:none}
+  .tb2 .who-box{display:flex;align-items:center}
+  body[data-pg="system"] .topbar{display:none}
+  /* 작은 버튼 → 손가락으로 누르기 쉬운 크기 */
+  .btn.xs{min-height:36px;padding:6px 12px}
+  .ihead button{min-height:36px;padding:6px 12px}
+  .sprow button,.spi button,#spItems button{min-width:36px;min-height:36px}
+  .an-x{min-width:34px;min-height:34px}
+  .mv button,.acts button[data-act="up"],.acts button[data-act="down"]{min-width:36px;min-height:34px}
+  .vh{margin:2px 2px 10px}.vh h2{font-size:18px}
+  .menu button,.menu a.mlink{min-height:52px;font-size:14px}
+  .sec-t{margin:16px 2px 8px}
+}
+@media (min-width:1024px){
+  /* 메뉴 버튼: 넓은 화면에서는 한 줄에 여러 개, 빈칸 없이 왼쪽부터 */
+  .menu{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+  .menu.m3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .menu.m3 button{flex-direction:row;justify-content:flex-start;gap:10px;text-align:left;font-size:15px;min-height:56px}
+  .vh{margin:2px 2px 14px}.vh h2{font-size:21px}
+  /* 현장 상세: 진행률 옆 숫자 4칸을 한 줄로 */
+  .shbody .shstat{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .shstat div{padding:12px 8px}.shstat b{font-size:22px}
+  .an-body .card,.view .card{margin-bottom:12px}
+  .drow{padding:11px 4px}
+  .drow:hover{background:#f8fafc}
+  /* 펼쳐지는 화면 위 줄 */
+  .sheet .top{margin:-18px -24px 14px;padding:calc(10px + env(safe-area-inset-top)) 16px 10px}
 }
 </style>
 </head>
@@ -733,12 +789,12 @@ img,svg,table,video{max-width:100%}
               <option value="">진행 상태 전체</option><option value="ing">진행 중</option><option value="soon">점검 예정 (7일 안)</option>
               <option value="late">지연 있음</option><option value="end">완료 (끝난 용역)</option>
             </select>
-            <input id="sfMon" type="month" onchange="renderSiteList()" title="점검일(예정일)이 있는 달">
+            <select id="sfMon" onchange="renderSiteList()" title="점검(예정)이 있는 달"><option value="">점검 월 전체</option></select>
           </div>
         </div>
         <div id="siteList"></div>
         <div class="menu" style="margin-top:12px">
-          <button onclick="openCal()"><svg class="ic"><use href="#i-cal"/></svg>점검 일정 (달력 · 월별 횟수)</button>
+          <button onclick="openCal()"><svg class="ic"><use href="#i-cal"/></svg><span class="ml">점검 일정<small>달력 · 월별 횟수</small></span></button>
           <button onclick="openProgress()"><svg class="ic"><use href="#i-chart"/></svg>진행 현황 표</button>
           <button onclick="loadBoot(true)"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 최신화</button>
         </div>
@@ -797,7 +853,7 @@ img,svg,table,video{max-width:100%}
         <div class="vh"><h2>제원 및 실측 관리</h2><small id="catSpecSub">사전 제원 · 현장 실측 · 기준값 비교</small></div>
         <div class="menu">
           <button onclick="openSpecNew()"><svg class="ic"><use href="#i-plus"/></svg>사전 제원 등록</button>
-          <button onclick="openSpecList()"><svg class="ic"><use href="#i-folder"/></svg>사전 제원 (공종별 조회)</button>
+          <button onclick="openSpecList()"><svg class="ic"><use href="#i-folder"/></svg><span class="ml">사전 제원<small>공종별 조회</small></span></button>
           <button class="pri" onclick="openMeasurePick()"><svg class="ic"><use href="#i-ruler"/></svg>현장 실측 입력</button>
           <button onclick="openMsList()"><svg class="ic"><use href="#i-scale"/></svg>기준값 비교</button>
           <button onclick="openMismatch()"><svg class="ic"><use href="#i-alert"/></svg>불일치 항목 조회</button>
@@ -816,9 +872,9 @@ img,svg,table,video{max-width:100%}
         <div class="vh"><h2>사진 관리</h2><small>촬영 · 분류 · 삭제 · 지적사항 표시</small></div>
         <div class="menu">
           <button class="pri" onclick="quickPhoto()"><svg class="ic"><use href="#i-camera"/></svg>현장 사진 촬영 · 업로드</button>
-          <button onclick="go('insp');showBy()"><svg class="ic"><use href="#i-users"/></svg>사진 분류 (촬영자별)</button>
+          <button onclick="go('insp');showBy()"><svg class="ic"><use href="#i-users"/></svg><span class="ml">사진 분류<small>촬영자별</small></span></button>
           <button onclick="openTrash()"><svg class="ic"><use href="#i-trash"/></svg>사진 삭제 · 복구</button>
-          <button onclick="quickDefect()"><svg class="ic"><use href="#i-marker"/></svg>지적사항 표시 (사진 위치 표시)</button>
+          <button onclick="quickDefect()"><svg class="ic"><use href="#i-marker"/></svg><span class="ml">지적사항 표시<small>사진 위치 표시</small></span></button>
           <a class="mlink" id="capLink" target="_blank" onclick="if(!this.href){toast('불러오는 중입니다');return false;}"><svg class="ic"><use href="#i-pen"/></svg>기본캡션 편집</a>
         </div>
         <div id="phGal" style="margin-top:12px"></div>
@@ -828,9 +884,9 @@ img,svg,table,video{max-width:100%}
       <section class="view" data-v="report">
         <div class="vh"><h2>보고서 및 출력 관리</h2><small>점검 결과 정리 · 사진대지 · 비교 결과표 · 엑셀/PDF</small></div>
         <div class="menu">
-          <button class="pri" onclick="go('insp');buildAll()"><svg class="ic"><use href="#i-file"/></svg>사진대지 만들기 (엑셀 · PDF)</button>
-          <button onclick="openReportWait()"><svg class="ic"><use href="#i-list"/></svg>점검 결과 정리 (작성 대기 · 완료)</button>
-          <button onclick="exportCompareUI()"><svg class="ic"><use href="#i-scale"/></svg>비교 결과표 (엑셀 · PDF)</button>
+          <button class="pri" onclick="go('insp');buildAll()"><svg class="ic"><use href="#i-file"/></svg><span class="ml">사진대지 만들기<small>엑셀 · PDF</small></span></button>
+          <button onclick="openReportWait()"><svg class="ic"><use href="#i-list"/></svg><span class="ml">점검 결과 정리<small>작성 대기 · 완료</small></span></button>
+          <button onclick="exportCompareUI()"><svg class="ic"><use href="#i-scale"/></svg><span class="ml">비교 결과표<small>엑셀 · PDF</small></span></button>
           <button onclick="openProgress()"><svg class="ic"><use href="#i-chart"/></svg>현장별 작성 현황</button>
         </div>
         <div class="rpwrap" id="rpWrap"><div class="card rplist"><div class="ch"><b>보고서 작성 현황</b><small class="muted">점검을 누르면 미리보기</small></div><div id="rpList"></div></div>
@@ -843,7 +899,7 @@ img,svg,table,video{max-width:100%}
         <div class="vh"><h2>시스템 관리</h2><small>사용자 · 권한 · 샘플 데이터 · 작업 속도</small></div>
         <div class="card"><div class="ch"><b>권한</b></div><div id="sysAuth"></div></div>
         <div class="menu" id="adminTools" style="display:none">
-          <button onclick="openSetup(true)"><svg class="ic"><use href="#i-user"/></svg>사용자 관리 (이름 변경 · 선택)</button>
+          <button onclick="openSetup(true)"><svg class="ic"><use href="#i-user"/></svg><span class="ml">사용자 관리<small>이름 변경 · 선택</small></span></button>
           <button onclick="openPerf()"><svg class="ic"><use href="#i-clock"/></svg>작업 속도 기록</button>
           <button onclick="sampleUI(true)"><svg class="ic"><use href="#i-sample"/></svg>샘플 데이터 넣기</button>
           <button onclick="sampleUI(false)"><svg class="ic"><use href="#i-trash"/></svg>샘플 데이터 지우기</button>
@@ -851,7 +907,7 @@ img,svg,table,video{max-width:100%}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261114-1218 · 2026-11-14 A</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261114-1426 · 2026-11-14 C</b></div>
       </section>
     </main>
   </div>
@@ -883,12 +939,12 @@ img,svg,table,video{max-width:100%}
       <input type="file" id="file_a" accept="image/*" hidden onchange="onFile('a',this)">
       <input type="file" id="cam_b" accept="image/*" capture="environment" hidden onchange="onFile('b',this)">
       <input type="file" id="cam_a" accept="image/*" capture="environment" hidden onchange="onFile('a',this)">
-      <div class="hint" id="mkHint" style="display:none">📍 지적 사진은 찍은 뒤 바로 <b>표시 화면</b>이 열립니다. 손가락으로 끌어 <b>빨간 점선 원</b>을 그리세요.</div>
+      <div class="hint" id="mkHint" style="display:none"><svg class="ic sm"><use href="#i-marker"/></svg> 지적 사진은 찍은 뒤 바로 <b>표시 화면</b>이 열립니다. 손가락으로 끌어 <b>빨간 점선 원</b>을 그리세요.</div>
     </div>
     <div class="card" id="fuOrigCard" style="display:none"><div class="hint" style="margin:0 0 6px">이전 지적 내용 (바꿀 수 없음)</div><div id="fuOrig"></div></div>
     <div class="card">
       <div id="grpPlace">
-      <button class="btn ghost sm" onclick="openPhrases()">📝 기본캡션에서 고르기</button>
+      <button class="btn ghost sm" onclick="openPhrases()"><svg class="ic sm"><use href="#i-pen"/></svg>기본캡션에서 고르기</button>
       <label>층 <span class="fsel" id="floorSel"></span></label>
       <div class="floors" id="floorBtns"></div>
       <label for="f_location">세부 위치</label>
@@ -913,7 +969,7 @@ img,svg,table,video{max-width:100%}
       </div>
       <div id="grpFollow">
         <label>이행 결과</label>
-        <div class="seg" id="fuSeg"><button data-v="이행완료">✅ 이행완료</button><button data-v="일부 이행">🟠 일부 이행</button><button data-v="미이행">❌ 미이행</button></div>
+        <div class="seg" id="fuSeg"><button data-v="이행완료">이행완료</button><button data-v="일부 이행">일부 이행</button><button data-v="미이행">미이행</button></div>
         <label for="f_fnote">확인 내용</label>
         <textarea id="f_fnote" placeholder="예) 안전난간 설치 확인 / 중간 난간대 일부 미설치"></textarea>
       </div>
@@ -1005,8 +1061,8 @@ img,svg,table,video{max-width:100%}
       <h2>관련 사진</h2>
       <div class="pgrid" id="svPhotos"></div>
       <div class="tools">
-        <button class="btn sm" onclick="$('#file_sv').click()">📷 사진 촬영</button>
-        <button class="btn ghost sm" onclick="openSvPick()">🖼 기존 사진 연결</button>
+        <button class="btn sm" onclick="$('#file_sv').click()"><svg class="ic sm"><use href="#i-camera"/></svg>사진 촬영</button>
+        <button class="btn ghost sm" onclick="openSvPick()"><svg class="ic sm"><use href="#i-image"/></svg>기존 사진 연결</button>
       </div>
       <input type="file" id="file_sv" accept="image/*" hidden onchange="onSvFile(this)">
     </div>
@@ -1031,7 +1087,7 @@ img,svg,table,video{max-width:100%}
     <div class="top"><button onclick="closePicker('spList')">← 닫기</button><h2>공종별 제원</h2><button onclick="refreshList(true).then(renderSpList)">새로고침</button></div>
     <div class="chips wrapc" id="spCatChips"></div>
     <div id="spListBody"></div>
-    <div class="tools"><button class="btn sm" onclick="openSpecNew()">➕ 제원 등록</button><button class="btn ghost sm" onclick="openSpecCopy()">📑 다른 현장에서 복사</button></div>
+    <div class="tools"><button class="btn sm" onclick="openSpecNew()"><svg class="ic sm"><use href="#i-plus"/></svg>제원 등록</button><button class="btn ghost sm" onclick="openSpecCopy()"><svg class="ic sm"><use href="#i-copy"/></svg>다른 현장에서 복사</button></div>
   </div>
 </div>
 
@@ -1061,7 +1117,7 @@ img,svg,table,video{max-width:100%}
         <button class="btn ghost sm" onclick="spAddItem()">＋ 항목 추가</button>
         <button class="btn ghost sm" onclick="spLoadTemplate()">↺ 공종 템플릿 불러오기</button>
       </div>
-      <button class="btn ghost sm" style="margin-top:8px;width:100%" onclick="spSaveTemplate()">💾 이 항목 구성을 공종 템플릿으로 저장</button>
+      <button class="btn ghost sm" style="margin-top:8px;width:100%" onclick="spSaveTemplate()"><svg class="ic sm"><use href="#i-download"/></svg>이 항목 구성을 공종 템플릿으로 저장</button>
     </div>
     <div class="hint" id="spWho"></div>
     <button class="btn" onclick="saveSp()">저장</button>
@@ -1072,7 +1128,7 @@ img,svg,table,video{max-width:100%}
 <div class="sheet" id="spCopy">
   <div class="panel">
     <div class="top"><button onclick="closePicker('spCopy')">← 닫기</button><h2>제원 복사</h2><span style="width:60px"></span></div>
-    <input id="spCopyQ" placeholder="🔍 현장·대상 검색" oninput="renderSpCopy()">
+    <input id="spCopyQ" placeholder="현장·대상 검색" oninput="renderSpCopy()">
     <div class="hint">다른 현장(또는 이 현장)의 제원을 골라 지금 현장에 새 제원으로 복사합니다. 기준값까지 복사되니 확인 후 고치세요.</div>
     <div id="spCopyList" style="margin-top:10px"></div>
   </div>
@@ -1192,7 +1248,7 @@ img,svg,table,video{max-width:100%}
     </div>
     <div class="mk-row">
       <button id="mkUndo" onclick="mkUndo()"><b>↶</b>실행 취소</button>
-      <button id="mkDel" onclick="mkDelete()"><b>🗑</b>선택 삭제</button>
+      <button id="mkDel" onclick="mkDelete()"><b><svg class="ic"><use href="#i-trash"/></svg></b>선택 삭제</button>
       <button onclick="mkColor()"><b><i id="mkColorDot"></i></b>색</button>
       <button id="mkDashB" onclick="mkDashToggle()">┅ 점선</button>
       <button id="mkTextEdit" onclick="mkEditText()"><b>✎</b>글자 수정</button>
@@ -1232,7 +1288,7 @@ img,svg,table,video{max-width:100%}
     <div class="card" id="syncBox">불러오는 중...</div>
     <div class="tools" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0">
       <button class="btn" id="syncAutoBtn" onclick="syncAutoUI()">자동 반영 켜기</button>
-      <button class="btn ghost" onclick="syncNowUI()">🔄 지금 반영</button>
+      <button class="btn ghost" onclick="syncNowUI()"><svg class="ic sm"><use href="#i-refresh"/></svg>지금 반영</button>
     </div>
     <div class="card">
       <label for="syncLink">다른 엑셀 파일로 연결 (드라이브 링크 붙여넣기)</label>
@@ -1252,7 +1308,7 @@ img,svg,table,video{max-width:100%}
     <div class="top"><button onclick="closePicker('backup')">← 닫기</button><h2>백업 · 복원</h2><button onclick="openBackup()">새로고침</button></div>
     <div class="card">
       <div id="bkInfo" class="hint"></div>
-      <div class="tools"><button class="btn sm" onclick="backupNowUI()">💾 지금 백업</button></div>
+      <div class="tools"><button class="btn sm" onclick="backupNowUI()"><svg class="ic sm"><use href="#i-db"/></svg>지금 백업</button></div>
     </div>
     <div id="bkList"></div>
     <div class="hint" style="margin-top:10px;line-height:1.7">「되돌리기」를 누르면 <b>지금 상태를 먼저 한 번 더 백업</b>한 뒤 그 시점의 기록으로 바꿉니다.
@@ -1277,7 +1333,7 @@ img,svg,table,video{max-width:100%}
       <div class="hint">이 주소로 열면 이름을 묻지 않고 바로 시작합니다. <b>이 주소를 홈 화면에 추가</b>해 두세요.</div>
       <textarea id="myLinkUrl" readonly style="margin-top:10px;min-height:76px;font-size:13px" onclick="this.select()"></textarea>
       <div class="tools">
-        <button class="btn ghost sm" onclick="copyMyLink()">📋 주소 복사</button>
+        <button class="btn ghost sm" onclick="copyMyLink()"><svg class="ic sm"><use href="#i-copy"/></svg>주소 복사</button>
         <a class="btn sm" id="myLinkOpen" target="_top">이 주소로 열기</a>
       </div>
       <div class="hint" style="margin-top:12px;line-height:1.7">
@@ -1628,7 +1684,7 @@ const fuSt = r => r.fu ? (r.fu.status || '미확인') : '미확인';
 function fuBarHtml(insp) {
   const l = prevDefects(insp); if (!l.length) return '';
   const done = l.filter(r => r.fu).length, ok = l.filter(r => fuSt(r) === '이행완료').length;
-  return `<button class="fubar ${done === l.length ? 'done' : ''}" data-act="follow">🔁 <b>이전 지적 ${l.length}건 이행 확인</b><span>${done}/${l.length} 확인${ok ? ` · 완료 ${ok}` : ''} ›</span></button>`;
+  return `<button class="fubar ${done === l.length ? 'done' : ''}" data-act="follow"><svg class="ic sm"><use href="#i-refresh"/></svg> <b>이전 지적 ${l.length}건 이행 확인</b><span>${done}/${l.length} 확인${ok ? ` · 완료 ${ok}` : ''} ›</span></button>`;
 }
 let fuInsp = '';
 function openFollow(insp) {
@@ -1647,7 +1703,7 @@ function renderFollow() {
       <div class="meta"><span class="kind 지적">${esc(o.insp)}</span><b>${esc([o.floor, o.location].filter(Boolean).join(' ') || '위치 미입력')}</b><span class="badge b-${esc(st.split(' ')[0])}">${esc(st)}</span>
         <p>${esc(o.issue || '')}</p>
         ${f ? `<div class="who">확인 ${esc(f.by)} · ${esc(shortAt(f.mat || f.at))}${f.action ? ' · ' + esc(f.action) : ''}</div>` : ''}
-        <div class="acts"><button data-fu="${esc(o.id)}">${f ? '수정' : '📷 확인하기'}</button>${f ? `<button data-fudel="${esc(f.id)}" ${canDel(f) ? '' : 'disabled'}>확인 취소</button>` : ''}</div>
+        <div class="acts"><button data-fu="${esc(o.id)}">${f ? '수정' : '<svg class="ic sm"><use href="#i-camera"/></svg>확인하기'}</button>${f ? `<button data-fudel="${esc(f.id)}" ${canDel(f) ? '' : 'disabled'}>확인 취소</button>` : ''}</div>
       </div></div>`; }).join('') : '<div class="empty">이전 점검에서 남은 지적사항이 없습니다.</div>';
 }
 $('#fuBody').onclick = e => {
@@ -1850,7 +1906,7 @@ function itemHtml(o, mode) {
     <div class="thumbs">${thumbHtml(o, gs.b[0] || 'b', true)}${o.kind === '지적' && gs.a[0] ? thumbHtml(o, gs.a[0]) : ''}${more > 0 ? `<div class="tw more" data-act="view" data-id="${esc(o.id)}" data-s="${(gs.b[1] || gs.a[1])}">+${more}</div>` : ''}</div>
     <div class="meta"><span class="kind ${o.kind}">${o.kind}</span><b>${esc(where || '위치 미입력')}</b>${o.kind === '지적' && o.status ? `<span class="badge b-${esc(o.status)}">${esc(o.status)}</span>` : ''}
       <p>${othersUp ? '<span class="up" title="다른 사람이 올리는 중">↑</span>' : ''}${esc(body)}</p>
-      <div class="who">👤 ${esc(o.by)} · ${esc(shortAt(o.at))}${o.mby && o.mby !== o.by ? ` · 수정 ${esc(o.mby)}` : ''}</div>
+      <div class="who"><svg class="ic sm"><use href="#i-user"/></svg>${esc(o.by)} · ${esc(shortAt(o.at))}${o.mby && o.mby !== o.by ? ` · 수정 ${esc(o.mby)}` : ''}</div>
       ${mode ? '' : `<div class="acts"><button data-act="up" data-id="${esc(o.id)}">▲</button><button data-act="down" data-id="${esc(o.id)}">▼</button>
         <button data-act="edit" data-id="${esc(o.id)}">수정</button><button data-act="del" data-id="${esc(o.id)}" ${can ? '' : 'disabled'}>삭제</button></div>`}
     </div></div>`;
@@ -1979,7 +2035,7 @@ function deleteItemsUI(ids) {
     if (changed.length) msgs.push(`${changed.length}건은 그 사이 다른 사용자가 수정해서 삭제하지 않았습니다. 확인 후 다시 시도하세요.`);
     if (denied.length) msgs.push(`${denied.length}건은 권한이 없습니다.`);
     ids.forEach(id => picked.delete(id));
-    if (msgs.length) alert(`${ok}건 삭제됨\n\n` + msgs.join('\n')); else toast(res._queued ? `📴 ${ok}건 삭제 — 연결되면 반영합니다` : `${ok}건 삭제했습니다`);
+    if (msgs.length) alert(`${ok}건 삭제됨\n\n` + msgs.join('\n')); else toast(res._queued ? `${ok}건 삭제 — 연결되면 반영합니다` : `${ok}건 삭제했습니다`);
     renderSections(); renderBar();
     if (viewing && ids.includes(viewing.id)) closeViewer();
   }).catch(e => alert('삭제 실패: ' + errMsg(e))).finally(() => { busy(false); refreshList(true); });
@@ -2011,9 +2067,9 @@ function openViewer(id, s) {
   const two = all.length > 1;
   let acts = `<button class="btn ghost sm" onclick="closeViewer();openEdit('${esc(id)}')">수정</button>`;
   const vm = markOf(o)[s];
-  if (vm) acts += `<button class="btn ghost sm" onclick="viewOrig('${esc(id)}','${s}')">🖼 원본 보기</button>
-    <button class="btn ghost sm" onclick="closeViewer();openEdit('${esc(id)}');remark('${s[0]}',${pi})">✏️ 표시 수정 (${(vm.shapes || []).length})</button>`;
-  else if (o.kind !== '조사' && o.kind !== '실측') acts += `<button class="btn ghost sm" onclick="closeViewer();openEdit('${esc(id)}');remark('${s[0]}',${pi})">✏️ 표시 넣기</button>`;
+  if (vm) acts += `<button class="btn ghost sm" onclick="viewOrig('${esc(id)}','${s}')"><svg class="ic sm"><use href="#i-image"/></svg>원본 보기</button>
+    <button class="btn ghost sm" onclick="closeViewer();openEdit('${esc(id)}');remark('${s[0]}',${pi})"><svg class="ic sm"><use href="#i-marker"/></svg>표시 수정 (${(vm.shapes || []).length})</button>`;
+  else if (o.kind !== '조사' && o.kind !== '실측') acts += `<button class="btn ghost sm" onclick="closeViewer();openEdit('${esc(id)}');remark('${s[0]}',${pi})"><svg class="ic sm"><use href="#i-marker"/></svg>표시 넣기</button>`;
   if (two) acts += `<button class="btn red sm" ${can ? '' : 'disabled'} onclick="deletePhotoUI('${esc(id)}','${s}')">이 사진만 삭제</button>
     <button class="btn red sm" style="grid-column:1/-1" ${can ? '' : 'disabled'} onclick="deleteItemsUI(['${esc(id)}'])">${o.kind === '현황' ? '항목' : o.kind === '이행' ? '이행 확인' : '지적 항목'} 전체 삭제</button>`;
   else acts += `<button class="btn red sm" ${can ? '' : 'disabled'} onclick="deleteItemsUI(['${esc(id)}'])">삭제</button>`;
@@ -2123,11 +2179,11 @@ function renderSlots() {
       const u = uploads[p.key], st = u ? u.status : (p.fileId ? '완료' : '업로드 중');
       const nm = p.mark ? (p.mark.shapes || []).length : 0;
       return `<div class="slot ph" onclick="openPhMenu('${g}',${i})"><img src="${turl(p.thumb || (u && u.thumb) || '')}">
-        ${max > 1 ? `<span class="phno">${i + 1}</span>` : ''}${p.mark ? `<span class="mkbadge">✏️ ${nm}</span>` : ''}
+        ${max > 1 ? `<span class="phno">${i + 1}</span>` : ''}${p.mark ? `<span class="mkbadge"><svg class="ic sm"><use href="#i-marker"/></svg>${nm}</span>` : ''}
         <div class="st ${st === '실패' ? 'f' : st === '완료' ? 'ok' : ''}">${UP_TXT[st] || st}</div></div>`;
     });
-    const chk = edit._checking && edit._checking.g === g ? `<div class="slot ph"><img src="${edit._checking.thumb}"><div class="st">🔍 중복 확인 중...</div></div>` : '';
-    const add = list.length < max ? `<div class="slot add"><button onclick="takePhoto('${g}',-1,true)">📷<br>카메라</button><button onclick="takePhoto('${g}',-1,false)">🖼<br>앨범${max > 1 ? '<small>여러 장 가능</small>' : ''}</button></div>` : '';
+    const chk = edit._checking && edit._checking.g === g ? `<div class="slot ph"><img src="${edit._checking.thumb}"><div class="st">중복 확인 중...</div></div>` : '';
+    const add = list.length < max ? `<div class="slot add"><button onclick="takePhoto('${g}',-1,true)"><svg class="ic"><use href="#i-camera"/></svg><br>카메라</button><button onclick="takePhoto('${g}',-1,false)"><svg class="ic"><use href="#i-image"/></svg><br>앨범${max > 1 ? '<small>여러 장 가능</small>' : ''}</button></div>` : '';
     box.innerHTML = `<div class="phh"><b>${title}</b>${max > 1 ? `<span>${list.length}/${max}장</span>` : ''}</div>
       <div class="slots ${max > 1 ? '' : 'one'}" id="slot_${g}">${tiles.join('')}${chk}${add}</div>`;
   });
@@ -2152,13 +2208,13 @@ function openPhMenu(g, i) {
   $('#phMenuTitle').textContent = `${g === 'a' ? '조치 후' : edit.kind === '이행' ? '이행 확인' : edit.kind === '지적' ? '조치 전' : '현황'} 사진${n > 1 ? ' ' + (i + 1) : ''}`;
   $('#phMenuImg').src = p.thumb || (u && u.thumb) || '';
   $('#phMenuBtns').innerHTML = [
-    edit.kind !== '현황' || true ? `<button class="mk" onclick="closePhMenu();remark('${g}',${i})">✏️ ${p.mark ? `표시 수정 (${(p.mark.shapes || []).length})` : '위치 표시하기'}</button>` : '',
+    edit.kind !== '현황' || true ? `<button class="mk" onclick="closePhMenu();remark('${g}',${i})"><svg class="ic sm"><use href="#i-marker"/></svg> ${p.mark ? `표시 수정 (${(p.mark.shapes || []).length})` : '위치 표시하기'}</button>` : '',
     u && u.status === '실패' ? `<button onclick="closePhMenu();retryUpload('${p.key}')">⟳ 업로드 다시 시도</button>` : '',
-    `<button onclick="closePhMenu();takePhoto('${g}',${i},true)">📷 다시 촬영</button>`,
-    `<button onclick="closePhMenu();takePhoto('${g}',${i},false)">🖼 앨범에서 바꾸기</button>`,
+    `<button onclick="closePhMenu();takePhoto('${g}',${i},true)"><svg class="ic sm"><use href="#i-camera"/></svg>다시 촬영</button>`,
+    `<button onclick="closePhMenu();takePhoto('${g}',${i},false)"><svg class="ic sm"><use href="#i-image"/></svg>앨범에서 바꾸기</button>`,
     n > 1 && i > 0 ? `<button onclick="movePh('${g}',${i},-1)">◀ 앞으로</button>` : '',
     n > 1 && i < n - 1 ? `<button onclick="movePh('${g}',${i},1)">뒤로 ▶</button>` : '',
-    `<button class="del" onclick="closePhMenu();deleteSlot('${g}',${i})">🗑 이 사진 빼기</button>`,
+    `<button class="del" onclick="closePhMenu();deleteSlot('${g}',${i})"><svg class="ic sm"><use href="#i-trash"/></svg>이 사진 빼기</button>`,
     `<button onclick="closePhMenu()">닫기</button>`
   ].filter(Boolean).join('');
   $('#phMenu').classList.add('on');
@@ -2683,7 +2739,7 @@ function renderSvList() {
       ${calc.summary ? `<div class="calc row">${esc(calc.summary)}</div>` : ''}
       ${(s.fields || {}).result ? `<div class="hint">${esc(s.fields.result)}</div>` : ''}
       <div class="thumbs" style="margin-top:8px">${pics.slice(0, 5).map(o => thumbHtml(o, 'b')).join('')}${pics.length > 5 ? `<span class="hint">+${pics.length - 5}</span>` : ''}</div>
-      <div class="meta"><div class="who">측정 ${s.rows.length}행 · 사진 ${pics.length}장 · 👤 ${esc(s.by)}${s.mby && s.mby !== s.by ? ` · 수정 ${esc(s.mby)}` : ''} ${esc(shortAt(s.mat))}</div></div>
+      <div class="meta"><div class="who">측정 ${s.rows.length}행 · 사진 ${pics.length}장 · <svg class="ic sm"><use href="#i-user"/></svg>${esc(s.by)}${s.mby && s.mby !== s.by ? ` · 수정 ${esc(s.mby)}` : ''} ${esc(shortAt(s.mat))}</div></div>
       <div class="acts"><button data-act="up" data-id="${esc(s.id)}">▲</button><button data-act="down" data-id="${esc(s.id)}">▼</button>
         <button data-act="edit" data-id="${esc(s.id)}">수정</button><button data-act="del" data-id="${esc(s.id)}" ${canDel(s) ? '' : 'disabled'}>삭제</button></div>
     </div>`;
@@ -2852,8 +2908,8 @@ function openSvPick() {
     .sort((a, b) => a.ord - b.ord);
   $('#svPickList').innerHTML = cand.length ? cand.map(o => `<label class="opt row"><input type="checkbox" value="${esc(o.id)}">
       ${slotSrc(o, 'b') ? `<img src="${slotSrc(o, 'b')}">` : '<img alt="">'}
-      <div><div class="t">${esc(o.kind)}${o.kind === '조사' ? ' (다른 조사)' : ''}</div><div class="i">${esc([o.floor, o.location].filter(Boolean).join(' '))} ${esc(o.caption || o.issue || '')}</div><div class="a">👤 ${esc(o.by)} · ${esc(shortAt(o.at))}</div></div></label>`).join('')
-    : '<div class="empty">연결할 사진이 없습니다.<br>먼저 「📷 현황 사진」으로 찍거나 여기서 직접 촬영하세요.</div>';
+      <div><div class="t">${esc(o.kind)}${o.kind === '조사' ? ' (다른 조사)' : ''}</div><div class="i">${esc([o.floor, o.location].filter(Boolean).join(' '))} ${esc(o.caption || o.issue || '')}</div><div class="a"><svg class="ic sm"><use href="#i-user"/></svg>${esc(o.by)} · ${esc(shortAt(o.at))}</div></div></label>`).join('')
+    : '<div class="empty">연결할 사진이 없습니다.<br>먼저 「현황 사진」으로 찍거나 여기서 직접 촬영하세요.</div>';
   $('#svPick').classList.add('on'); $('#svPick').scrollTop = 0;
 }
 function svLinkPicked() {
@@ -2931,7 +2987,7 @@ function go(v) {
   document.body.dataset.pg = v;
   $('#moreMenu').classList.remove('on');
   try { window.scrollTo(0, 0); } catch (e) {}
-  if (v === 'home') setTimeout(loadRecentLog, 1500);
+  if (v === 'home') { setTimeout(loadRecentLog, 1500); setTimeout(() => { const el = $('#dMonth'); if (el && el.clientWidth && Math.abs(el.clientWidth - dMonthW) > 8) drawMonth(); }, 0); }
   if (v === 'site') renderSiteList();
   if (v === 'report') renderReport();
   if (v === 'photo') renderSitePhotos('#phGal');
@@ -2978,6 +3034,8 @@ function renderSiteList() {
   const cs = $('#sfCat'), cv = cs.value;
   const cats = [...new Set(all.flatMap(x => x.cats))].sort();
   cs.innerHTML = `<option value="">공종 전체</option>` + cats.map(c => `<option ${c === cv ? 'selected' : ''} value="${esc(c)}">${esc(c === '시스템동바리' ? '거푸집 및 동바리' : c)}</option>`).join('');
+  { const ms = $('#sfMon'), mv = ms.value, mons = [...new Set(all.flatMap(x => x.ins.flatMap(r => [r.plan, r.done]).filter(isD).map(d => d.slice(0, 7))))].sort().reverse();
+    ms.innerHTML = '<option value="">점검 월 전체</option>' + mons.map(m => `<option value="${m}" ${m === mv ? 'selected' : ''}>${m.slice(0, 4)}년 ${+m.slice(5)}월</option>`).join(''); }
   const q = ($('#sfQ').value || '').trim(), st = $('#sfSt').value, mon = $('#sfMon').value;
   const l = all.filter(x => (!q || [x.s.name, x.s.code, x.s.gu, x.s.builder, x.s.scale].join(' ').includes(q))
     && (!cs.value || x.cats.includes(cs.value))
@@ -2990,7 +3048,7 @@ function renderSiteList() {
     ${l.map(x => `<button class="str ${x.s.code === state.svc ? 'cur' : ''} ${x.end ? 'end' : ''}" onclick="openSite('${esc(x.s.code)}')">
       <span class="nm"><b>${esc(x.s.name)}</b><small>${esc([x.s.code, x.s.gu, x.s.builder].filter(Boolean).join(' · '))}</small></span>
       <span class="cats">${x.cats.slice(0, 3).map(c => esc(c === '시스템동바리' ? '동바리' : c)).join(' · ')}${x.cats.length > 3 ? ` 외 ${x.cats.length - 3}` : ''}</span>
-      <span class="nx">${x.next ? `${esc(x.next.item)}<small>${esc(x.next.plan)}</small>` : '<small>-</small>'}</span>
+      <span class="nx">${x.next ? `${esc(x.next.item)}<small>${esc(x.next.plan)}</small>` : '<small>예정된 점검 없음</small>'}</span>
       <span class="pg"><span class="prog"><div style="width:${x.pct}%"></div></span><small>${x.done}/${x.total} · ${x.pct}%</small></span>
       <span class="stc">${stTxt(x)}</span></button>`).join('')}</div>`
     : '<div class="empty">조건에 맞는 현장이 없습니다.</div>';
@@ -3035,7 +3093,7 @@ function renderSiteDetail() {
     const ins = row.ins.slice().sort((a, b) => String(a.plan || '9').localeCompare(String(b.plan || '9'))), td = today();
     B.innerHTML = `<div class="card"><div class="ch"><b>점검 일정 ${ins.length}회</b><button class="lnk" onclick="openCal()">달력으로 보기</button></div>
       ${ins.map(r => { const st = doneR(r) ? '<span class="pill g">완료</span>' : isD(r.plan) && r.plan < td ? '<span class="pill r">지연</span>' : r.plan === td ? '<span class="pill o">오늘</span>' : '<span class="pill n">예정</span>';
-        return `<button class="drow" ${live ? `onclick="go('insp');ensureSel('${esc(r.item)}');showSection('${esc(r.item)}')"` : ''}>${st}<span><b>${esc(r.item)}</b> <small class="muted">${esc(r.type || '')}</small></span><em>예정 ${esc(r.plan || '-')}${isD(r.done) ? ' · 점검 ' + esc(r.done) : ''}</em></button>`; }).join('') || '<div class="empty">점검 일정이 없습니다.</div>'}</div>`;
+        return `<button class="drow" ${live ? `onclick="go('insp');ensureSel('${esc(r.item)}');showSection('${esc(r.item)}')"` : ''}>${st}<span class="two"><b>${esc(r.item)}</b><small>${esc(r.type || '')}</small></span><em class="two">예정 ${esc(r.plan || '-')}${isD(r.done) ? '<br>점검 ' + esc(r.done) : ''}</em></button>`; }).join('') || '<div class="empty">점검 일정이 없습니다.</div>'}</div>`;
   } else if (t === 'data') {
     const sp = srv.specs || [], ms = srv.measures || [], sv = srv.surveys || [], mm = mismatches();
     B.innerHTML = `<div class="kpi"><button onclick="openSpecList()"><span>사전 제원</span><b>${sp.length}</b><small>공종별 제원 조회</small></button>
@@ -3053,7 +3111,7 @@ function renderSiteDetail() {
       ${l.map(r => { const it = srv.items.filter(o => o.insp === r.item), d = it.filter(o => o.kind === '지적'), sel = selOf(r.item);
         const ck = sel && sel.ck ? `체크 ${Object.keys(sel.ck.res || {}).length}/${sel.ck.rows.length}` : '체크 -';
         return `<button class="drow" onclick="go('insp');ensureSel('${esc(r.item)}');showSection('${esc(r.item)}')">${doneR(r) ? '<span class="pill g">완료</span>' : '<span class="pill n">진행</span>'}
-          <span><b>${esc(r.item)}</b><small class="muted"> 현황 ${it.filter(o => o.kind === '현황').length} · 지적 ${d.length}${d.length ? ` (미조치 ${d.filter(o => o.status !== '조치완료').length})` : ''} · ${ck}</small></span>
+          <span class="two"><b>${esc(r.item)}</b><small>현황 ${it.filter(o => o.kind === '현황').length} · 지적 ${d.length}${d.length ? ` (미조치 ${d.filter(o => o.status !== '조치완료').length})` : ''} · ${ck}</small></span>
           <em>${made[code + '|' + r.item] ? '사진대지 ' + esc(String(made[code + '|' + r.item]).slice(5, 10)) : ''}</em></button>`; }).join('') || '<div class="empty">점검항목이 없습니다.</div>'}</div>`;
   } else if (t === 'photo') {
     renderSitePhotos('#sdBody');
@@ -3061,7 +3119,7 @@ function renderSiteDetail() {
     renderAnaTab(); setTimeout(anAfterSetup, 0);
   } else if (t === 'report') {
     B.innerHTML = `<div class="menu" style="margin-bottom:12px"><button class="pri" onclick="go('insp');buildAll()"><svg class="ic"><use href="#i-file"/></svg>사진대지 만들기</button>
-      <button onclick="exportCompareUI()"><svg class="ic"><use href="#i-scale"/></svg>비교 결과표 (엑셀 · PDF)</button></div>
+      <button onclick="exportCompareUI()"><svg class="ic"><use href="#i-scale"/></svg><span class="ml">비교 결과표<small>엑셀 · PDF</small></span></button></div>
       <div class="card"><div class="ch"><b>보고서 작성 현황</b><small class="muted">점검별 자료 준비 상태</small></div>${reportRows(false)}</div>`;
   }
 }
@@ -3112,7 +3170,7 @@ function reportRows(pick) {
     const pend = srv.items.some(o => o.insp === r.item && SLOTS.some(s2 => o[s2 + 'St'] === '업로드중'));
     const miss = srv.items.filter(o => o.insp === r.item && o.kind === '지적' && o.status !== '조치완료').length;
     return `<div class="rprow ${pick && rp.item === r.item ? 'on' : ''}" ${pick ? `onclick="rpOpen('${esc(r.item)}')"` : ''}><div class="rpt"><b>${esc(r.item)}</b>${x.made && !x.wait ? `<span class="pill g">작성 ${esc(x.made.slice(5))}</span>` : x.made ? '<span class="pill o">작성 후 수정됨</span>' : '<span class="pill o">작성 대기</span>'}</div>
-      <div class="rpc">${ok(ph, '사진 자료')}${ok(ck, '체크리스트')}${ok(msN, `제원 비교 ${msN || ''}`)}${ok(svN || !surveyOk(r), surveyOk(r) ? `조사 ${svN}` : '조사 해당없음')}${miss ? `<span class="noc" style="color:var(--bad)">미조치 지적 ${miss}</span>` : ''}${pend ? '<span class="noc">⏳ 업로드 중</span>' : ''}</div>
+      <div class="rpc">${ok(ph, '사진 자료')}${ok(ck, '체크리스트')}${ok(msN, `제원 비교 ${msN || ''}`)}${ok(svN || !surveyOk(r), surveyOk(r) ? `조사 ${svN}` : '조사 해당없음')}${miss ? `<span class="noc" style="color:var(--bad)">미조치 지적 ${miss}</span>` : ''}${pend ? '<span class="noc">업로드 중</span>' : ''}</div>
       <div class="rpb"><button class="btn ghost xs" onclick="event.stopPropagation();go('insp');ensureSel('${esc(r.item)}');showSection('${esc(r.item)}')">입력 화면</button>
       <button class="btn acc xs" onclick="event.stopPropagation();buildOne('${esc(r.item)}')">이 점검 사진대지</button></div></div>`; }).join('') || '<div class="empty">아직 입력된 점검이 없습니다.</div>';
 }
@@ -3250,6 +3308,9 @@ function anSaveNote(t) { const el = $('#anSave'); if (el) el.textContent = t; }
 window.addEventListener('beforeunload', () => { if (an.dirty.size) anFlush(); });
 
 /* ---------- 화면 조각 (핸들러 표) ---------- */
+/** 공종 이름으로 현장앱 공종 짐작 (없으면 '') */
+function anAutoCat(w) { const n = w.name; const r = CAT_RULES.find(([c]) => n.includes(c.replace(' 가시설', '')) || (c === '시스템동바리' && /동바리|거푸집/.test(n)) || (c === '흙막이 가시설' && /흙막이|가시설|굴착/.test(n)));
+  return r ? r[0] : (AN_COMMON.includes(n) ? '*' : ''); }
 const anOn = fn => { an.H.push(fn); return an.H.length - 1; };
 const anEd = fn => { an.E.push(fn); return an.E.length - 1; };
 const anRefs = r => (r || []).map(x => `<button class="an-pg" data-ah="${anOn(() => anOpenRef(x))}" title="원본 페이지 보기">p.${esc(x)}</button>`).join('');
@@ -3415,8 +3476,7 @@ function anPickImport() {
 const anKeyT = t => String(t || '').replace(/\s+/g, ' ').trim();
 /** 다시 가져올 때: 같은 내용은 예전 ID 유지(현장 점검 결과·사진 연결 보존), 고친·직접 입력 항목은 덧붙임, 체크 유지 */
 function anMerge(old, j) {
-  const auto = w => { const n = w.name; const r = CAT_RULES.find(([c]) => n.includes(c.replace(' 가시설', '')) || (c === '시스템동바리' && /동바리|거푸집/.test(n)) || (c === '흙막이 가시설' && /흙막이|가시설|굴착/.test(n)));
-    return r ? r[0] : (AN_COMMON.includes(n) ? '*' : ''); };
+  const auto = anAutoCat;
   const works = (j.works || []).map(w => ({ ...w, sections: w.sections || {}, conflicts: w.conflicts || [] }));
   const core = JSON.parse(JSON.stringify(j.core)), checklist = JSON.parse(JSON.stringify(j.checklist || []));
   if (!old) { const map = {}; works.forEach(w => { const c = auto(w); if (c) map[w.id] = c; }); return { core, checklist, works, map }; }
@@ -3524,6 +3584,7 @@ function anWorksFor(insp) {
     if (AN_COMMON.includes(w.name)) return true;
     const mp = d.map[w.id];
     if (mp === '-') return false; if (mp === '*') return true; if (mp) return mp === cat;
+    const g = anAutoCat(w); if (g) return g === '*' || g === cat;            // 이름으로 공종을 알 수 있으면 그 공종 점검에만
     const key = w.name.replace(/\s|공사|가시설/g, '').slice(0, 3);
     return !!(sch && key && String(sch.works || '').replace(/\s/g, '').includes(key));
   });
@@ -3698,22 +3759,27 @@ function donut(pct, sz, sub) {
     <text x="50" y="${sub ? 50 : 56}" text-anchor="middle" font-size="22" font-weight="800" fill="var(--navy)">${pct}%</text>
     ${sub ? `<text x="50" y="68" text-anchor="middle" font-size="11" fill="var(--muted)">${esc(sub)}</text>` : ''}</svg>`;
 }
-function monthChart(rows) {
+function monthChart(rows, Wpx) {
   const ym = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`, now = new Date(), cur = ym(now);
   const ms = []; for (let i = -4; i <= 3; i++) ms.push(ym(new Date(now.getFullYear(), now.getMonth() + i, 1)));
   const isDt = v => /^\d{4}-\d{2}-\d{2}$/.test(String(v || ''));
   const data = ms.map(m => ({ m, p: rows.filter(r => isDt(r.plan) && r.plan.slice(0, 7) === m).length, d: rows.filter(r => isDt(r.done) && r.done.slice(0, 7) === m).length }));
-  const mx = Math.max(2, ...data.map(x => Math.max(x.p, x.d))), W = 320, H = 150, top = 16, base = H - 24, cw = W / ms.length, bw = Math.min(14, cw * 0.28);
+  // 실제 칸 너비로 그림 (늘려 붙이지 않음 → 글자가 찌그러지지 않음)
+  const W = Math.max(300, Math.round(Wpx || 320)), H = W >= 700 ? 210 : 160, fs = W >= 700 ? 12 : 10;
+  const mx = Math.max(2, ...data.map(x => Math.max(x.p, x.d))), top = 22, base = H - 28, padR = 22, cw = (W - padR) / ms.length, bw = Math.max(8, Math.min(26, cw * 0.2));
   const y = v => base - (base - top) * v / mx;
-  const grid = [0, Math.ceil(mx / 2), mx].map(v => `<line x1="0" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="#eef2f6"/><text x="${W}" y="${y(v) - 3}" text-anchor="end" font-size="9" fill="#9aa6b5">${v}</text>`).join('');
+  const grid = [...new Set([0, Math.ceil(mx / 2), mx])].map(v => `<line x1="0" x2="${W - padR}" y1="${y(v)}" y2="${y(v)}" stroke="#eef2f6"/><text x="${W - 4}" y="${y(v) + 4}" text-anchor="end" font-size="${fs - 1}" fill="#9aa6b5">${v}</text>`).join('');
   const bars = data.map((x, i) => { const cx = i * cw + cw / 2, on = x.m === cur;
-    return `${on ? `<rect x="${i * cw + 2}" y="${top - 6}" width="${cw - 4}" height="${base - top + 6}" rx="6" fill="#fdf3e7"/>` : ''}
+    return `${on ? `<rect x="${cx - Math.min(cw * 0.42, bw * 2.6)}" y="${top - 10}" width="${Math.min(cw * 0.84, bw * 5.2)}" height="${base - top + 10}" rx="6" fill="#fdf3e7"/>` : ''}
       <rect x="${cx - bw - 1}" y="${y(x.p)}" width="${bw}" height="${base - y(x.p)}" rx="3" fill="#b9c6d6"><title>${x.m} 예정 ${x.p}</title></rect>
       <rect x="${cx + 1}" y="${y(x.d)}" width="${bw}" height="${base - y(x.d)}" rx="3" fill="var(--acc)"><title>${x.m} 완료 ${x.d}</title></rect>
-      ${x.p ? `<text x="${cx - bw / 2 - 1}" y="${y(x.p) - 3}" text-anchor="middle" font-size="9" fill="#5d6b7c">${x.p}</text>` : ''}${x.d ? `<text x="${cx + bw / 2 + 1}" y="${y(x.d) - 3}" text-anchor="middle" font-size="9" font-weight="700" fill="var(--acc2)">${x.d}</text>` : ''}
-      <text x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10" ${on ? 'font-weight="800" fill="var(--navy)"' : 'fill="#8a97a8"'}>${+x.m.slice(5)}월</text>`; }).join('');
-  return `<svg class="mchart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="월별 점검 예정·완료">${grid}${bars}</svg>`;
+      ${x.p ? `<text x="${cx - bw / 2 - 1}" y="${y(x.p) - 3}" text-anchor="middle" font-size="${fs - 1}" fill="#5d6b7c">${x.p}</text>` : ''}${x.d ? `<text x="${cx + bw / 2 + 1}" y="${y(x.d) - 4}" text-anchor="middle" font-size="${fs - 1}" font-weight="700" fill="var(--acc2)">${x.d}</text>` : ''}
+      <text x="${cx}" y="${H - 8}" text-anchor="middle" font-size="${fs}" ${on ? 'font-weight="800" fill="var(--navy)"' : 'fill="#8a97a8"'}>${+x.m.slice(5)}월</text>`; }).join('');
+  return `<svg class="mchart" viewBox="0 0 ${W} ${H}" width="100%" style="height:auto" role="img" aria-label="월별 점검 예정·완료">${grid}${bars}</svg>`;
 }
+let dMonthRows = [], dMonthW = 0;
+function drawMonth() { const el = $('#dMonth'); if (!el) return; dMonthW = el.clientWidth || 320; el.innerHTML = monthChart(dMonthRows, dMonthW); }
+window.addEventListener('resize', () => { clearTimeout(drawMonth.t); drawMonth.t = setTimeout(() => { const el = $('#dMonth'); if (el && el.clientWidth && Math.abs(el.clientWidth - dMonthW) > 8) drawMonth(); }, 150); });
 function renderDash() {
   if (!$('#kSvc')) return;
   $('#kSvc').textContent = svcList().length;
@@ -3729,7 +3795,7 @@ function renderDash() {
   const done = all.filter(r => /^\d{4}-\d{2}-\d{2}$/.test(r.done || '') || r.stage === '완료').length, pct = all.length ? Math.round(done / all.length * 100) : 0;
   const next = all.filter(r => !(/^\d{4}-\d{2}-\d{2}$/.test(r.done || '') || r.stage === '완료')).sort((a, b) => String(a.plan || '9').localeCompare(String(b.plan || '9'))).slice(0, 4);
   const late = all.filter(r => !(/^\d{4}-\d{2}-\d{2}$/.test(r.done || '') || r.stage === '완료') && /^\d{4}-\d{2}-\d{2}$/.test(r.plan || '') && r.plan < t).length;
-  $('#dMonth').innerHTML = monthChart(all);
+  dMonthRows = all; drawMonth();
   $('#dSched').innerHTML = `<div class="dring">${donut(pct, 92, '진행률')}<div class="dleg"><div><i class="d"></i>완료<b>${done}</b></div><div><i class="p"></i>잔여<b>${all.length - done}</b></div><div><i class="r"></i>지연<b>${late}</b></div><small>전체 ${all.length}회</small></div></div>`
     + (next.map(r => `<button class="drow" onclick="go('insp');ensureSel('${esc(r.item)}');showSection('${esc(r.item)}')">${icon('cal', 'sm')}<span>${esc(r.item)}</span><em class="${r.plan && r.plan < t ? 'late' : ''}">${esc(r.plan || '날짜 미정')}</em></button>`).join('') || '<div class="empty">남은 점검이 없습니다.</div>');
 }
@@ -3980,8 +4046,8 @@ function renderSync(r) {
   const f = r.file;
   $('#syncBox').innerHTML = `<div class="hint" style="margin:0;line-height:1.8">
     연결된 엑셀: ${f ? `<b>${esc(f.name)}</b> <a href="${esc(f.url)}" target="_blank">열기</a><br>드라이브 저장 시각: <b>${esc(f.at)}</b> <small>(마지막 확인 때)</small>` : '<b style="color:var(--bad)">찾지 못함</b> — 드라이브에 통합관리 엑셀을 올리거나 아래에 링크를 넣으세요'}
-    <button class="btn ghost sm" style="margin-left:6px;padding:2px 8px" onclick="openSync(true)">다시 찾기</button><br>
-    자동 반영: <b>${r.auto ? `켜짐 (${r.every}분마다) ✅` : '꺼짐'}</b><br>
+    <button class="btn ghost sm" style="margin:4px 0 4px 6px" onclick="openSync(true)">다시 찾기</button><br>
+    자동 반영: <b>${r.auto ? `켜짐 (${r.every}분마다)` : '꺼짐'}</b><br>
     마지막 확인: <b>${esc(r.last || '-')}</b><br>
     현장앱 마지막 반영: <b>${esc(r.lastPush || '-')}</b>${r.err ? `<br><span style="color:var(--bad)">파일 찾기 오류: ${esc(r.err)}</span>` : ''}</div>`;
   $('#syncAutoBtn').textContent = r.auto ? '자동 반영 끄기' : '자동 반영 켜기';
@@ -4021,7 +4087,7 @@ function openBackup() {
   $('#backup').classList.add('on');
   $('#bkInfo').innerHTML = '불러오는 중...'; $('#bkList').innerHTML = '';
   run('listBackups', me(), adminPin).then(r => {
-    $('#bkInfo').innerHTML = `자동 백업: <b>${r.auto ? '매일 새벽 2시 ✅' : '꺼짐 — 편집기에서 setupBackup 을 한 번 실행하세요'}</b><br>
+    $('#bkInfo').innerHTML = `자동 백업: <b>${r.auto ? '매일 새벽 2시' : '꺼짐 — 편집기에서 setupBackup 을 한 번 실행하세요'}</b><br>
       마지막 백업: <b>${esc(r.last || '-')}</b> · 최근 ${r.keep}개 보관 · <a href="${esc(r.folder)}" target="_blank">백업 폴더 열기</a>`;
     $('#bkList').innerHTML = r.list.length ? `<table class="pt"><tr><th>백업</th><th>구분</th><th></th></tr>${r.list.map(b =>
       `<tr><td>${esc(b.name.replace('현장앱_DB_백업_', '').replace('_', ' '))}</td><td>${esc(b.why)}</td>
@@ -4110,11 +4176,11 @@ function renderSpList() {
   $('#spListBody').innerHTML = list.length ? list.map(s => {
     const m = latestMeasures().find(x => x.specId === s.id);
     return `<div class="card"><div class="ihead"><b style="font-size:16px">${esc(s.name)}</b><span>${esc(catName(s.cat))}</span></div>
-      <div class="hint">${esc([s.loc, s.doc].filter(Boolean).join(' · '))}${s.loc || s.doc ? '<br>' : ''}항목 ${s.items.length}개 · v${s.ver} · 👤 ${esc(s.mby || s.by)} ${esc(shortAt(s.mat))}</div>
+      <div class="hint">${esc([s.loc, s.doc].filter(Boolean).join(' · '))}${s.loc || s.doc ? '<br>' : ''}항목 ${s.items.length}개 · v${s.ver} · <svg class="ic sm"><use href="#i-user"/></svg>${esc(s.mby || s.by)} ${esc(shortAt(s.mat))}</div>
       ${m ? `<div class="sumbar">${sumHtml(judgeAll(m).c)}<span class="hint" style="margin:0">최근 실측 ${esc(m.date)}</span></div>` : '<div class="hint">아직 실측 없음</div>'}
-      <div class="acts"><button data-a="ms" data-id="${esc(s.id)}">📏 실측</button><button data-a="edit" data-id="${esc(s.id)}">수정</button>
+      <div class="acts"><button data-a="ms" data-id="${esc(s.id)}"><svg class="ic sm"><use href="#i-ruler"/></svg>실측</button><button data-a="edit" data-id="${esc(s.id)}">수정</button>
         <button data-a="hist" data-id="${esc(s.id)}">이력</button><button data-a="del" data-id="${esc(s.id)}" ${canDel(s) ? '' : 'disabled'}>삭제</button></div></div>`;
-  }).join('') : '<div class="empty">등록된 제원이 없습니다.<br>「➕ 제원 등록」으로 시작하세요.</div>';
+  }).join('') : '<div class="empty">등록된 제원이 없습니다.<br>「제원 등록」으로 시작하세요.</div>';
 }
 $('#spCatChips').onclick = e => { const b = e.target.closest('[data-c]'); if (!b) return; spCat = b.dataset.c; renderSpList(); };
 $('#spListBody').onclick = e => {
@@ -4324,10 +4390,10 @@ function msRowHtml(it, i) {
     <div class="std">기준 ${std} · ${MODES[it.mode]}${it.tol ? ' ±' + esc(it.tol) : (it.mode === 'eq' && it.type === 'num' ? ' (허용오차 없음)' : '')}</div>
     <div class="in"><input data-v value="${esc(x.v || '')}" ${it.type === 'num' ? 'inputmode="decimal"' : ''} placeholder="실측값"><span class="u">${esc(it.unit)}</span>
       ${it.std && it.mode !== 'rec' ? `<button class="same ${x.same && x.v === it.std ? 'on' : ''}" data-a="same" title="미리 입력한 기준값을 실측값으로">✔ 일치</button>` : '<span></span>'}
-      <button data-a="ph">📷 ${ph.length || ''}</button></div>
+      <button data-a="ph"><svg class="ic sm"><use href="#i-camera"/></svg>${ph.length || ''}</button></div>
     <div class="why" data-why>${esc(j.why)}</div>
     <div class="ph"><div class="pgrid">${ph.map(id => { const o = findItem(id); return o ? `<div class="tw" data-view="${esc(id)}">${slotSrc(o, 'b') ? `<img src="${slotSrc(o, 'b')}">` : ''}${slotState(o, 'b') !== '완료' ? `<div class="lb">${esc(slotState(o, 'b') || '')}</div>` : ''}<button class="px" data-unlink="${esc(id)}">✕</button></div>` : `<div class="tw need">삭제됨<button class="px" data-unlink="${esc(id)}">✕</button></div>`; }).join('')}</div>
-      <div class="tools"><button class="btn sm" data-a="shot">📷 촬영</button><button class="btn ghost sm" data-a="link">🖼 기존 사진 연결</button></div>
+      <div class="tools"><button class="btn sm" data-a="shot"><svg class="ic sm"><use href="#i-camera"/></svg>촬영</button><button class="btn ghost sm" data-a="link"><svg class="ic sm"><use href="#i-image"/></svg>기존 사진 연결</button></div>
       <label>메모</label><input data-note value="${esc(x.note || '')}" placeholder="측정 위치 등"></div>
   </div>`;
 }
@@ -4446,7 +4512,7 @@ function saveMs() {
     srv.measures = (srv.measures || []).filter(x => x.id !== m.id).concat([m]);
     cur.newItems.clear(); ms = null; $('#msEdit').classList.remove('on');
     const c = judgeAll(m).c;
-    toast(`${m._queued ? '📴 휴대폰에 저장 (연결되면 전송) · ' : '저장: '}일치 ${c['일치']} · 불일치 ${c['불일치']} · 기준 초과 ${c['기준 초과']} · 미입력 ${c['미입력']}`);
+    toast(`${m._queued ? '휴대폰에 저장 (연결되면 전송) · ' : '저장: '}일치 ${c['일치']} · 불일치 ${c['불일치']} · 기준 초과 ${c['기준 초과']} · 미입력 ${c['미입력']}`);
     renderCats(); if ($('#msList').classList.contains('on')) renderMsList(); if ($('#spList').classList.contains('on')) renderSpList();
     refreshList(true);
   }).catch(err => {
@@ -4467,10 +4533,10 @@ function renderMsList() {
   const l = (srv.measures || []).slice().sort((a, b) => (b.date + b.mat).localeCompare(a.date + a.mat));
   $('#msListBody').innerHTML = l.length ? l.map(m => { const s = specOf(m.specId) || {}, c = judgeAll(m).c;
     return `<div class="card"><div class="ihead"><b style="font-size:16px">${esc(s.name || '(삭제된 제원)')}</b><span>${esc(s.cat || '')}</span></div>
-      <div class="hint">측정일 ${esc(m.date)}${m.insp ? ' · ' + esc(m.insp) : ''} · 👤 ${esc(m.by)}${m.mby !== m.by ? ' · 수정 ' + esc(m.mby) : ''}</div>
+      <div class="hint">측정일 ${esc(m.date)}${m.insp ? ' · ' + esc(m.insp) : ''} · <svg class="ic sm"><use href="#i-user"/></svg>${esc(m.by)}${m.mby !== m.by ? ' · 수정 ' + esc(m.mby) : ''}</div>
       <div class="sumbar">${sumHtml(c)}</div>
       <div class="acts"><button data-a="edit" data-id="${esc(m.id)}">열기 · 수정</button><button data-a="del" data-id="${esc(m.id)}" ${canDel(m) ? '' : 'disabled'}>삭제</button></div></div>`; }).join('')
-    : '<div class="empty">아직 실측이 없습니다.<br>바로가기 「📏 현장 실측」으로 시작하세요.</div>';
+    : '<div class="empty">아직 실측이 없습니다.<br>바로가기 「현장 실측」으로 시작하세요.</div>';
 }
 $('#msListBody').onclick = e => {
   const b = e.target.closest('[data-a]'); if (!b) return;
@@ -4499,7 +4565,7 @@ function exportCompareUI() {
   busy('비교 결과표 만드는 중...<br><span style="font-weight:400;font-size:13px">엑셀과 PDF를 함께 만듭니다</span>');
   run('exportCompare', state.svc, null, me()).then(r => {
     $('#resList').innerHTML = `<div class="card"><b>제원 · 실측 비교표</b><div class="hint">실측 ${r.count}건 · 비교 요약 + 불일치 모음 + 대상별 비교표</div>
-      <div class="links"><a href="${r.xlsxDownload}" target="_blank">⬇ 엑셀 다운로드</a><a href="${r.pdfUrl}" target="_blank">🧾 PDF 보기</a><a href="${r.folderUrl}" target="_blank">📁 저장 폴더</a></div></div>`;
+      <div class="links"><a href="${r.xlsxDownload}" target="_blank"><svg class="ic sm"><use href="#i-download"/></svg>엑셀 다운로드</a><a href="${r.pdfUrl}" target="_blank"><svg class="ic sm"><use href="#i-file"/></svg>PDF 보기</a><a href="${r.folderUrl}" target="_blank"><svg class="ic sm"><use href="#i-folder"/></svg>저장 폴더</a></div></div>`;
     $('#result').classList.add('on'); $('#result').scrollTop = 0;
   }).catch(e => alert('출력 실패: ' + errMsg(e))).finally(() => busy(false));
 }
@@ -4509,7 +4575,7 @@ function openPhotoPicker(cand, cb) {
   phPickCb = cb;
   $('#phPickList').innerHTML = cand.length ? cand.map(o => `<label class="opt row"><input type="checkbox" value="${esc(o.id)}">
       ${slotSrc(o, 'b') ? `<img src="${slotSrc(o, 'b')}">` : '<img alt="">'}
-      <div><div class="t">${esc(o.insp)} · ${esc(o.kind)}</div><div class="i">${esc([o.floor, o.location].filter(Boolean).join(' '))} ${esc(o.caption || o.issue || '')}</div><div class="a">👤 ${esc(o.by)} · ${esc(shortAt(o.at))}</div></div></label>`).join('')
+      <div><div class="t">${esc(o.insp)} · ${esc(o.kind)}</div><div class="i">${esc([o.floor, o.location].filter(Boolean).join(' '))} ${esc(o.caption || o.issue || '')}</div><div class="a"><svg class="ic sm"><use href="#i-user"/></svg>${esc(o.by)} · ${esc(shortAt(o.at))}</div></div></label>`).join('')
     : '<div class="empty">연결할 사진이 없습니다.</div>';
   $('#phPick').classList.add('on'); $('#phPick').scrollTop = 0;
 }
@@ -4535,7 +4601,7 @@ function openTrash() {
 function renderTrash() {
   $('#trashHint').textContent = isAdmin() ? '관리자 모드: 이 용역의 삭제된 사진·조사 전체' : `${me()}님이 올리거나 삭제한 것만 보입니다. 전체 관리는 관리자 모드에서.`;
   const sHtml = trashSurveys.map(s => `<label class="opt row"><input type="checkbox" data-k="s:${esc(s.id)}" ${trashPick.has('s:' + s.id) ? 'checked' : ''}>
-      <div><div class="t">${esc(s.insp)} · 🔬 ${esc((defOf(s.type) || {}).name || s.type)}</div><div class="i">${esc(s.location || '위치 미입력')}</div>
+      <div><div class="t">${esc(s.insp)} · <svg class="ic sm"><use href="#i-flask"/></svg>${esc((defOf(s.type) || {}).name || s.type)}</div><div class="i">${esc(s.location || '위치 미입력')}</div>
       <div class="a">측정 ${s.rows.length}행 · 사진 ${s.photos.length}장 / 삭제 ${esc(s.dby)} · ${esc(shortAt(s.dat))} / 입력 ${esc(s.by)}</div></div></label>`).join('');
   const iHtml = trashItems.map(o => {
     const t = thumbs[o.id];
@@ -4546,8 +4612,8 @@ function renderTrash() {
   }).join('');
   const recRow = (key, icon, t, i, a) => `<label class="opt row"><input type="checkbox" data-k="${key}" ${trashPick.has(key) ? 'checked' : ''}>
       <div><div class="t">${icon} ${esc(t)}</div><div class="i">${esc(i)}</div><div class="a">${esc(a)}</div></div></label>`;
-  const pHtml = trashSpecs.map(x => recRow('p:' + x.id, '📏 제원', x.cat, x.name, `삭제 ${x.dby} · ${shortAt(x.dat)} / 등록 ${x.by}`)).join('');
-  const mHtml = trashMeasures.map(x => recRow('m:' + x.id, '⚖️ 실측', x.date, (specOf(x.specId) || {}).name || '제원 삭제됨', `삭제 ${x.dby} · ${shortAt(x.dat)} / 측정 ${x.by}`)).join('');
+  const pHtml = trashSpecs.map(x => recRow('p:' + x.id, '<svg class="ic sm"><use href="#i-ruler"/></svg>제원', x.cat, x.name, `삭제 ${x.dby} · ${shortAt(x.dat)} / 등록 ${x.by}`)).join('');
+  const mHtml = trashMeasures.map(x => recRow('m:' + x.id, '<svg class="ic sm"><use href="#i-scale"/></svg>실측', x.date, (specOf(x.specId) || {}).name || '제원 삭제됨', `삭제 ${x.dby} · ${shortAt(x.dat)} / 측정 ${x.by}`)).join('');
   const any = trashItems.length + trashSurveys.length + trashSpecs.length + trashMeasures.length;
   $('#trashList').innerHTML = any ? pHtml + mHtml + sHtml + iHtml : '<div class="empty">삭제된 항목이 없습니다.</div>';
   $('#trashActs').innerHTML = any ? `<button class="btn sm" onclick="restoreUI()">선택 복구 (${trashPick.size})</button>` +
@@ -4647,9 +4713,9 @@ function showResults(rs) {
   $('#resList').innerHTML = rs.map(r => r.error
     ? `<div class="card"><b>${esc(r.item)}</b><div class="hint" style="color:var(--bad)">실패: ${esc(r.error)}</div></div>`
     : `<div class="card"><b>${esc(r.item)}</b><div class="hint">현황 ${r.count.photo}장 · 지적 ${r.count.defect}건${r.count.open ? ` (미조치 ${r.count.open})` : ''}${r.count.survey ? ` · 조사 ${r.count.survey}건` : ''}${r.count.follow ? ` · 이전 지적 ${r.count.follow}건 (이행완료 ${r.count.followDone})` : ''}</div>
-       <div class="links"><a href="${r.xlsxDownload}" target="_blank">⬇ 엑셀 다운로드</a>
-       ${r.pdfUrl ? `<a href="${r.pdfUrl}" target="_blank">🧾 PDF 보기</a>` : ''}
-       <a href="${r.folderUrl}" target="_blank">📁 저장 폴더</a></div></div>`).join('');
+       <div class="links"><a href="${r.xlsxDownload}" target="_blank"><svg class="ic sm"><use href="#i-download"/></svg>엑셀 다운로드</a>
+       ${r.pdfUrl ? `<a href="${r.pdfUrl}" target="_blank"><svg class="ic sm"><use href="#i-file"/></svg>PDF 보기</a>` : ''}
+       <a href="${r.folderUrl}" target="_blank"><svg class="ic sm"><use href="#i-folder"/></svg>저장 폴더</a></div></div>`).join('');
   $('#result').classList.add('on'); $('#result').scrollTop = 0;
 }
 function closeResult(finish) {
@@ -4745,7 +4811,7 @@ async function runSave(fn, args, opt) {
   try { return await run(fn, ...args); }
   catch (e) { if (isNetErr(e)) { flushSoon(); return queue(); } throw e; }
 }
-const queuedToast = r => { if (r && r._queued) toast('📴 연결 안 됨 — 휴대폰에 저장했습니다 (연결되면 자동 전송)'); return r; };
+const queuedToast = r => { if (r && r._queued) toast('연결 안 됨 — 휴대폰에 저장했습니다 (연결되면 자동 전송)'); return r; };
 
 /* ---- 화면용 임시 결과 ---- */
 function localItem(p) {
@@ -4864,7 +4930,7 @@ async function flushOut() {
   // 연결된 김에 미뤄 둔 사진 업로드도 다시
   if (navigator.onLine) { [...netWait].forEach(k => { netWait.delete(k); const u = uploads[k]; if (u && !u.cancel && u.status === '대기') enqueue(k); }); }
   renderNet();
-  if (sent) { toast(`📶 연결됨 — 저장 대기 ${sent}건을 보냈습니다`); refreshList(true); }
+  if (sent) { toast(`연결됨 — 저장 대기 ${sent}건을 보냈습니다`); refreshList(true); }
   if (failed) alert(`저장 대기 중 ${failed}건은 보내지 못했습니다.\n(다른 사람이 먼저 고쳤거나 삭제한 경우)\n\n위쪽 「⚠ 전송 실패」를 눌러 확인하세요.`);
 }
 function afterSent(op, r) {
@@ -4903,8 +4969,8 @@ function renderNet() {
     (u.status === '완료' && u.itemId && !u.attached)).length;
   const off = !navigator.onLine, n = OUT.length, f = OUT_FAIL.length;
   let t = '', cls = '';
-  if (off) { t = `📴 오프라인 — 저장 대기 ${n}건 · 사진 대기 ${ph}장 (휴대폰에 보관 중)`; cls = 'off'; }
-  else if (flushing) { t = `🔄 연결됨 — 저장 대기 보내는 중... (${n}건 남음)`; cls = 'sync'; }
+  if (off) { t = `오프라인 — 저장 대기 ${n}건 · 사진 대기 ${ph}장 (휴대폰에 보관 중)`; cls = 'off'; }
+  else if (flushing) { t = `연결됨 — 저장 대기 보내는 중... (${n}건 남음)`; cls = 'sync'; }
   else if (n) { t = `⏸ 저장 대기 ${n}건 — 눌러서 지금 보내기`; cls = 'off'; }
   if (f) { t += (t ? ' · ' : '') + `⚠ 전송 실패 ${f}건 — 눌러서 확인`; cls = 'fail'; }
   bar.textContent = t; bar.className = cls; bar.style.display = t ? '' : 'none';
@@ -4918,7 +4984,7 @@ function openOutSheet() {
   $('#outBody').innerHTML =
     (OUT_FAIL.length ? `<h3 class="sub">⚠ 보내지 못한 것 ${OUT_FAIL.length}건</h3>` + OUT_FAIL.map((x, i) => row(x.op,
       `<p style="color:var(--bad)">${esc(x.msg)}</p><div class="acts">${x.type === 'conflict' ? `<button onclick="retryFail(${i})">내 내용으로 덮어쓰기</button>` : ''}<button onclick="dropFail(${i})">버리기</button></div>`)).join('') : '') +
-    `<h3 class="sub">📦 저장 대기 ${OUT.length}건</h3>` + (OUT.length ? OUT.map(op => row(op)).join('') : '<div class="empty">보낼 것이 없습니다.</div>') +
+    `<h3 class="sub">저장 대기 ${OUT.length}건</h3>` + (OUT.length ? OUT.map(op => row(op)).join('') : '<div class="empty">보낼 것이 없습니다.</div>') +
     `<div class="hint" style="margin-top:10px">${navigator.onLine ? '연결되어 있습니다.' : '지금은 연결이 안 되어 있습니다. 신호가 잡히면 자동으로 보냅니다.'}
       이 화면을 닫거나 앱을 다시 열어도 대기분은 휴대폰에 남아 있습니다.</div>`;
   $('#outSheet').classList.add('on');
@@ -4956,8 +5022,8 @@ async function outInit() {
     if (!u.fileId) enqueue(k); else if (!u.attached) attachUpload(k); });
   flushOut();
 }
-window.addEventListener('online', () => { renderNet(); toast('📶 연결되었습니다'); flushOut(); });
-window.addEventListener('offline', () => { renderNet(); toast('📴 연결이 끊겼습니다 — 저장하면 휴대폰에 보관합니다'); });
+window.addEventListener('online', () => { renderNet(); toast('연결되었습니다'); flushOut(); });
+window.addEventListener('offline', () => { renderNet(); toast('연결이 끊겼습니다 — 저장하면 휴대폰에 보관합니다'); });
 setInterval(() => { if (navigator.onLine) flushOut(); }, 15000);
 
 
@@ -5326,7 +5392,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261114-1218';
+window.APP_VER = '20261114-1426';
 </script>
 </body>
 </html>
