@@ -556,7 +556,7 @@ body[data-pg="site"] .topbar,body[data-pg="sited"] .topbar{display:none}
   .mchart{height:190px}
 }
 /* 휴대폰 화면에 딱 맞게: 가로 넘침 막기 · 입력칸 누를 때 자동 확대 막기(16px) · 두 번 탭 확대 막기 */
-html,body{max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html,body{max-width:100%;overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html{touch-action:manipulation}
 .sheet{overflow-x:hidden}
 img,svg,table,video{max-width:100%}
@@ -570,6 +570,48 @@ img,svg,table,video{max-width:100%}
 @media (min-width:1024px){.dash3{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .lg div,.lg b{overflow-wrap:anywhere;word-break:keep-all}
 .drow span{overflow:hidden;text-overflow:ellipsis}
+
+/* ---- 자료분석 ---- */
+.an-head .an-cnt,.an-cnt{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.an-cnt span{font-size:12px;background:#f4f7fb;border:1px solid var(--line);border-radius:6px;padding:4px 8px;color:var(--muted)}
+.an-cnt b{color:var(--navy);margin-left:2px}.an-cnt .o b{color:var(--acc2)}.an-cnt .r b{color:var(--bad)}
+.an-tabs{display:flex;gap:4px;overflow-x:auto;margin:10px 0;scrollbar-width:none}.an-tabs::-webkit-scrollbar{display:none}
+.an-tabs button{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 11px;border-radius:6px;font-weight:600;font-size:13px;font-family:inherit;cursor:pointer}
+.an-tabs button.on{background:var(--navy);border-color:var(--navy);color:#fff}.an-tabs i{font-style:normal;font-size:11px;opacity:.75;margin-left:2px}
+.an-legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted);margin:0 2px 10px}
+.an-items{list-style:none;margin:0 0 4px;padding:0;display:grid;gap:6px}
+.an-it{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 8px;padding:8px 10px;border-radius:6px;border-left:3px solid var(--navy);background:#f6f8fb}
+.an-it.s-ai{border-left-color:#6b4fa0}.an-it.s-rule{border-left-color:#8a5a00}.an-it.s-none{border-left-color:var(--line)}.an-it.s-user{border-left-color:var(--muted)}
+.an-it.chk{grid-template-columns:auto minmax(0,1fr) auto}.an-it.chk input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--navy)}
+.an-it.done .an-tx{color:var(--muted);text-decoration:line-through}.an-it.chk .an-meta{grid-column:2/-1}
+.an-tx{min-width:0;overflow-wrap:anywhere;white-space:pre-wrap;border-radius:4px;padding:1px 3px;font-size:14px;line-height:1.55;outline:0}
+.an-tx:focus{background:#fff;box-shadow:0 0 0 2px var(--acc)}.an-tx:empty::before{content:attr(data-ph);color:#a3afbd}
+.an-meta{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:4px;align-items:center}.an-meta small{color:var(--muted);font-size:12px;margin-right:4px}
+.an-tag{font-size:11px;font-weight:700;border-radius:4px;padding:1px 6px;border:1px solid currentColor;white-space:nowrap;color:var(--navy);background:#fff}
+.an-tag.ai{color:#6b4fa0;background:#ece6f5}.an-tag.rule{color:#8a5a00;background:#f8edd5}.an-tag.none,.an-tag.user{color:var(--muted)}
+.an-tag.warn{color:#a65f00;background:#fbebd5}.an-tag.crit{color:var(--bad);background:#fde9e7}.an-tag.ok{color:#1d7a46;background:#e6f4ec}
+.an-pg{font:600 11.5px/1.4 ui-monospace,Menlo,monospace;border:1px solid var(--line);background:#fff;border-radius:4px;padding:2px 6px;color:var(--navy);cursor:pointer;min-height:24px}
+.an-x{border:0;background:transparent;color:var(--muted);font-size:18px;line-height:1;padding:2px 6px;cursor:pointer}
+.an-kv{display:grid;gap:8px}.an-kvr{display:grid;gap:2px 10px;margin:4px 0}.an-kvr>span{font-size:12px;color:var(--muted);font-weight:600}
+.an-kvr input,.an-memo{width:100%;min-width:0;border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:#fff}
+.an-box{border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;gap:4px;margin-bottom:8px}.an-box.legal{border-style:dashed}.an-box.plan{border-color:var(--navy)}
+.an-box small{font-size:12px;font-weight:700;color:var(--muted)}
+.an-two{display:grid;gap:8px}.an-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.an-work>summary{cursor:pointer;list-style:none;display:flex;gap:6px;align-items:center;flex-wrap:wrap}.an-work>summary::-webkit-details-marker{display:none}
+.an-work>summary::before{content:'▸';color:var(--muted)}.an-work[open]>summary::before{content:'▾'}.an-work>summary b{color:var(--navy);font-size:15px}
+.an-work>summary em{margin-left:auto;font-style:normal;font-size:12px;color:var(--muted)}
+.an-sec{margin-top:10px}.an-sec>small{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:0 0 4px}
+.an-fi{border-top:1px solid var(--line);padding:10px 0;display:grid;gap:6px}.an-fi>small{font-size:11px;font-weight:700;color:var(--muted)}
+.an-fi.ok{background:linear-gradient(90deg,#e6f4ec 0,transparent 6px)}.an-fi.bad{background:linear-gradient(90deg,#fde9e7 0,transparent 6px)}
+.an-fi.zone{border:1px dashed var(--acc);border-radius:8px;padding:10px;margin:8px 0;background:#fffaf3}
+.an-seg{display:flex;gap:4px}.an-seg button{flex:1;padding:8px 4px;border:1px solid var(--line);background:#fff;border-radius:6px;font:600 13px inherit;font-family:inherit;color:var(--ink);cursor:pointer}
+.an-seg button.on{background:var(--navy);border-color:var(--navy);color:#fff}.an-seg button.on.g{background:#1d7a46;border-color:#1d7a46}.an-seg button.on.r{background:var(--bad);border-color:var(--bad)}
+.an-memo{flex:1;min-width:120px}
+.an-th{width:40px;height:40px;padding:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#e7ecf2}.an-th img{width:100%;height:100%;object-fit:cover}
+.an-vbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px}.an-vbody{overflow:auto;background:#e7ecf2;border-radius:8px;min-height:200px;padding:6px;-webkit-overflow-scrolling:touch}
+.an-vbody canvas{display:block;margin:0 auto;background:#fff;max-width:none}
+#anView .an-vbody,#anView .panel{touch-action:pan-x pan-y pinch-zoom}
+.tchip.an{background:var(--navy);color:#fff;border-color:var(--navy)}
+@media (min-width:640px){.an-kvr{grid-template-columns:150px minmax(0,1fr);align-items:start}.an-two{grid-template-columns:1fr 1fr}}
 .okc{color:#1d7a46;font-weight:700}.noc{color:var(--muted)}.rpb{display:flex;gap:6px;justify-content:flex-end}
 @media (min-width:1024px){
   .sth{display:grid;grid-template-columns:2.2fr 1.4fr 1.4fr 1fr 90px;gap:12px;padding:10px 14px;background:#f4f7fb;font-size:12px;font-weight:700;color:var(--muted)}
@@ -708,7 +750,7 @@ img,svg,table,video{max-width:100%}
         <div class="card shead" id="sdHead"></div>
         <div class="tabs" id="sdTabs">
           <button data-t="info">기본정보</button><button data-t="sched">점검 일정</button><button data-t="data">현장 자료</button>
-          <button data-t="result">점검 결과</button><button data-t="photo">사진 자료</button><button data-t="report">보고서</button>
+          <button data-t="result">점검 결과</button><button data-t="ana">자료분석</button><button data-t="photo">사진 자료</button><button data-t="report">보고서</button>
         </div>
         <div id="sdBody"></div>
         <div id="sdFloors" class="card" style="display:none">
@@ -809,7 +851,7 @@ img,svg,table,video{max-width:100%}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261112-1608 · 2026-11-12 I</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261114-1218 · 2026-11-14 A</b></div>
       </section>
     </main>
   </div>
@@ -1092,6 +1134,22 @@ img,svg,table,video{max-width:100%}
 </div>
 
 <!-- 정보 화면 (점검 일정 · 진행 현황 · 실측할 제원 고르기) -->
+<div class="sheet" id="anView">
+  <div class="panel">
+    <div class="top"><button onclick="closePicker('anView')">← 닫기</button><h2 id="anViewT">원본 페이지</h2><span style="width:60px"></span></div>
+    <div class="an-vbar"><button class="btn ghost xs" onclick="anViewMove(-1)">◀ 앞 쪽</button><span id="anViewNo" class="an-pg"></span><button class="btn ghost xs" onclick="anViewMove(1)">다음 쪽 ▶</button>
+      <span style="flex:1"></span><button class="btn ghost xs" onclick="anViewZoom(0.7)">－</button><button class="btn ghost xs" onclick="anViewZoom(0)">맞춤</button><button class="btn ghost xs" onclick="anViewZoom(1.4)">＋</button></div>
+    <div id="anViewBody" class="an-vbody"></div>
+  </div>
+</div>
+<div class="sheet" id="anField">
+  <div class="panel">
+    <div class="top"><button onclick="closePicker('anField');anRender()">← 닫기</button><h2 id="anFieldT">자료분석 확인사항</h2><span style="width:60px"></span></div>
+    <div id="anFieldBody"></div>
+  </div>
+</div>
+<input type="file" id="anImportIn" accept=".json,application/json" style="display:none">
+<input type="file" id="anPdfIn" accept="application/pdf,.pdf" style="display:none">
 <div class="sheet" id="infoSheet">
   <div class="panel">
     <div class="top"><button onclick="closePicker('infoSheet')">← 닫기</button><h2 id="infoTitle"></h2><span style="width:60px"></span></div>
@@ -1294,7 +1352,7 @@ const T0 = performance.now();
 const GAS = !!(window.google && google.script && google.script.run);
 const API = (window.APP_CFG && window.APP_CFG.api) || '';
 const LS_CODE = 'fieldApp.code';
-const LONG_FN = /^(uploadPhoto|buildInspection|buildContinue|syncNow|exportCompare|getPhoto|restoreBackup|backupNow|createSampleData)$/;
+const LONG_FN = /^(anaImport|anaGet|uploadPhoto|buildInspection|buildContinue|syncNow|exportCompare|getPhoto|restoreBackup|backupNow|createSampleData)$/;
 function run(fn, ...args) {
   const t = performance.now(), sv = SAVE_FN.test(fn);
   if (sv) { saveSt.busy++; renderSaveSt(); }
@@ -1346,7 +1404,7 @@ const FN_KO = { getBootstrap: '앱 정보 받기', listItems: '목록 받기', g
   setItemPhoto: '사진 연결', checkDuplicate: '중복 확인', deleteItems: '삭제', getPhoto: '크게 보기', buildInspection: '사진대지 만들기',
   saveSurvey: '조사 저장', registerUser: '사용자 등록', getChecklist: '체크리스트 받기', openSession: '시작 정보 받기',
   saveSpec: '제원 저장', saveMeasure: '실측 저장', exportCompare: '비교표 출력', buildContinue: '사진대지 이어서', syncNow: '통합관리 반영', setItemMark: '원본·표시본 연결', saveSurvey_q: '조사 저장',
-  deleteItems_q: '삭제', backupNow: '백업', listBackups: '백업 목록', restoreBackup: '복원' };
+  deleteItems_q: '삭제', anaGet: '자료분석 받기', anaImport: '자료분석 가져오기', anaSavePart: '자료분석 저장', anaResSave: '자료분석 기록', anaResList: '자료분석 기록 받기', backupNow: '백업', listBackups: '백업 목록', restoreBackup: '복원' };
 function openPerf() {
   const g = {};
   perfLog.forEach(p => { (g[p.fn] = g[p.fn] || []).push(p.ms); });
@@ -1690,7 +1748,7 @@ function onSvcChange(v) {
   if (v === state.svc) return;
   state.svc = v; state.sel = [];
   if (v) { const r = (lsGet(LS_RECENT) || []).filter(x => x !== v); r.unshift(v); lsSet(LS_RECENT, r.slice(0, 6)); }
-  sd.code = v; sd.pf = { insp: '', kind: '', by: '', day: '' }; rp.item = '';
+  sd.code = v; sd.pf = { insp: '', kind: '', by: '', day: '' }; rp.item = ''; an._asked = '';
   const fl = parseScale(svcObj() && svcObj().scale);
   state.above = fl.above; state.below = fl.below;
   svcInsp(v).filter(r => r.stage !== '완료' && r.plan && r.plan === state.date).forEach(r => state.sel.push({ item: r.item, tag: '', ck: null }));
@@ -2999,6 +3057,8 @@ function renderSiteDetail() {
           <em>${made[code + '|' + r.item] ? '사진대지 ' + esc(String(made[code + '|' + r.item]).slice(5, 10)) : ''}</em></button>`; }).join('') || '<div class="empty">점검항목이 없습니다.</div>'}</div>`;
   } else if (t === 'photo') {
     renderSitePhotos('#sdBody');
+  } else if (t === 'ana') {
+    renderAnaTab(); setTimeout(anAfterSetup, 0);
   } else if (t === 'report') {
     B.innerHTML = `<div class="menu" style="margin-bottom:12px"><button class="pri" onclick="go('insp');buildAll()"><svg class="ic"><use href="#i-file"/></svg>사진대지 만들기</button>
       <button onclick="exportCompareUI()"><svg class="ic"><use href="#i-scale"/></svg>비교 결과표 (엑셀 · PDF)</button></div>
@@ -3096,6 +3156,13 @@ function renderInspTodo() {
     const np = it.filter(o => o.kind === '지적' && !o.bId).length; if (np) out.push(`<button class="tchip r" onclick="showSection('${esc(sl.item)}')">${icon('camera', 'sm')}${esc(sl.item)} 사진 없는 지적 ${np}</button>`);
     const nu = it.filter(o => o.kind === '지적' && o.status !== '조치완료').length; if (nu) out.push(`<button class="tchip o" onclick="showSection('${esc(sl.item)}')">${icon('alert', 'sm')}${esc(sl.item)} 미조치 ${nu}</button>`);
   });
+  if (state.svc && an.code !== state.svc && !an._asked) { an._asked = state.svc; anLoad(state.svc, true); }
+  if (an.d && an.code === state.svc) {
+    const c = anCounts();
+    state.sel.forEach(sl => { const ws = anWorksFor(sl.item), tot = ws.reduce((a, w) => a + anFieldItems(w).length, 0), dn = ws.reduce((a, w) => a + anFieldItems(w).filter(x => anResOf(sl.item, w.id, x.id).result).length, 0);
+      out.unshift(`<button class="tchip an" onclick="openAnField('${esc(sl.item)}')">${icon('layers', 'sm')}${esc(sl.item)} 자료분석 확인사항 ${dn}/${tot}</button>`); });
+    if (state.sel.length && (c.todo || c.conflict || c.missing)) out.push(`<button class="tchip o" onclick="sd.tab='ana';an.tab='checklist';go('sited')">${icon('alert', 'sm')}자료분석: 점검 전 확인 ${c.todo} · 상충 ${c.conflict} · 자료 누락 ${c.missing}</button>`);
+  }
   B.innerHTML = out.length ? `<div class="card todo"><div class="ch"><b>미완료 항목 바로가기</b><small class="muted">${out.length}건</small></div><div class="tchips">${out.join('')}</div></div>` : '';
 }
 /** 한 점검만 사진대지 */
@@ -3105,6 +3172,491 @@ async function buildOne(item) {
   const one = selOf(item); if (!keep.includes(one)) keep.push(one);
   state.sel = [one];
   try { go('insp'); await buildAll(); } finally { state.sel = keep; saveDraft(); renderAll(); }
+}
+
+
+/* ====================================================================
+ * 자료분석 — Claude 「정기안전점검 자료분석」에서 만든 결과 파일을 가져와 현장에 연결
+ *  · 현장 상세 → 자료분석 탭: 6개 화면(바로 고치기 · 자동 저장) · 원본 PDF 연결 · 공종 맞추기 · 출력
+ *  · 안전점검 화면: 점검항목마다 「자료분석 확인사항」(적합 / 보완 필요 / 해당 없음 · 메모 · 실측값 · 사진)
+ *  · 원본 PDF는 기기마다 보관(서버에 올리지 않음)
+ * ==================================================================== */
+const AN_NF = '자료에서 확인되지 않음';
+const AN_SRC = { doc: '문서 기재', ai: 'AI 제안', rule: '사내 기준', none: '자료 없음', user: '직접 입력' };
+const AN_TABS = [['overview', '공사 개요 · 점검대상'], ['schedule', '실시시기'], ['works', '공종별 점검내용'], ['docs', '구조검토서 · 관련 자료'], ['checklist', '점검 전 확인사항'], ['gaps', '누락 · 추가 확인'], ['setup', '가져오기 · 원본 · 공종']];
+const AN_SECS = [['construct', '주요 시공 내용'], ['structure', '주요 구조 및 부재 구성'], ['spec', '설치 규격 및 시공 조건'], ['safetyStruct', '구조적 안전성 확인사항'], ['state', '시공 상태 및 안전조치 확인사항'], ['compare', '구조검토서와 실제 시공 상태 비교사항'], ['monitor', '계측 및 유지관리 확인사항']];
+const AN_DOCS = ['공사개요서', '구조검토서 및 구조계산서', '시공상세도 및 설치도면', '가시설 계획도', '안전관리계획서', '장비 제원 및 배치도', '계측관리계획서', '기타 관련 자료'];
+const AN_COMMON = ['가설공사 공통', '안전관리 공통'];
+const AN_RES = ['적합', '보완 필요', '해당 없음'];
+const AN_LIB = GAS ? 'https://inseon10342-alt.github.io/anjeon/' : '';      // pdf.js · 출력 도구 · 한글 글꼴 (GitHub에 함께 올린 파일)
+const an = { code: '', d: null, res: [], tab: 'overview', dirty: new Set(), t: null, loading: '', H: [], E: [], pdf: {}, list: null };
+
+/* ---------- 불러오기 · 정리 ---------- */
+function anNormalize(g) {
+  if (!g || !g.parts || !g.parts.core) return null;
+  const p = g.parts, c = p.core || {}, meta = p.meta || {};
+  const works = Object.keys(p).filter(k => /^w_/.test(k)).map(k => p[k]).filter(Boolean);
+  const ord = c.workOrder || []; works.sort((a, b) => ord.indexOf(a.id) - ord.indexOf(b.id));
+  works.forEach(w => { w.sections = w.sections || {}; AN_SECS.forEach(([k]) => { w.sections[k] = w.sections[k] || []; }); w.conflicts = w.conflicts || []; });
+  return { meta, overview: c.overview || [], targets: c.targets || [], schedule: c.schedule || [], struct: c.struct || [], docs: c.docs || [], gaps: c.gaps || [],
+    works, checklist: p.checklist || [], pages: p.pages || [], map: p.map || {}, settings: p.settings || {}, hasFacts: !!p.facts };
+}
+async function anLoad(code, quiet) {
+  if (!code) return;
+  if (an.code !== code) { an.code = code; an.d = null; an.res = []; an.dirty.clear(); }
+  const c = await KV.cget('ana:' + code);
+  if (c && an.code === code && !an.d) { an.d = c.d; an.res = c.res || []; anRefresh(); }
+  if (!navigator.onLine) { if (!an.d) an.loading = 'off'; anRefresh(); return; }
+  an.loading = an.d ? '' : 'ing'; if (!quiet) anRefresh();
+  try {
+    const [g, res] = await Promise.all([run('anaGet', code), run('anaResList', code)]);
+    if (an.code !== code) return;
+    if (an.dirty.size) { an.res = res || []; return; }                 // 고치는 중이면 화면 내용 유지
+    an.d = anNormalize(g); an.res = res || []; an.loading = '';
+    KV.cset('ana:' + code, { d: an.d, res: an.res });
+  } catch (e) { an.loading = an.d ? '' : 'fail:' + errMsg(e); }
+  anRefresh();
+}
+function anRefresh() {
+  if (curView === 'sited' && sd.tab === 'ana') renderSiteDetail();
+  if (curView === 'insp') renderInspTodo();
+  if ($('#anField').classList.contains('on') && anF.insp) anFieldRender();
+}
+/* ---------- 저장 (조각별 · 1.2초 모아서) ---------- */
+function anPart(name) {
+  const d = an.d;
+  if (name === 'core') return { overview: d.overview, targets: d.targets, schedule: d.schedule, struct: d.struct, docs: d.docs, gaps: d.gaps, workOrder: d.works.map(w => w.id) };
+  if (name === 'checklist') return d.checklist;
+  if (name === 'map') return d.map;
+  if (name === 'meta') return d.meta;
+  if (/^w_/.test(name)) { const w = d.works.find(x => 'w_' + x.id === name); if (!w) return null; const { _open, ...x } = w; return x; }
+  return undefined;
+}
+function anMark(part) { if (!an.d) return; an.dirty.add(part); clearTimeout(an.t); an.t = setTimeout(anFlush, 1200); anSaveNote('저장 대기'); }
+async function anFlush() {
+  const code = an.code; if (!an.d || !an.dirty.size) return;
+  const list = [...an.dirty]; an.dirty.clear();
+  KV.cset('ana:' + code, { d: an.d, res: an.res });
+  anSaveNote('저장 중…');
+  try {
+    for (const p of list) {
+      const data = anPart(p); if (data === undefined) continue;
+      await runSave('anaSavePart', [me(), code, p, data], { tgt: 'ana|' + code + '|' + p, label: `자료분석 · ${p === 'core' ? '개요·시기·자료' : p === 'checklist' ? '확인사항' : p === 'map' ? '공종 맞추기' : '공종 점검내용'}` });
+    }
+    anSaveNote(OUT.length ? '휴대폰에 저장 (연결되면 전송)' : '저장 완료 ' + new Date().toTimeString().slice(0, 5));
+  } catch (e) { list.forEach(p => an.dirty.add(p)); anSaveNote('저장 실패 — ' + errMsg(e)); }
+}
+function anSaveNote(t) { const el = $('#anSave'); if (el) el.textContent = t; }
+window.addEventListener('beforeunload', () => { if (an.dirty.size) anFlush(); });
+
+/* ---------- 화면 조각 (핸들러 표) ---------- */
+const anOn = fn => { an.H.push(fn); return an.H.length - 1; };
+const anEd = fn => { an.E.push(fn); return an.E.length - 1; };
+const anRefs = r => (r || []).map(x => `<button class="an-pg" data-ah="${anOn(() => anOpenRef(x))}" title="원본 페이지 보기">p.${esc(x)}</button>`).join('');
+const anTag = s => `<span class="an-tag ${s || 'doc'}">${AN_SRC[s || 'doc'] || ''}</span>`;
+function anField(obj, key, part, ph) {
+  return `<div class="an-tx" contenteditable="plaintext-only" data-ph="${esc(ph || '내용 입력')}" data-ae="${anEd(v => { if (obj[key] !== v) { obj[key] = v; if (obj.s && obj.s !== 'user') obj.e = true; anMark(part); } })}">${esc(obj[key] || '')}</div>`;
+}
+function anItem(it, list, part, chk) {
+  const s = it.s || 'doc', noref = s === 'doc' && !(it.r && it.r.length);
+  return `<li class="an-it s-${s}${chk ? ' chk' : ''}${it.done ? ' done' : ''}">
+    ${chk ? `<input type="checkbox" aria-label="확인 완료" ${it.done ? 'checked' : ''} data-ac="${anOn(e => { it.done = e.target.checked; anMark(part); anRender(); })}">` : ''}
+    ${anField(it, 't', part)}
+    <button class="an-x" aria-label="삭제" data-ah="${anOn(() => { if (!confirm('이 항목을 지울까요?')) return; list.splice(list.indexOf(it), 1); anMark(part); anRender(); })}">×</button>
+    <div class="an-meta">${anTag(s)}${it.e ? '<span class="an-tag user">수정됨</span>' : ''}${noref ? '<span class="an-tag warn">출처 페이지 확인 필요</span>' : ''}${anRefs(it.r)}</div></li>`;
+}
+function anItems(list, part, chk) {
+  return `<ul class="an-items">${list.map(it => anItem(it, list, part, chk)).join('')}</ul>
+    <button class="btn ghost xs" data-ah="${anOn(() => { list.push(Object.assign({ id: uid(), t: '', s: 'user', r: [] }, chk ? { done: false } : {})); anMark(part); anRender(); })}">+ 항목 추가</button>`;
+}
+const anLegend = `<div class="an-legend"><span>${anTag('doc')} PDF에 적힌 내용</span><span>${anTag('ai')} 문서에 없는 추가 확인 제안</span><span>${anTag('rule')} 사내 기준</span><span>${anTag('none')}</span><span>${anTag('user')} 직접 입력</span></div>`;
+
+/* ---------- 현장 상세 → 자료분석 ---------- */
+function renderAnaTab() {
+  const B = $('#sdBody'); an.H = []; an.E = [];
+  if (an.code !== state.svc) { anLoad(state.svc); }
+  const d = an.d;
+  if (!d) {
+    B.innerHTML = an.loading === 'ing' ? '<div class="empty">자료분석을 불러오는 중…</div>'
+      : `<div class="card"><div class="ch"><b>자료분석</b></div>
+        <p class="hint" style="margin:0 0 10px">${/^fail:/.test(an.loading) ? '불러오지 못했습니다: ' + esc(an.loading.slice(5)) + '<br>' : an.loading === 'off' ? '연결되면 불러옵니다.<br>' : ''}아직 이 현장에 가져온 분석이 없습니다.
+        Claude의 <b>「정기안전점검 자료분석」</b> 화면에서 PDF를 분석한 뒤 <b>현장앱으로 보내기</b>로 받은 파일을 여기서 가져오세요.</p>
+        <div class="menu"><button class="pri" data-ah="${anOn(anPickImport)}"><svg class="ic"><use href="#i-download"/></svg>결과 파일 가져오기</button></div></div>`;
+    return;
+  }
+  const cnt = anCounts();
+  const n = { overview: d.targets.length, schedule: d.schedule.length, works: d.works.length, docs: d.docs.filter(x => x.exists !== '없음').length, checklist: cnt.todo, gaps: d.gaps.length, setup: '' };
+  B.innerHTML = `<div class="card an-head"><div class="ch"><b>${esc(d.meta.name || '자료분석')}</b><span class="hint" id="anSave"></span></div>
+      <div class="hint" style="margin:0">자료 ${(d.meta.files || []).map(f => `<b>${esc(f.label)}</b> ${esc(f.name)}(${f.pages}쪽)`).join(' · ')}<br>
+      전체 ${anStats().pages}쪽 = 글자 추출 ${anStats().textPages}쪽 + 이미지 판독 ${anStats().imagePages}쪽 + 실패 ${anStats().failed}쪽 · 가져온 날 ${esc(String(d.meta.importedAt || '').slice(0, 16))}</div>
+      <div class="an-cnt"><span class="${cnt.todo ? 'o' : ''}">확인사항 미완료 <b>${cnt.todo}</b></span><span class="${cnt.conflict ? 'r' : ''}">상충 <b>${cnt.conflict}</b></span><span class="${cnt.missing ? 'o' : ''}">자료 누락 <b>${cnt.missing}</b></span></div></div>
+    <div class="an-tabs">${AN_TABS.map(([k, l]) => `<button class="${an.tab === k ? 'on' : ''}" data-ah="${anOn(() => { anFlush(); an.tab = k; anRender(); })}">${l}${n[k] !== '' ? ` <i>${n[k]}</i>` : ''}</button>`).join('')}</div>
+    <div class="an-body">${({ overview: anOverview, schedule: anSchedule, works: anWorks, docs: anDocsHtml, checklist: anChecklist, gaps: anGaps, setup: anSetup })[an.tab]()}</div>`;
+}
+function anRender() { if (curView === 'sited' && sd.tab === 'ana') { const y = window.scrollY; renderAnaTab(); window.scrollTo(0, y); } }
+function anStats() { const s = (an.d && an.d.meta.stats) || {}; return { pages: s.pages || 0, textPages: s.textPages || 0, imagePages: s.imagePages || 0, failed: s.failed || 0 }; }
+function anCounts() {
+  const d = an.d; if (!d) return { todo: 0, conflict: 0, missing: 0 };
+  return { todo: d.checklist.reduce((a, g) => a + g.items.filter(i => !i.done).length, 0),
+    conflict: d.gaps.filter(g => g.type === '상충').length, missing: d.gaps.filter(g => g.type === '자료 누락').length };
+}
+function anOverview() {
+  const d = an.d, ap = { '해당': 'ok', '법정기준만': 'none', '불명': 'warn' };
+  return anLegend + `<div class="card"><div class="ch"><b>공사 개요</b></div><div class="an-kv">${d.overview.map(o => `<div class="an-kvr"><span>${esc(o.k)}</span><div class="an-it s-${o.s}">${anField(o, 't', 'core')}<div class="an-meta">${anTag(o.s)}${anRefs(o.r)}</div></div></div>`).join('')}</div></div>
+    <div class="card"><div class="ch"><b>점검대상 공종 및 시설물</b></div><div class="hint" style="margin:0 0 8px">‘해당’은 이 현장의 실제 점검대상, ‘법정기준만’은 법령·지침 표로 인용만 된 것입니다.</div>
+    ${d.targets.map(t => `<div class="an-box"><div class="an-row"><span class="an-tag ${ap[t.applies] || 'warn'}">${esc(t.applies || '불명')}</span><b style="flex:1;min-width:0">${anField(t, 'work', 'core', '공종')}</b>
+      <button class="an-x" aria-label="삭제" data-ah="${anOn(() => { if (!confirm('지울까요?')) return; d.targets.splice(d.targets.indexOf(t), 1); anMark('core'); anRender(); })}">×</button></div>
+      <div class="an-kvr"><span>시설물·공법</span>${anField(t, 'facility', 'core')}</div><div class="an-kvr"><span>규격·규모</span>${anField(t, 'spec', 'core')}</div><div class="an-kvr"><span>점검 조건</span>${anField(t, 'cond', 'core')}</div>
+      <div class="an-meta">${anTag(t.s)}${anRefs(t.r)}</div></div>`).join('') || `<div class="empty">${AN_NF}</div>`}
+    <button class="btn ghost xs" data-ah="${anOn(() => { d.targets.push({ id: uid(), work: '', facility: '', spec: '', cond: '', applies: '불명', s: 'user', r: [] }); anMark('core'); anRender(); })}">+ 점검대상 추가</button></div>`;
+}
+function anSchedule() {
+  const d = an.d;
+  return `<div class="hint" style="margin:0 2px 8px">법정 실시시기와 이 현장의 실제 점검 예정 시점을 나누어 적습니다. 법정 시기는 자료에 적힌 기준만 씁니다.</div>` +
+    (d.schedule.map(s => `<div class="card"><div class="an-row"><b style="flex:1;min-width:0;font-size:16px;color:var(--navy)">${anField(s, 'round', 'core', '차수')}</b>
+      <button class="an-x" aria-label="삭제" data-ah="${anOn(() => { if (!confirm('이 차수를 지울까요?')) return; d.schedule.splice(d.schedule.indexOf(s), 1); anMark('core'); anRender(); })}">×</button></div>
+      <div class="an-two"><div class="an-box legal"><small>법정 실시시기 (자료에 적힌 기준)</small>${anField(s, 'legal', 'core')}<div class="an-meta">${anRefs(s.legalR)}</div></div>
+      <div class="an-box plan"><small>이 현장 점검 예정 시점</small>${anField(s, 'planned', 'core')}<div class="an-meta">${anRefs(s.plannedR)}</div></div></div>
+      <div class="an-kvr"><span>점검대상 공종</span>${anField(s, 'works', 'core')}</div><div class="an-kvr"><span>공정 단계·실시 조건</span>${anField(s, 'cond', 'core')}</div></div>`).join('')
+      || `<div class="card"><div class="empty">점검 차수와 실시시기가 ${AN_NF}</div></div>`) +
+    `<button class="btn ghost xs" data-ah="${anOn(() => { d.schedule.push({ id: uid(), round: (d.schedule.length + 1) + '차', legal: '', legalR: [], planned: '', plannedR: [], works: '', cond: '' }); anMark('core'); anRender(); })}">+ 차수 추가</button>`;
+}
+function anWorks() {
+  const d = an.d;
+  return anLegend + d.works.map((w, i) => {
+    const part = 'w_' + w.id, n = AN_SECS.reduce((a, [k]) => a + (w.sections[k] || []).length, 0), cat = d.map[w.id];
+    return `<details class="card an-work" ${w._open || (i === 0 && w._open !== false) ? 'open' : ''} data-at="${anOn(e => { w._open = e.target.open; })}">
+      <summary><b>${esc(w.name)}</b>${w.conflicts.length ? `<span class="an-tag crit">상충 ${w.conflicts.length}</span>` : ''}${cat ? `<span class="an-tag none">${esc(cat === '*' ? '모든 점검' : catName(cat))}</span>` : ''}<em>${n}항목</em></summary>
+      ${w.conflicts.length ? `<div class="an-sec"><small>자료 간 상충 내용</small>${anItems(w.conflicts, part)}</div>` : ''}
+      ${AN_SECS.map(([k, l]) => `<div class="an-sec"><small>${l}</small>${anItems(w.sections[k], part)}</div>`).join('')}
+      <button class="btn ghost xs" data-ah="${anOn(() => { if (!confirm(`‘${w.name}’ 공종을 지울까요?`)) return; d.works.splice(d.works.indexOf(w), 1); anMark(part); anMark('core'); anRender(); })}">이 공종 지우기</button></details>`;
+  }).join('') + `<button class="btn ghost xs" data-ah="${anOn(() => { const v = (prompt('추가할 공종 이름') || '').trim(); if (!v) return; const w = { id: uid(), name: v, sections: {}, conflicts: [], _open: true }; AN_SECS.forEach(([k]) => { w.sections[k] = []; }); d.works.push(w); anMark('w_' + w.id); anMark('core'); anRender(); })}">+ 공종 추가</button>`;
+}
+function anDocsHtml() {
+  const d = an.d, ex = { '있음': 'ok', '일부': 'warn', '없음': 'crit' };
+  return `<div class="card"><div class="ch"><b>구조검토서 핵심 내용</b></div>${d.struct.map(s => `<div class="an-box"><div class="an-row"><b style="flex:1;min-width:0">${anField(s, 'target', 'core', '검토 대상')}</b>
+      <button class="an-x" aria-label="삭제" data-ah="${anOn(() => { if (!confirm('지울까요?')) return; d.struct.splice(d.struct.indexOf(s), 1); anMark('core'); anRender(); })}">×</button></div>
+      ${[['members', '주요 부재 규격'], ['spacing', '설치 간격'], ['loads', '설계하중'], ['conds', '구조검토 조건']].map(([k, l]) => `<div class="an-kvr"><span>${l}</span>${anField(s, k, 'core')}</div>`).join('')}
+      <div class="an-meta">${anTag('doc')}${anRefs(s.r)}</div></div>`).join('') || `<div class="empty">구조검토서 내용이 ${AN_NF}</div>`}
+    <button class="btn ghost xs" data-ah="${anOn(() => { d.struct.push({ id: uid(), target: '', members: '', spacing: '', loads: '', conds: '', r: [] }); anMark('core'); anRender(); })}">+ 검토 대상 추가</button></div>` +
+    d.docs.map(x => `<details class="card an-work"><summary><b>${esc(x.name)}</b><span class="an-tag ${ex[x.exists] || 'warn'}">${esc(x.exists)}</span><em>${(x.r || []).length ? 'p.' + esc(x.r[0]) : ''}</em></summary>
+      <div class="an-meta"><small>위치</small>${anRefs(x.r) || `<span class="hint" style="margin:0">${AN_NF}</span>`}</div>
+      <div class="an-sec"><small>주요 설계 및 시공 조건</small>${anItems(x.conds, 'core')}</div>
+      <div class="an-sec"><small>점검 시 확인해야 할 사항</small>${anItems(x.checks, 'core')}</div>
+      <div class="an-kvr"><span>누락·추가 확인</span>${anField(x, 'missing', 'core')}</div></details>`).join('');
+}
+function anChecklist() {
+  const d = an.d, tot = d.checklist.reduce((a, g) => a + g.items.length, 0), dn = d.checklist.reduce((a, g) => a + g.items.filter(i => i.done).length, 0);
+  return `<div class="hint" style="margin:0 2px 6px">현장에 나가기 전에 확인할 일입니다. 완료 ${dn} / 전체 ${tot}</div><div class="prog" style="margin-bottom:12px"><div style="width:${tot ? Math.round(dn / tot * 100) : 0}%"></div></div>` +
+    d.checklist.map(g => `<div class="card"><div class="an-row"><b style="flex:1;min-width:0">${anField(g, 'work', 'checklist', '구분')}</b><span class="hint" style="margin:0">${g.items.filter(i => i.done).length}/${g.items.length}</span></div>${anItems(g.items, 'checklist', true)}</div>`).join('') +
+    `<button class="btn ghost xs" data-ah="${anOn(() => { d.checklist.push({ id: uid(), work: '새 구분', items: [] }); anMark('checklist'); anRender(); })}">+ 구분 추가</button>`;
+}
+function anGaps() {
+  const d = an.d, cls = { '상충': 'crit', '미분석': 'crit', '판독 불가': 'warn', '자료 누락': 'warn', '출처 확인': 'warn', '자료 미확인': 'none', '추가 확인': 'ai' }, st = anStats();
+  return `<div class="hint" style="margin:0 2px 8px">전체 ${st.pages}쪽 중 글자 추출 ${st.textPages}쪽 · 이미지 판독 ${st.imagePages}쪽${st.failed ? ` · 분석 실패 ${st.failed}쪽` : ''}</div>
+    <div class="card"><ul class="an-items">${d.gaps.map(g => `<li class="an-it s-${g.s || 'none'}">${anField(g, 't', 'core')}
+      <button class="an-x" aria-label="삭제" data-ah="${anOn(() => { if (!confirm('지울까요?')) return; d.gaps.splice(d.gaps.indexOf(g), 1); anMark('core'); anRender(); })}">×</button>
+      <div class="an-meta"><span class="an-tag ${cls[g.type] || 'none'}">${esc(g.type)}</span>${anRefs(g.r)}</div></li>`).join('') || '<li class="empty">표시할 사항이 없습니다.</li>'}</ul>
+    <button class="btn ghost xs" data-ah="${anOn(() => { d.gaps.push({ id: uid(), type: '추가 확인', t: '', s: 'user', r: [] }); anMark('core'); anRender(); })}">+ 항목 추가</button></div>`;
+}
+/* 가져오기 · 원본 PDF · 공종 맞추기 · 출력 */
+function anSetup() {
+  const d = an.d, cats = INSP_CATS.filter(c => c !== '기타 점검');
+  const opt = (w) => `<select data-ac="${anOn(e => { d.map[w.id] = e.target.value; anMark('map'); })}"><option value="">(자동 — 차수의 점검대상 공종 글자로 판단)</option>
+      <option value="*" ${d.map[w.id] === '*' ? 'selected' : ''}>모든 점검항목에 표시</option>${cats.map(c => `<option value="${esc(c)}" ${d.map[w.id] === c ? 'selected' : ''}>${esc(catName(c))}</option>`).join('')}
+      <option value="-" ${d.map[w.id] === '-' ? 'selected' : ''}>표시 안 함</option></select>`;
+  return `<div class="card"><div class="ch"><b>원본 PDF (이 기기)</b></div><div class="hint" style="margin:0 0 8px">페이지 번호를 누르면 이 기기에 연결한 원본이 열립니다. 원본은 서버에 올라가지 않고 기기마다 한 번 연결합니다.</div>
+      <div id="anPdfList">${(d.meta.files || []).map(f => `<div class="lrow"><div class="m"><b>${esc(f.label)} · ${esc(f.name)}</b><div class="a" id="anPdfSt_${esc(f.label)}">확인 중…</div></div>
+        <button class="btn ghost xs" data-ah="${anOn(() => anPickPdf(f))}">파일 선택</button></div>`).join('') || '<div class="empty">파일 정보가 없습니다.</div>'}</div></div>
+    <div class="card"><div class="ch"><b>공종 맞추기</b></div><div class="hint" style="margin:0 0 8px">분석에서 나온 공종을 현장앱 공종에 연결하면, 그 공종의 점검항목을 열 때 확인사항이 나옵니다. 가설공사 공통 · 안전관리 공통은 항상 모든 점검에 나옵니다.</div>
+      ${d.works.filter(w => !AN_COMMON.includes(w.name)).map(w => `<div class="an-kvr"><span>${esc(w.name)}</span>${opt(w)}</div>`).join('') || '<div class="empty">공종이 없습니다.</div>'}</div>
+    <div class="card"><div class="ch"><b>출력 · 다시 가져오기</b></div>
+      <div class="menu"><button data-ah="${anOn(() => anExport('xlsx', false))}"><svg class="ic"><use href="#i-download"/></svg>분석 결과 엑셀</button><button data-ah="${anOn(() => anExport('pdf', false))}"><svg class="ic"><use href="#i-file"/></svg>분석 결과 PDF</button>
+      <button data-ah="${anOn(() => anExport('xlsx', true))}"><svg class="ic"><use href="#i-list"/></svg>체크리스트 엑셀</button><button data-ah="${anOn(() => anExport('pdf', true))}"><svg class="ic"><use href="#i-check"/></svg>체크리스트 PDF</button>
+      <button data-ah="${anOn(anPickImport)}"><svg class="ic"><use href="#i-refresh"/></svg>다시 분석한 결과 가져오기</button></div>
+      <div class="hint">다시 가져와도 여기서 고치거나 추가한 항목, 체크한 항목, 공종 맞추기, 현장 점검 결과는 그대로 남습니다.</div>
+      ${isAdmin() ? `<button class="btn ghost xs" style="margin-top:8px;color:var(--bad)" data-ah="${anOn(anDelete)}">이 현장의 자료분석 지우기 (관리자)</button>` : ''}</div>`;
+}
+function anAfterSetup() {
+  if (!an.d || an.tab !== 'setup') return;
+  (an.d.meta.files || []).forEach(async f => { const b = await KV.cget(anPdfKey(f.label)); const el = $('#anPdfSt_' + f.label); if (el) el.innerHTML = b ? `<span style="color:#1d7a46">✓ 이 기기에 있음</span> · ${(b.size / 1048576).toFixed(1)}MB` : '<span style="color:var(--bad)">이 기기에 없음</span> — 파일 선택'; });
+}
+async function anDelete() {
+  if (!confirm('이 현장의 자료분석을 지울까요? (현장 점검 결과 기록은 남습니다)')) return;
+  try { busy('지우는 중...'); await run('anaDelete', me(), adminPin, an.code); an.d = null; KV.cset('ana:' + an.code, null); toast('지웠습니다'); anRender(); }
+  catch (e) { toast('지우지 못했습니다: ' + errMsg(e)); } finally { busy(false); }
+}
+
+/* ---------- 결과 파일 가져오기 (다시 분석해도 고친 내용 유지) ---------- */
+function anPickImport() {
+  if (!needSvc()) return;
+  const inp = $('#anImportIn'); inp.value = ''; inp.onchange = async () => {
+    const f = inp.files[0]; if (!f) return;
+    let j; try { j = JSON.parse(await f.text()); } catch (e) { toast('결과 파일을 읽지 못했습니다'); return; }
+    if (!j || j.format !== 'yuto-site-analysis' || !j.core) { alert('Claude 「정기안전점검 자료분석」의 「현장앱으로 보내기」로 받은 파일이 아닙니다.'); return; }
+    const sv = svcObj();
+    if (j.meta && j.meta.svc && j.meta.svc !== state.svc && !confirm(`이 파일은 용역코드 ${j.meta.svc}로 만든 분석입니다.\n지금 고른 현장(${state.svc} ${sv ? sv.name : ''})에 넣을까요?`)) return;
+    if (an.code !== state.svc || (!an.d && navigator.onLine)) await anLoad(state.svc, true);
+    if (an.d && !confirm('이미 가져온 분석이 있습니다. 새 결과로 바꿀까요?\n(여기서 고치거나 추가한 항목 · 체크 · 공종 맞추기 · 현장 점검 결과는 유지)')) return;
+    const merged = anMerge(an.d, j);
+    const parts = { core: merged.core, checklist: merged.checklist, pages: j.pages || [], settings: j.settings || {}, map: merged.map };
+    if (j.facts && j.facts.length) parts.facts = j.facts;
+    merged.works.forEach(w => { parts['w_' + w.id] = w; });
+    busy('자료분석 가져오는 중...');
+    try {
+      const g = await run('anaImport', me(), state.svc, { meta: j.meta || {}, parts });
+      an.code = state.svc; an.d = anNormalize(g); an.tab = 'overview'; an.dirty.clear();
+      KV.cset('ana:' + an.code, { d: an.d, res: an.res });
+      toast('자료분석을 가져왔습니다'); sd.tab = 'ana'; go('sited');
+    } catch (e) { alert('가져오지 못했습니다: ' + errMsg(e)); } finally { busy(false); }
+  };
+  inp.click();
+}
+const anKeyT = t => String(t || '').replace(/\s+/g, ' ').trim();
+/** 다시 가져올 때: 같은 내용은 예전 ID 유지(현장 점검 결과·사진 연결 보존), 고친·직접 입력 항목은 덧붙임, 체크 유지 */
+function anMerge(old, j) {
+  const auto = w => { const n = w.name; const r = CAT_RULES.find(([c]) => n.includes(c.replace(' 가시설', '')) || (c === '시스템동바리' && /동바리|거푸집/.test(n)) || (c === '흙막이 가시설' && /흙막이|가시설|굴착/.test(n)));
+    return r ? r[0] : (AN_COMMON.includes(n) ? '*' : ''); };
+  const works = (j.works || []).map(w => ({ ...w, sections: w.sections || {}, conflicts: w.conflicts || [] }));
+  const core = JSON.parse(JSON.stringify(j.core)), checklist = JSON.parse(JSON.stringify(j.checklist || []));
+  if (!old) { const map = {}; works.forEach(w => { const c = auto(w); if (c) map[w.id] = c; }); return { core, checklist, works, map }; }
+  const keepList = (nl, ol) => {                                          // nl: 새 목록, ol: 예전 목록 (항목 {id,t,s,r,e,done})
+    if (!Array.isArray(nl) || !Array.isArray(ol)) return;
+    const byT = {}; ol.forEach(x => { byT[anKeyT(x.t)] = x; });
+    nl.forEach(x => { const o = byT[anKeyT(x.t)]; if (o) { x.id = o.id; if (o.done) x.done = true; } });
+    const have = new Set(nl.map(x => anKeyT(x.t)));
+    ol.filter(x => (x.e || x.s === 'user') && !have.has(anKeyT(x.t)) && anKeyT(x.t)).forEach(x => nl.push(x));
+  };
+  const map = {};
+  works.forEach(w => {
+    const o = old.works.find(x => x.name === w.name);
+    if (o) { w.id = o.id; AN_SECS.forEach(([k]) => { w.sections[k] = w.sections[k] || []; keepList(w.sections[k], o.sections[k] || []); }); keepList(w.conflicts, o.conflicts || []); if (old.map[o.id]) map[w.id] = old.map[o.id]; }
+    if (!map[w.id]) { const c = auto(w); if (c) map[w.id] = c; }
+  });
+  old.works.filter(o => !works.some(w => w.name === o.name) && (AN_SECS.some(([k]) => (o.sections[k] || []).some(x => x.e || x.s === 'user')))).forEach(o => { works.push(o); if (old.map[o.id]) map[o.id] = old.map[o.id]; });
+  ['overview', 'targets', 'struct', 'gaps'].forEach(k => { const key = k === 'overview' ? 'k' : k === 'targets' ? 'work' : k === 'struct' ? 'target' : 't';
+    const ol = old[k] || [], nl = core[k] || (core[k] = []);
+    nl.forEach(x => { const o = ol.find(y => anKeyT(y[key]) === anKeyT(x[key]) && (k !== 'gaps' || y.type === x.type)); if (o) { x.id = o.id; if (o.e && k === 'overview') { x.t = o.t; x.e = true; } } });
+    ol.filter(y => (y.e || y.s === 'user') && !nl.some(x => anKeyT(x[key]) === anKeyT(y[key]))).forEach(y => nl.push(y)); });
+  (core.schedule || []).forEach(x => { const o = (old.schedule || []).find(y => anKeyT(y.round) === anKeyT(x.round)); if (o) x.id = o.id; });
+  (core.docs || []).forEach(x => { const o = (old.docs || []).find(y => y.name === x.name); if (o) { keepList(x.conds, o.conds); keepList(x.checks, o.checks); x.id = o.id; } });
+  checklist.forEach(g => { const o = (old.checklist || []).find(y => y.work === g.work); if (o) { g.id = o.id; keepList(g.items, o.items); } });
+  (old.checklist || []).filter(o => !checklist.some(g => g.work === o.work) && o.items.some(x => x.s === 'user' || x.e)).forEach(o => checklist.push(o));
+  core.workOrder = works.map(w => w.id);
+  return { core, checklist, works, map };
+}
+
+/* ---------- 원본 PDF (이 기기) · 페이지 보기 ---------- */
+const anPdfKey = label => `anaPdf:${an.code}:${label}`;
+function anPickPdf(f, then) {
+  const inp = $('#anPdfIn'); inp.value = ''; inp.onchange = async () => {
+    const file = inp.files[0]; if (!file) return;
+    if (file.name !== f.name && !confirm(`분석할 때 쓴 파일은 「${f.name}」입니다.\n고른 파일 「${file.name}」을 ${f.label} 자료로 연결할까요?`)) return;
+    try { await KV.cset(anPdfKey(f.label), file); delete an.pdf[an.code + ':' + f.label]; toast(`${f.label} 원본을 이 기기에 연결했습니다`); }
+    catch (e) { toast('이 기기에 보관하지 못했습니다 (용량 부족일 수 있음)'); }
+    anAfterSetup(); if (then) then();
+  };
+  inp.click();
+}
+let anLibP = null;
+function anLoadJs(src) { return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => rej(new Error('불러오지 못함: ' + src)); document.head.appendChild(s); }); }
+function anPdfLib() {
+  return anLibP || (anLibP = (async () => {
+    await anLoadJs(AN_LIB + 'lib/pdf.min.js'); await anLoadJs(AN_LIB + 'lib/cmaps-ko.js');
+    try {
+      if (GAS) { const t = await (await fetch(AN_LIB + 'lib/pdf.worker.min.js')).text(); pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(new Blob([t], { type: 'text/javascript' })); }
+      else pdfjsLib.GlobalWorkerOptions.workerSrc = 'lib/pdf.worker.min.js';
+    } catch (e) { /* 일꾼 없이도 열림 (조금 느림) */ }
+    return window.pdfjsLib;
+  })().catch(e => { anLibP = null; throw e; }));
+}
+async function anGetPdf(label) {
+  const k = an.code + ':' + label; if (an.pdf[k]) return an.pdf[k];
+  const b = await KV.cget(anPdfKey(label)); if (!b) return null;
+  const lib = await anPdfLib();
+  return (an.pdf[k] = await lib.getDocument({ data: new Uint8Array(await b.arrayBuffer()), cMapUrl: 'cmaps/', cMapPacked: true, useWorkerFetch: false, CMapReaderFactory: window.EmbeddedCMapReader }).promise);
+}
+const anV = { label: '', p: 1, zoom: 1 };
+function anOpenRef(ref) {
+  const m = /^([A-Z])-(\d+)$/.exec(String(ref)); if (!m || !an.d) return;
+  anV.label = m[1]; anV.p = +m[2]; anV.zoom = 1; $('#anView').classList.add('on'); anDrawView();
+}
+async function anDrawView() {
+  const f = ((an.d && an.d.meta.files) || []).find(x => x.label === anV.label), B = $('#anViewBody');
+  $('#anViewT').textContent = f ? `${f.label}-${anV.p} · ${f.name}` : `${anV.label}-${anV.p}`;
+  $('#anViewNo').textContent = `${anV.p} / ${f ? f.pages : '?'}`;
+  if (!f) { B.innerHTML = '<div class="empty">이 자료 정보가 없습니다.</div>'; return; }
+  B.innerHTML = '<div class="empty">페이지를 여는 중…</div>';
+  let pdf = null;
+  try { pdf = await anGetPdf(f.label); } catch (e) { B.innerHTML = `<div class="empty">원본 보기 도구를 불러오지 못했습니다. 연결 상태를 확인해 주세요.<br><small>${esc(errMsg(e))}</small></div>`; return; }
+  if (!pdf) { B.innerHTML = `<div class="card"><p style="margin:0 0 10px">이 기기에 원본 PDF가 없습니다. <b>${esc(f.name)}</b> 파일을 고르면 이 페이지를 보여 드립니다.</p><button class="btn" id="anViewPick">원본 PDF 선택</button></div>`;
+    $('#anViewPick').onclick = () => anPickPdf(f, anDrawView); return; }
+  try {
+    const pg = await pdf.getPage(Math.min(anV.p, pdf.numPages)), v0 = pg.getViewport({ scale: 1 });
+    const W = Math.min(B.clientWidth || 360, 1100) * anV.zoom, sc = Math.min(W / v0.width, 4) * Math.min(window.devicePixelRatio || 1, 2);
+    const vp = pg.getViewport({ scale: sc }), c = document.createElement('canvas'); c.width = vp.width; c.height = vp.height;
+    c.style.width = (vp.width / Math.min(window.devicePixelRatio || 1, 2)) + 'px';
+    await pg.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise; B.innerHTML = ''; B.appendChild(c);
+  } catch (e) { B.innerHTML = '<div class="empty">이 페이지를 표시하지 못했습니다.</div>'; }
+}
+function anViewMove(d) { const f = (an.d.meta.files || []).find(x => x.label === anV.label); anV.p = Math.max(1, Math.min(f ? f.pages : anV.p + d, anV.p + d)); anDrawView(); }
+function anViewZoom(z) { anV.zoom = z ? Math.max(1, Math.min(3, anV.zoom * z)) : 1; anDrawView(); }
+
+/* ---------- 이벤트 (현장 상세 · 점검 확인사항 공통) ---------- */
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-ah]'); if (!t || !t.closest('#sdBody,#anField')) return;
+  const f = an.H[+t.dataset.ah]; if (f) { if (t.closest('summary')) e.preventDefault(); f(e); if (an.tab === 'setup') setTimeout(anAfterSetup, 0); }
+});
+document.addEventListener('change', e => { const t = e.target.closest('[data-ac]'); if (!t || !t.closest('#sdBody,#anField')) return; const f = an.H[+t.dataset.ac]; f && f(e); });
+document.addEventListener('toggle', e => { const t = e.target; if (t.dataset && t.dataset.at && t.closest('#sdBody')) { const f = an.H[+t.dataset.at]; f && f(e); } }, true);
+document.addEventListener('focusout', e => { const t = e.target.closest && e.target.closest('[data-ae]'); if (!t) return; const f = an.E[+t.dataset.ae]; f && f(t.innerText.replace(/ /g, ' ').trim()); });
+
+/* ====================================================================
+ * 안전점검 화면 — 점검항목별 「자료분석 확인사항」
+ *  차수(점검항목)를 고르면 그 공종의 카드만 (가설공사 공통 · 안전관리 공통은 항상)
+ * ==================================================================== */
+const anF = { insp: '', open: {} };
+function anWorksFor(insp) {
+  const d = an.d; if (!d) return [];
+  const cat = inspCat(insp), m = meta(insp), rn = String(m.round || '').replace(/\D/g, '') || (String(insp).match(/(\d+)\s*차/) || [])[1] || '';
+  const sch = d.schedule.find(s => String(s.round).replace(/\D/g, '') === rn);
+  return d.works.filter(w => {
+    if (AN_COMMON.includes(w.name)) return true;
+    const mp = d.map[w.id];
+    if (mp === '-') return false; if (mp === '*') return true; if (mp) return mp === cat;
+    const key = w.name.replace(/\s|공사|가시설/g, '').slice(0, 3);
+    return !!(sch && key && String(sch.works || '').replace(/\s/g, '').includes(key));
+  });
+}
+const anResOf = (insp, w, i) => an.res.find(r => r.insp === insp && r.work === w && r.item === i) || {};
+const anPhotos = (insp, w, i) => srv.items.filter(o => o.insp === insp && o.sid === `ana|${w}|${i}`);
+function openAnField(insp) {
+  if (!needSvc()) return;
+  anF.insp = insp; $('#anField').classList.add('on'); $('#anField').scrollTop = 0;
+  if (an.code !== state.svc || !an.d) anLoad(state.svc).then(anFieldRender); else anFieldRender();
+}
+function anFieldRender() {
+  const B = $('#anFieldBody'), insp = anF.insp; an.H = []; an.E = [];
+  $('#anFieldT').textContent = `${insp} · 자료분석 확인사항`;
+  if (!an.d) { B.innerHTML = `<div class="empty">${an.loading === 'ing' ? '불러오는 중…' : '이 현장에 가져온 자료분석이 없습니다. 현장 상세 → 자료분석에서 가져오세요.'}</div>`; return; }
+  const d = an.d, c = anCounts(), m = meta(insp), rn = String(m.round || '').replace(/\D/g, '') || (String(insp).match(/(\d+)\s*차/) || [])[1] || '';
+  const sch = d.schedule.find(s => String(s.round).replace(/\D/g, '') === rn), works = anWorksFor(insp);
+  const done = works.reduce((a, w) => a + anFieldItems(w).filter(x => anResOf(insp, w.id, x.id).result).length, 0), tot = works.reduce((a, w) => a + anFieldItems(w).length, 0);
+  B.innerHTML = `<div class="an-cnt"><span class="${c.todo ? 'o' : ''}">점검 전 확인사항 미완료 <b>${c.todo}</b></span><span class="${c.conflict ? 'r' : ''}">상충 <b>${c.conflict}</b></span><span class="${c.missing ? 'o' : ''}">자료 누락 <b>${c.missing}</b></span><span>이번 점검 기록 <b>${done}/${tot}</b></span></div>
+    ${sch ? `<div class="card an-two"><div class="an-box legal"><small>${esc(sch.round)} 법정 실시시기</small><div>${esc(sch.legal || '')}</div><div class="an-meta">${anRefs(sch.legalR)}</div></div>
+      <div class="an-box plan"><small>이 현장 점검 예정 시점</small><div>${esc(sch.planned || '')}</div><div class="an-meta">${anRefs(sch.plannedR)}</div></div></div>` : ''}
+    ${works.map(w => anFieldWork(insp, w)).join('') || `<div class="card"><div class="empty">이 점검항목(${esc(catName(inspCat(insp)))})에 연결된 공종이 없습니다. 현장 상세 → 자료분석 → 공종 맞추기에서 연결하세요.</div></div>`}
+    <div class="hint">기록은 이 점검항목(${esc(insp)})에만 저장되고, 분석 원본은 바뀌지 않습니다.</div>`;
+}
+function anFieldItems(w) { return ['safetyStruct', 'state', 'compare', 'monitor'].flatMap(k => (w.sections[k] || []).filter(x => x.t && x.s !== 'none').map(x => Object.assign(x, { _k: k }))); }
+function anFieldWork(insp, w) {
+  const items = anFieldItems(w), open = anF.open[w.id] !== false, isDongbari = /동바리|거푸집/.test(w.name);
+  const zones = isDongbari ? [['zone1', '① 설치높이가 가장 큰 구간'], ['zone2', '② 보 크기가 가장 큰 구간']] : [];
+  const sec = Object.fromEntries(AN_SECS);
+  return `<details class="card an-work" ${open ? 'open' : ''} data-at="${anOn(e => { anF.open[w.id] = e.target.open; })}"><summary><b>${esc(w.name)}</b>${w.conflicts.length ? `<span class="an-tag crit">상충 ${w.conflicts.length}</span>` : ''}<em>${items.filter(x => anResOf(insp, w.id, x.id).result).length}/${items.length}</em></summary>
+    ${w.conflicts.length ? `<div class="an-sec"><small>자료 간 상충 — 현장에서 실제 적용 내용 확인</small>${w.conflicts.map(x => `<div class="an-fi"><div>${esc(x.t)}</div><div class="an-meta">${anRefs(x.r)}</div></div>`).join('')}</div>` : ''}
+    ${zones.map(([z, l]) => anFieldZone(insp, w, z, l)).join('')}
+    ${items.map(x => anFieldItem(insp, w, x, sec[x._k])).join('') || `<div class="empty">${AN_NF}</div>`}
+  </details>`;
+}
+function anFieldZone(insp, w, z, l) {
+  const r = anResOf(insp, w.id, z), ph = anPhotos(insp, w.id, z);
+  return `<div class="an-fi zone"><b>${l}</b><div class="an-kvr"><span>구간·위치</span><input type="text" value="${esc(r.loc || '')}" placeholder="예: 1층 로비 층고 5.4m 구간" data-ac="${anOn(e => anResSet(insp, w.id, z, { loc: e.target.value }))}"></div>
+    <div class="an-kvr"><span>기록</span><input type="text" value="${esc(r.memo || '')}" placeholder="설치 상태 · 수직재 간격 · 가새 등" data-ac="${anOn(e => anResSet(insp, w.id, z, { memo: e.target.value }))}"></div>
+    ${anResSeg(insp, w.id, z, r)}<div class="an-row">${anPhotoBtn(insp, w, z, l, ph)}</div></div>`;
+}
+function anResSeg(insp, wid, iid, r) {
+  return `<div class="an-seg">${AN_RES.map(v => `<button class="${r.result === v ? 'on ' + (v === '보완 필요' ? 'r' : v === '적합' ? 'g' : '') : ''}" data-ah="${anOn(() => anResSet(insp, wid, iid, { result: r.result === v ? '' : v }))}">${v}</button>`).join('')}</div>`;
+}
+function anPhotoBtn(insp, w, iid, cap, ph) {
+  return `<button class="btn ghost xs" data-ah="${anOn(() => anTakePhoto(insp, w, iid, cap))}"><svg class="ic sm"><use href="#i-camera"/></svg>사진${ph.length ? ' ' + ph.length : ''}</button>
+    ${ph.slice(0, 4).map(o => `<button class="an-th" data-ah="${anOn(() => openViewer(o.id, 'b'))}"><img src="${slotSrc(o, 'b')}" alt=""></button>`).join('')}`;
+}
+function anFieldItem(insp, w, x, label) {
+  const r = anResOf(insp, w.id, x.id), ph = anPhotos(insp, w.id, x.id), cmp = x._k === 'compare';
+  return `<div class="an-fi ${r.result === '보완 필요' ? 'bad' : r.result ? 'ok' : ''}"><small>${esc(label)}</small><div>${esc(x.t)}</div>
+    <div class="an-meta">${anTag(x.s)}${anRefs(x.r)}</div>
+    ${cmp ? `<div class="an-kvr"><span>현장 실측값</span><input type="text" value="${esc(r.measured || '')}" placeholder="실제 측정한 값" data-ac="${anOn(e => anResSet(insp, w.id, x.id, { measured: e.target.value }))}"></div>` : ''}
+    ${anResSeg(insp, w.id, x.id, r)}
+    <div class="an-row"><input type="text" class="an-memo" value="${esc(r.memo || '')}" placeholder="메모" data-ac="${anOn(e => anResSet(insp, w.id, x.id, { memo: e.target.value }))}">${anPhotoBtn(insp, w, x.id, x.t, ph)}</div></div>`;
+}
+async function anResSet(insp, wid, iid, f) {
+  const key = [state.svc, insp, wid, iid].join('|');
+  let r = an.res.find(x => x.key === key);
+  if (!r) { r = { key, code: state.svc, insp, work: wid, item: iid }; an.res.push(r); }
+  Object.assign(r, f, { by: me(), at: nowStr() });
+  KV.cset('ana:' + an.code, { d: an.d, res: an.res });
+  if (f.result !== undefined) anFieldRender();
+  try { await runSave('anaResSave', [me(), state.svc, insp, wid, iid, { result: r.result || '', memo: r.memo || '', measured: r.measured || '', loc: r.loc || '' }], { tgt: 'anares|' + key, label: `자료분석 기록 · ${insp}` }); }
+  catch (e) { toast('기록을 저장하지 못했습니다: ' + errMsg(e)); }
+}
+/** 항목에서 바로 촬영 → 현황 사진으로 저장 (용역 · 점검항목 · 공종 · 항목 ID 자동 연결) */
+function anTakePhoto(insp, w, iid, cap) {
+  ensureSel(insp); openEdit(null, '현황', insp);
+  if (!edit) return;
+  edit.sid = `ana|${w.id}|${iid}`;
+  $('#f_caption').value = `${w.name} · ${String(cap || '').replace(/\s+/g, ' ').slice(0, 60)}`;
+  setTimeout(() => takePhoto('b', 0, true), 50);
+}
+
+/* ---------- 출력 (엑셀 · PDF) — 화면에서 고친 내용 그대로, 출처 구분 · 출처 페이지 포함 ---------- */
+function anTables(onlyCheck) {
+  const d = an.d, R = r => (r || []).map(x => 'p.' + x).join(', '), T = [];
+  const chk = []; d.checklist.forEach(g => g.items.forEach(i => chk.push([g.work, i.done ? '■' : '□', i.t, AN_SRC[i.s] || '', R(i.r)])));
+  if (onlyCheck) return [{ name: '체크리스트', title: '현장 점검 전 확인사항', head: ['구분', '확인', '확인사항', '출처 구분', '출처 페이지'], rows: chk, w: [16, 6, 60, 12, 16] }];
+  T.push({ name: '공사개요', title: '1. 공사 개요', head: ['항목', '내용', '출처 구분', '출처 페이지'], rows: d.overview.map(o => [o.k, o.t, AN_SRC[o.s] || '', R(o.r)]), w: [18, 60, 10, 16] });
+  T.push({ name: '점검대상', title: '1-2. 점검대상 공종 및 시설물', head: ['공종', '시설물·공법', '규격·규모', '점검 조건', '적용', '출처 구분', '출처 페이지'], rows: d.targets.map(t => [t.work, t.facility, t.spec, t.cond, t.applies, AN_SRC[t.s] || '', R(t.r)]), w: [14, 20, 20, 20, 9, 9, 12] });
+  T.push({ name: '실시시기', title: '2. 정기안전점검 실시시기', head: ['차수', '법정 실시시기', '출처', '현장 점검 예정 시점', '출처', '점검대상 공종', '공정 단계·실시 조건'], rows: d.schedule.map(s => [s.round, s.legal, R(s.legalR), s.planned, R(s.plannedR), s.works, s.cond]), w: [7, 24, 10, 24, 10, 16, 22] });
+  const wr = []; d.works.forEach(w => { (w.conflicts || []).forEach(i => wr.push([w.name, '자료 간 상충', i.t, AN_SRC[i.s] || '', R(i.r)])); AN_SECS.forEach(([k, l]) => (w.sections[k] || []).forEach(i => wr.push([w.name, l, i.t, AN_SRC[i.s] || '', R(i.r)]))); });
+  T.push({ name: '공종별 점검내용', title: '3. 공종별 주요 점검내용', head: ['공종', '구분', '내용', '출처 구분', '출처 페이지'], rows: wr, w: [14, 20, 56, 10, 14] });
+  T.push({ name: '구조검토서', title: '4. 구조검토서 핵심 내용', head: ['검토 대상', '주요 부재 규격', '설치 간격', '설계하중', '구조검토 조건', '출처 구분', '출처 페이지'], rows: d.struct.map(s => [s.target, s.members, s.spacing, s.loads, s.conds, '문서 기재', R(s.r)]), w: [16, 22, 14, 14, 24, 9, 12] });
+  const dr = []; d.docs.forEach(x => { const base = [x.name, x.exists, R(x.r)]; const ln = [...x.conds.map(i => ['설계·시공 조건', i.t, AN_SRC[i.s] || '', R(i.r)]), ...x.checks.map(i => ['점검 시 확인사항', i.t, AN_SRC[i.s] || '', R(i.r)])]; if (x.missing) ln.push(['누락·추가 확인', x.missing, '', '']); if (!ln.length) ln.push(['', '', '', '']); ln.forEach(l => dr.push([...base, ...l])); });
+  T.push({ name: '관련자료', title: '4-2. 관련 자료 분석', head: ['자료명', '유무', '위치', '구분', '내용', '출처 구분', '출처 페이지'], rows: dr, w: [18, 7, 12, 14, 44, 10, 12] });
+  T.push({ name: '체크리스트', title: '5. 현장 점검 전 확인사항', head: ['구분', '확인', '확인사항', '출처 구분', '출처 페이지'], rows: chk, w: [16, 6, 60, 12, 16] });
+  T.push({ name: '누락·추가확인', title: '6. 분석 누락 및 추가 확인 필요사항', head: ['유형', '내용', '출처 구분', '관련 페이지'], rows: d.gaps.map(g => [g.type, g.t, AN_SRC[g.s] || '', R(g.r)]), w: [12, 64, 10, 18] });
+  return T;
+}
+function anSaveBlob(name, blob) {
+  const url = URL.createObjectURL(blob), a = document.createElement('a');
+  a.href = url; a.download = name; a.rel = 'noopener'; a.style.display = 'none'; document.body.appendChild(a); a.click(); setTimeout(() => a.remove(), 1500);
+  setTimeout(() => URL.revokeObjectURL(url), 60000); toast('파일을 만들었습니다: ' + name);
+}
+let anFontB64 = null;
+async function anExport(kind, onlyCheck) {
+  anFlush(); const d = an.d; if (!d) return;
+  const base = ((state.svc ? state.svc + ' ' : '') + (d.meta.name || '자료분석')).replace(/[\\/:*?"<>|]/g, ' ').slice(0, 60).trim() + (onlyCheck ? ' 체크리스트' : ' 분석결과');
+  busy(kind === 'pdf' ? 'PDF 만드는 중...' : '엑셀 만드는 중...');
+  try {
+    if (kind === 'xlsx') {
+      if (!window.XLSX) await anLoadJs(AN_LIB + 'lib/xlsx.full.min.js');
+      const wb = XLSX.utils.book_new();
+      anTables(onlyCheck).forEach(t => { const ws = XLSX.utils.aoa_to_sheet([t.head, ...t.rows]); ws['!cols'] = t.w.map(w => ({ wch: Math.round(w * 1.1) })); XLSX.utils.book_append_sheet(wb, ws, t.name.replace(/[\\/?*\[\]:]/g, ' ').slice(0, 31)); });
+      anSaveBlob(base + '.xlsx', new Blob([XLSX.write(wb, { bookType: 'xlsx', type: 'array' })], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+    } else {
+      if (!window.jspdf) await anLoadJs(AN_LIB + 'lib/jspdf.umd.min.js');
+      if (!(window.jspdf && window.jspdf.jsPDF && window.jspdf.jsPDF.API.autoTable)) await anLoadJs(AN_LIB + 'lib/jspdf.plugin.autotable.min.js');
+      if (!anFontB64) { const buf = new Uint8Array(await (await fetch(AN_LIB + 'fonts/NanumGothic.ttf')).arrayBuffer()); let s = ''; for (let i = 0; i < buf.length; i += 32768) s += String.fromCharCode.apply(null, buf.subarray(i, i + 32768)); anFontB64 = btoa(s); }
+      const doc = new jspdf.jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+      doc.addFileToVFS('NG.ttf', anFontB64); doc.addFont('NG.ttf', 'NG', 'normal'); doc.addFont('NG.ttf', 'NG', 'bold'); doc.setFont('NG');
+      const U = v => String(v == null ? '' : v).replace(/㎡/g, 'm²').replace(/㎥/g, 'm³').replace(/㎜/g, 'mm').replace(/㎝/g, 'cm').replace(/㎏/g, 'kg').replace(/㎞/g, 'km').replace(/㎾/g, 'kW');
+      doc.setFontSize(15); doc.text(onlyCheck ? '현장 점검 전 확인사항' : '정기안전점검 자료 분석 결과', 14, 16);
+      doc.setFontSize(9); doc.setTextColor(90);
+      doc.text(doc.splitTextToSize(U(`${state.svc} ${(svcObj() || {}).name || ''} | ${d.meta.name || ''} | 자료: ${(d.meta.files || []).map(f => f.label + ' ' + f.name + '(' + f.pages + '쪽)').join(', ')} | 출력 ${new Date().toLocaleDateString('ko-KR')} (주)유토엔지니어링건축사사무소`), 268), 14, 22);
+      doc.text('출처 구분 — 문서 기재: PDF에 적힌 내용 / AI 제안: 문서에 없는 추가 확인 제안 / 사내 기준: 기준 설정 내용 / 자료 없음: 자료에서 확인되지 않음 / 직접 입력', 14, 31);
+      let y = 36;
+      for (const t of anTables(onlyCheck)) {
+        doc.setFontSize(11); doc.setTextColor(23, 54, 83); if (y > 180) { doc.addPage(); y = 16; } doc.text(t.title, 14, y);
+        const tot = t.w.reduce((a, b) => a + b, 0), cs = {}; t.w.forEach((w, i) => { cs[i] = { cellWidth: 269 * w / tot }; });
+        doc.autoTable({ startY: y + 2, head: [t.head], body: (t.rows.length ? t.rows : [t.head.map((_, i) => i === 0 ? AN_NF : '')]).map(r => r.map(U)), margin: { left: 14, right: 14 },
+          styles: { font: 'NG', fontSize: 8, cellPadding: 1.6, overflow: 'linebreak', lineColor: [220, 227, 235], lineWidth: .1, textColor: [38, 52, 69] },
+          headStyles: { font: 'NG', fontStyle: 'normal', fillColor: [23, 54, 83], textColor: 255 }, columnStyles: cs, theme: 'grid' });
+        y = doc.lastAutoTable.finalY + 9;
+      }
+      const n = doc.getNumberOfPages(); for (let i = 1; i <= n; i++) { doc.setPage(i); doc.setFontSize(8); doc.setTextColor(120); doc.text(i + ' / ' + n, 283, 203, { align: 'right' }); }
+      anSaveBlob(base + '.pdf', doc.output('blob'));
+    }
+  } catch (e) { alert('파일을 만들지 못했습니다: ' + errMsg(e) + (GAS ? '\n(출력 도구는 GitHub 주소에 올린 파일을 씁니다)' : '')); }
+  finally { busy(false); }
 }
 
 /* ---- 대시보드 ---- */
@@ -3231,7 +3783,7 @@ function quickDefect() {
   pickInsp('어느 점검의 지적사항인가요? (사진을 찍으면 위치 표시 화면이 열립니다)', list, it => { ensureSel(it); openEdit(null, '지적', it); });
 }
 /* ---- 저장 상태 표시 (저장 중 · 저장 완료 · 저장 실패 · 저장 대기) ---- */
-const SAVE_FN = /^(saveItem|saveSurvey|saveSpec|saveMeasure|deleteItems|deletePhoto|setItemPhoto|setItemMark|uploadPhoto|moveItem|moveSurvey|saveTemplate|copySpec|deleteSurveys|deleteRecs|restoreItems|restoreSurveys|restoreRecs)$/;
+const SAVE_FN = /^(anaSavePart|anaResSave|anaImport|saveItem|saveSurvey|saveSpec|saveMeasure|deleteItems|deletePhoto|setItemPhoto|setItemMark|uploadPhoto|moveItem|moveSurvey|saveTemplate|copySpec|deleteSurveys|deleteRecs|restoreItems|restoreSurveys|restoreRecs)$/;
 const saveSt = { busy: 0, ok: '', fail: '' };
 function renderSaveSt() {
   const el = $('#saveSt'); if (!el) return;
@@ -4774,7 +5326,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261112-1608';
+window.APP_VER = '20261114-1218';
 </script>
 </body>
 </html>
