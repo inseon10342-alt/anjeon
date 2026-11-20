@@ -622,7 +622,52 @@ img,svg,table,video{max-width:100%}
 }
 .ml{display:inline-flex;flex-direction:column;gap:1px;min-width:0;text-align:left}.ml small{font-size:12px;font-weight:500;color:var(--muted)}
 .pri .ml small,button.pri .ml small{color:rgba(255,255,255,.85)}
+
+/* ---- 촬영 목록 ---- */
+#shotSheet{z-index:9}
+#shotSheet .panel.shot{padding:0;max-width:720px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;background:var(--bg)}
+.shot-head{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:6px;background:#fff;padding:calc(10px + env(safe-area-inset-top)) 14px 10px 6px;border-bottom:1px solid var(--line)}
+.shot-back{border:0;background:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--ink);cursor:pointer}.shot-back .ic{width:26px;height:26px}
+.shot-head h2{flex:1;min-width:0;margin:0;font-size:18px;font-weight:800;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position:static;transform:none}
+.shot-n{font-size:17px;font-weight:600;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}.shot-n b{color:var(--ink);font-weight:800}
+.shot-pick{display:flex;gap:6px;overflow-x:auto;padding:10px 14px 0;scrollbar-width:none}.shot-pick::-webkit-scrollbar{display:none}
+.shot-pick button{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 12px;font:600 13px inherit;font-family:inherit;color:var(--ink)}.shot-pick button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.shot-tabs{position:sticky;top:calc(64px + env(safe-area-inset-top));z-index:2;display:grid;grid-template-columns:repeat(3,1fr);background:#eef2f6;border-bottom:1px solid var(--line)}
+.shot-tabs button{border:0;background:none;padding:13px 4px 11px;font:600 16px inherit;font-family:inherit;color:#8a97a8;border-bottom:3px solid transparent;cursor:pointer;position:relative}
+.shot-tabs button+button::before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:1px;background:var(--line)}
+.shot-tabs button.on{color:var(--ink);font-weight:800;border-bottom-color:var(--ink)}
+.shot-list{flex:1;display:grid;gap:8px;padding:12px 14px 12px;align-content:start}
+.sh-card{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 10px 10px 14px;min-height:68px;cursor:pointer;box-shadow:0 1px 2px rgba(16,40,70,.04)}
+.sh-card.ing{border:2px solid var(--navy);padding:9px 9px 9px 13px}
+.sh-m{flex:1;min-width:0;display:grid;gap:5px}
+.sh-t{display:flex;align-items:flex-start;gap:8px;font-size:16px;font-weight:800;color:var(--ink);line-height:1.35}
+.sh-no{flex:0 0 auto;font-variant-numeric:tabular-nums}.sh-no::after{content:' ·';font-weight:700}
+.sh-cap{min-width:0;word-break:keep-all;overflow-wrap:anywhere}
+.sh-ok{flex:0 0 auto;width:26px;height:26px;border-radius:99px;background:#1f9d55;color:#fff;display:flex;align-items:center;justify-content:center;margin-top:-1px}.sh-ok svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.sh-dot{flex:0 0 auto;width:14px;height:14px;border-radius:99px;background:var(--acc);margin:5px 2px 0}
+.sh-sub{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sh-tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;border-radius:7px;padding:3px 8px}
+.sh-tag.todo{background:#fdf0e1;color:#b8650a}.sh-tag.todo::before{content:'';width:8px;height:8px;border-radius:99px;background:var(--acc)}
+.sh-tag.ing{background:#e3ecf7;color:var(--navy)}
+.sh-del{border:0;background:none;color:var(--muted);font-size:12px;text-decoration:underline;padding:4px;cursor:pointer}
+.sh-loc{font-size:12px;color:var(--muted);font-weight:600}
+.sh-more{border:1px solid var(--line);background:#fff;color:var(--navy);font:700 12px inherit;font-family:inherit;border-radius:8px;padding:4px 9px;cursor:pointer}
+.sh-sec{grid-column:1/-1;font-size:13px;font-weight:800;color:var(--muted);padding:8px 2px 0;letter-spacing:.02em}.sh-sec span{font-weight:600;color:#9aa6b5}
+.sh-sec:first-child{padding-top:0}
+.sh-th{position:relative;flex:0 0 auto;width:60px;height:60px;border-radius:8px;overflow:hidden;border:1px solid var(--line);padding:0;background:#e7ecf2;cursor:pointer}
+.sh-th img{width:100%;height:100%;object-fit:cover;display:block}
+.sh-th em{position:absolute;right:3px;bottom:3px;background:rgba(0,0,0,.6);color:#fff;font-style:normal;font-size:11px;font-weight:700;border-radius:4px;padding:1px 5px}
+.sh-cam{flex:0 0 auto;width:60px;height:60px;border-radius:8px;border:0;background:#e9edf2;color:#6b7788;display:flex;align-items:center;justify-content:center;cursor:pointer}.sh-cam .ic{width:28px;height:28px}
+.sh-cam:active,.sh-card:active{transform:scale(.99)}
+.shot-new{background:#fff;border:2px dashed var(--acc);border-radius:10px;padding:12px;display:grid;gap:8px}.shot-new input{width:100%;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:8px}
+.shot-new .row{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap}
+.shot-foot{position:sticky;bottom:0;z-index:2;background:linear-gradient(transparent,var(--bg) 18px);padding:14px 14px calc(14px + env(safe-area-inset-bottom))}
+.shot-addbtn{width:100%;min-height:56px;font-size:17px;font-weight:800;background:var(--navy);border-color:var(--navy);color:#fff;border-radius:10px}
+@media (min-width:1024px){#shotSheet .panel.shot{max-width:860px}.shot-list{grid-template-columns:1fr 1fr}}
 /* ================= 전체 다듬기 (11/14) — 모든 화면 공통 ================= */
+.view>.menu,.an-body>.menu,#sdBody>.menu{margin-bottom:12px}
+.card .menu:last-child{margin-bottom:0}
+.rpwrap{margin-top:0}
 /* 글자 안 아이콘 간격 */
 .btn .ic.sm,.acts .ic.sm,.who .ic.sm,.lrow .a .ic.sm,.links .ic.sm,.t .ic.sm,.tools .ic.sm,.st .ic.sm,.mkbadge .ic.sm,.hint .ic.sm,.fubar .ic.sm,.sheet button .ic.sm{margin-right:4px}
 .slot.add button .ic{width:26px;height:26px;color:var(--navy);margin-bottom:2px}
@@ -664,7 +709,11 @@ img,svg,table,video{max-width:100%}
 }
 @media (min-width:1024px){
   /* 메뉴 버튼: 넓은 화면에서는 한 줄에 여러 개, 빈칸 없이 왼쪽부터 */
-  .menu{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+  .menu{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+  .menu:has(>:nth-child(6):last-child),.menu:has(>:nth-child(9):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
+  .menu:has(>:nth-child(7):last-child),.menu:has(>:nth-child(8):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+  .rpwrap{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);align-items:stretch}
+  .rpwrap>.card{margin:0}.rpprev{position:static;max-height:none}
   .menu.m3{grid-template-columns:repeat(3,minmax(0,1fr))}
   .menu.m3 button{flex-direction:row;justify-content:flex-start;gap:10px;text-align:left;font-size:15px;min-height:56px}
   .vh{margin:2px 2px 14px}.vh h2{font-size:21px}
@@ -907,7 +956,7 @@ img,svg,table,video{max-width:100%}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261114-1426 · 2026-11-14 C</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261119-2028 · 2026-11-19 A</b></div>
       </section>
     </main>
   </div>
@@ -929,6 +978,15 @@ img,svg,table,video{max-width:100%}
 
 
 <!-- 항목 입력 -->
+<div class="sheet" id="shotSheet">
+  <div class="panel shot">
+    <div class="shot-head"><button class="shot-back" aria-label="뒤로" onclick="closeShot()"><svg class="ic"><use href="#i-back"/></svg></button><h2 id="shotT">촬영 목록</h2><span id="shotN" class="shot-n"></span></div>
+    <div id="shotPick"></div>
+    <div class="shot-tabs" id="shotTabs"></div>
+    <div id="shotList" class="shot-list"></div>
+    <div class="shot-foot"><button class="btn shot-addbtn" onclick="shotAdd()">+ 새 캡션 항목 추가</button></div>
+  </div>
+</div>
 <div class="sheet" id="sheet">
   <div class="panel">
     <div class="top"><button onclick="closeEdit()">← 취소</button><h2 id="sheetTitle">항목 추가</h2><span style="width:60px"></span></div>
@@ -1946,7 +2004,7 @@ function renderSections() {
 $('#sections').onclick = e => {
   const b = e.target.closest('[data-act]'); if (!b) return;
   const card = b.closest('[data-insp]'), insp = card && card.dataset.insp, act = b.dataset.act, id = b.dataset.id;
-  if (act === 'photo') openEdit(null, '현황', insp);
+  if (act === 'photo') openShot(insp);
   else if (act === 'defect') openEdit(null, '지적', insp);
   else if (act === 'ck') openChecklist(insp);
   else if (act === 'survey') openSvHub(insp);
@@ -1980,7 +2038,7 @@ function renderBar() {
   b.textContent = n ? `사진대지 만들기 (${n}개 점검 · ${cnt}건)${up ? ` · 업로드 ${up}` : ''}` : (up ? `업로드 중 ${up}장` : '사진대지 만들기');
   b.disabled = !n;
 }
-function renderAll() { renderSvc(); renderBy(); renderSections(); renderBar(); renderUpPanel(); renderCats(); }
+function renderAll() { renderSvc(); renderBy(); renderSections(); renderBar(); renderUpPanel(); renderCats(); if (typeof renderShot === 'function') renderShot(); }
 
 /* ---------- 촬영자별 보기 ---------- */
 let byFilter = '';
@@ -2165,7 +2223,7 @@ function closeEdit(force) {
   const fresh = [...editNew], nPh = fresh.filter(k => !(uploads[k] && uploads[k].role)).length;
   if (!force && nPh && !confirm(`저장하지 않은 새 사진 ${nPh}장을 버릴까요?`)) return;
   fresh.forEach(discardLocal);
-  $('#sheet').classList.remove('on'); closePhMenu(); edit = null;
+  $('#sheet').classList.remove('on'); closePhMenu(); edit = null; shot.cur = ''; renderShot();
 }
 const UP_TXT = { '대기': '⏸ 대기', '업로드 중': '⏳ 업로드 중', '완료': '✔ 완료', '실패': '⚠ 실패 · 눌러서 재시도' };
 function renderSlots() {
@@ -3003,8 +3061,19 @@ function renderNav() {
 document.addEventListener('click', e => {
   const b = e.target.closest('#sideNav [data-v], #bNav [data-v], #moreGrid [data-v]');
   if (!b || b.dataset.v === 'more') return;
+  if (!closeSheetsForNav()) return;
   go(b.dataset.v);
 });
+/** 메뉴를 누르면 열려 있던 화면(조사 입력 · 목록 등)을 닫고 이동 — 저장 안 한 새 사진이 있으면 먼저 물어봄 */
+function closeSheetsForNav() {
+  if ($('#mk') && $('#mk').classList.contains('on')) { toast('사진 표시 화면을 먼저 저장하거나 닫아 주세요'); return false; }
+  if ($('#sheet').classList.contains('on')) { closeEdit(); if ($('#sheet').classList.contains('on')) return false; }
+  if ($('#ckSheet') && $('#ckSheet').classList.contains('on') && typeof closeCk === 'function') closeCk();
+  if ($('#viewer').classList.contains('on')) closeViewer();
+  document.querySelectorAll('.sheet.on').forEach(x => { if (x.id !== 'setup') x.classList.remove('on'); });
+  $('#moreMenu').classList.remove('on');
+  return true;
+}
 function openMore() { $('#moreMenu').classList.add('on'); }
 
 
@@ -3720,6 +3789,128 @@ async function anExport(kind, onlyCheck) {
   finally { busy(false); }
 }
 
+/* ====================================================================
+ * 촬영 목록 — 점검항목별 「찍어야 할 캡션」 목록 (전체 · 미촬영 · 완료)
+ *  · 목록 = 공통 캡션(25) + 그 공종 캡션 + 이 기기에서 추가한 캡션 + 그 밖에 이미 찍은 현황 사진
+ *  · 캡션을 누르면 그 캡션이 들어간 채로 바로 카메라 → 저장하면 「완료」
+ * ==================================================================== */
+const shot = { insp: '', tab: 'all', cur: '', adding: false };
+const shotNorm = t => String(t || '').replace(/\s+/g, ' ').trim();
+const shotKey = insp => `shotPlan:${state.svc}|${insp}`;
+let shotCustom = [];
+async function openShot(insp) {
+  if (!needSvc()) return;
+  if (!insp) {
+    if (state.sel.length === 1) insp = state.sel[0].item;
+    else { const list = state.sel.length ? state.sel.map(s => meta(s.item)) : svcInsp(state.svc).filter(r => r.stage !== '완료');
+      return pickInsp('어느 점검의 사진인가요?', list, it => { ensureSel(it); openShot(it); }); }
+  }
+  ensureSel(insp);
+  shot.insp = insp; shot.tab = 'all'; shot.adding = false;
+  shotCustom = (await KV.cget(shotKey(insp))) || [];
+  $('#shotSheet').classList.add('on'); $('#shotSheet').scrollTop = 0;
+  renderShot();
+}
+function closeShot() { shot.cur = ''; $('#shotSheet').classList.remove('on'); renderAll(); }
+/* 촬영 캡션 (고정) — 공통은 모든 공종, 공종별은 그 공종에서만. 층수는 따로 고름. 이름은 바꾸지 않음 */
+const SHOT_CAPS = {
+  '공통': ['현장 전경(정면)','현장 전경(배면)','현장 전경(우측)','현장 전경(좌측)','설치상태 전경','내부 계단 난간','임시분전반','현장 주변도로','인접 건축물 현황','안전난간','위험물 저장소','CCTV','CCTV모니터링','안전교육일지','안전교육사진','공사안내판','개구부 추락방지','세륜시설','가설휀스','안전표지판','보행자 이동통로','점검 지적사항','현장 시정조치','시정 완료 확인','구조검토도면 확인'],
+  '흙막이지보공': ['부재 규격','설치 간격','계측기 설치','띠장','STRUT','버팀보','토류판','CORNER STRUT','ANGLE','BRACKET','CIP벽체','띠장 연결부','STRUT 연결부','버팀보 접합부','굴착면 균열·침하','지하수 및 용수 상태'],
+  '합벽지지대': ['부재규격','설치간격','설치높이','앵커볼트 규격','거푸집 설치상태','수평연결재','자재손상상태','앵커볼트 체결상태','지지대 연결부','지지대 수직도','지지대 변형'],
+  '거푸집 및 동바리': ['수직재, 수평재 체결상태','수직재 규격','수평재 규격','가새재 규격','U헤드잭','상부 멍에','거푸집 설치상태','잭베이스 지면 이격거리','잭베이스 설치상태','가새재 설치상태','수직재 설치상태','수평재 설치상태','설치간격','수직,수평도 측정','설치높이 측정','하부 지반 상태','받침목 및 깔판','연결핀 체결상태','U헤드잭 고정상태','구조검토도면 대조'],
+  '천공기 및 항타기': ['번호판','운전실 조작부','건설기계실명제카드','무한궤도 트랙','하부 누유','상부 리더','와이어로프','드럼','천공상태','CIP시공상태','천공 시 수직도 점검','제원 확인','백스테이','방진막 설치','각종 볼트류 점검','전도방지 철판','신호수 배치','작업반경 출입통제','유압호스 및 연결부','리더 연결핀','장비 하부 지반상태'],
+  '1.2종 시설물': ['태양광 설비','옥상 난간','태양광 설비 기초','내부 마감재','외부 마감재']
+};
+/** 점검유형(없으면 점검항목 이름)으로 공종 찾기 */
+function shotGroup(insp) {
+  const m = meta(insp), t = (m.type || '') + ' ' + insp;
+  return /흙막이/.test(t) ? '흙막이지보공' : /합벽/.test(t) ? '합벽지지대' : /동바리|거푸집|갱폼/.test(t) ? '거푸집 및 동바리'
+    : /천공|항타|항발/.test(t) ? '천공기 및 항타기' : /[12]종\s*시설물/.test(t) ? '1.2종 시설물' : '';
+}
+function shotEntries() {
+  const insp = shot.insp, grp = shotGroup(insp), plan = [];
+  const add = (t, src, sec) => { if (!plan.some(x => shotNorm(x.t) === shotNorm(t))) plan.push({ t, src, sec }); };
+  SHOT_CAPS['공통'].forEach(t => add(t, 'plan', '공통'));
+  if (grp) SHOT_CAPS[grp].forEach(t => add(t, 'plan', grp));
+  shotCustom.forEach(t => add(t, 'custom', '직접 추가'));
+  const items = srv.items.filter(o => o.insp === insp && o.kind === '현황' && !o.del), used = new Set();
+  plan.forEach(e => { const n = shotNorm(e.t); e.os = items.filter(o => shotNorm(o.caption) === n); e.os.forEach(o => used.add(o.id)); });
+  const rest = items.filter(o => !used.has(o.id)), byCap = {};
+  rest.forEach(o => { const k = shotNorm(o.caption) || '(캡션 없음)'; (byCap[k] = byCap[k] || []).push(o); });
+  Object.entries(byCap).forEach(([t, os]) => plan.push({ t, src: 'item', sec: '그 밖에 찍은 사진', os }));
+  plan.forEach(e => {
+    e.os.sort((x, y) => String(y.at || '').localeCompare(String(x.at || '')));
+    e.o = e.os[0];
+    const pend = e.os.some(o => photoSlots(o).some(s => String(o[s + 'Id']).startsWith('pending:')));
+    const ok = e.os.some(o => photoSlots(o).length && !photoSlots(o).some(s => String(o[s + 'Id']).startsWith('pending:')));
+    const editing = edit && $('#sheet').classList.contains('on') && edit.insp === insp && ((!edit.id && shot.cur === e.t) || e.os.some(o => o.id === edit.id));
+    e.pend = pend;
+    e.st = editing || (pend && !ok) ? 'ing' : ok ? 'done' : e.o ? 'ing' : 'todo';
+  });
+  return plan;
+}
+function renderShot() {
+  if (!$('#shotSheet').classList.contains('on')) return;
+  const insp = shot.insp, sv = svcObj(), list = shotEntries();
+  const nDone = list.filter(e => e.st === 'done').length, nTodo = list.filter(e => e.st !== 'done').length;
+  $('#shotT').textContent = `${sv ? sv.name : state.svc} · ${insp}`;
+  $('#shotN').innerHTML = `<b>${nDone}</b> / ${list.length}`;
+  $('#shotPick').innerHTML = state.sel.length > 1 ? `<div class="shot-pick">${state.sel.map(s => `<button class="${s.item === insp ? 'on' : ''}" onclick="openShot('${esc(s.item)}')">${esc(s.item)}</button>`).join('')}</div>` : '';
+  $('#shotTabs').innerHTML = [['all', '전체', list.length], ['todo', '미촬영', nTodo], ['done', '완료', nDone]]
+    .map(([k, l, n]) => `<button class="${shot.tab === k ? 'on' : ''}" onclick="shot.tab='${k}';renderShot()">${l} (${n})</button>`).join('');
+  const show = list.map((e, i) => ({ e, i })).filter(({ e }) => shot.tab === 'all' || (shot.tab === 'done' ? e.st === 'done' : e.st !== 'done'));
+  window._shot = list;
+  let lastSec = '';
+  $('#shotList').innerHTML = (shot.adding ? `<div class="shot-new"><input id="shotNewT" type="text" placeholder="새 캡션 (예: 3층 슬래브 거푸집 설치 상태)" maxlength="80">
+      <div class="row"><button class="btn ghost sm" onclick="shot.adding=false;renderShot()">취소</button><button class="btn sm" onclick="shotAddSave(false)">목록에 추가</button><button class="btn acc sm" onclick="shotAddSave(true)">추가하고 바로 촬영</button></div></div>` : '')
+    + (show.map(({ e, i }) => {
+      const no = '#' + String(i + 1).padStart(2, '0'), o = e.o, src = o ? slotSrc(o, photoSlots(o)[0] || 'b') : '';
+      const more = e.os.length - 1;
+      const head = e.sec !== lastSec ? `<div class="sh-sec">${esc(e.sec)} <span>${list.filter(x => x.sec === e.sec).length}</span></div>` : '';
+      lastSec = e.sec;
+      const badge = e.st === 'done' ? '<i class="sh-ok" aria-label="완료"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>'
+        : e.st === 'ing' ? '' : '<i class="sh-dot" aria-hidden="true"></i>';
+      const tag = e.st === 'ing' ? `<span class="sh-tag ing">${e.pend ? '올리는 중' : '촬영중'}</span>`
+        : e.st === 'todo' ? '<span class="sh-tag todo">미촬영</span>' : '';
+      const right = e.st === 'done' || (o && src)
+        ? `<button class="sh-th" onclick="event.stopPropagation();openViewer('${esc(o.id)}','${photoSlots(o)[0] || 'b'}')">${src ? `<img src="${src}" alt="">` : ''}${more > 0 ? `<em>+${more}</em>` : ''}</button>`
+        : `<button class="sh-cam" aria-label="촬영" onclick="event.stopPropagation();shotTake(${i})"><svg class="ic"><use href="#i-camera"/></svg></button>`;
+      const floors = [...new Set(e.os.map(x => x.floor).filter(Boolean))];
+      return head + `<div class="sh-card ${e.st}" onclick="shotTap(${i})">
+        <div class="sh-m"><div class="sh-t">${badge}<span class="sh-no">${no}</span><span class="sh-cap">${esc(e.t)}</span></div>
+        ${tag || o || e.src === 'custom' ? `<div class="sh-sub">${tag}${floors.length ? `<span class="sh-loc">${esc(floors.join(' · '))}</span>` : ''}${o && e.src !== 'item' ? `<button class="sh-more" onclick="event.stopPropagation();shotTake(${i},true)">+ 다른 층 추가 촬영</button>` : ''}${e.src === 'custom' && !o ? `<button class="sh-del" onclick="event.stopPropagation();shotDel(${i})">목록에서 빼기</button>` : ''}</div>` : ''}</div>
+        ${right}</div>`;
+    }).join('') || `<div class="empty">${shot.tab === 'done' ? '아직 찍은 사진이 없습니다.' : shot.tab === 'todo' ? '모두 찍었습니다.' : '찍을 캡션이 없습니다. 아래 「새 캡션 항목 추가」를 누르거나 기본캡션에 현황 문구를 넣어 주세요.'}</div>`);
+  fetchThumbs(list.filter(e => e.o).map(e => e.o));
+  if (shot.adding) setTimeout(() => { const el = $('#shotNewT'); el && el.focus(); }, 30);
+}
+/** 카드 누르기: 미촬영 → 바로 카메라 / 찍은 것 → 내용 · 사진 고치기 */
+function shotTap(i) { const e = window._shot[i]; if (!e) return; if (e.o) openEdit(e.o.id); else shotTake(i); }
+function shotTake(i, again) {
+  const e = window._shot[i]; if (!e) return;
+  if (e.o && !again) { openEdit(e.o.id); return; }
+  shot.cur = e.t;
+  openEdit(null, '현황', shot.insp);
+  if (!edit) return;
+  $('#f_caption').value = e.t;
+  takePhoto('b', -1, true);   // 누른 그 순간에 카메라를 열어야 아이폰에서도 바로 뜸
+  renderShot();
+}
+function shotAdd() { shot.adding = true; shot.tab = 'all'; renderShot(); $('#shotSheet').scrollTop = 0; }
+async function shotAddSave(go) {
+  const t = shotNorm($('#shotNewT').value); if (!t) { toast('캡션을 입력하세요'); return; }
+  const dup = window._shot.find(e => e.src !== 'item' && shotNorm(e.t) === t);
+  if (dup) { toast(`「${dup.t}」는 이미 목록에 있습니다`); return; }
+  if (!shotCustom.includes(t)) shotCustom.push(t);
+  await KV.cset(shotKey(shot.insp), shotCustom);
+  shot.adding = false; renderShot();
+  if (go) { const i = window._shot.findIndex(e => shotNorm(e.t) === t && !e.o); if (i >= 0) shotTake(i); }
+}
+async function shotDel(i) {
+  const e = window._shot[i]; if (!e || e.src !== 'custom') return;
+  shotCustom = shotCustom.filter(t => t !== e.t); await KV.cset(shotKey(shot.insp), shotCustom); renderShot();
+}
+
 /* ---- 대시보드 ---- */
 function reportWaitList() {
   const made = (boot && boot.made) || {};
@@ -3901,12 +4092,7 @@ function pickInsp(title, list, cb) {
     : '<div class="empty">해당하는 점검항목이 없습니다.</div>');
 }
 function ensureSel(item) { if (!selOf(item)) { state.sel.push({ item, tag: '', ck: null }); saveDraft(); renderAll(); } }
-function quickPhoto() {
-  if (!needSvc()) return;
-  if (state.sel.length === 1) return openEdit(null, '현황', state.sel[0].item);
-  const list = state.sel.length ? state.sel.map(s => meta(s.item)) : svcInsp(state.svc).filter(r => r.stage !== '완료');
-  pickInsp('어느 점검의 사진인가요?', list, it => { ensureSel(it); openEdit(null, '현황', it); });
-}
+function quickPhoto() { openShot(); }
 function showBy() {
   if ($('#byWrap').style.display === 'none') { toast('아직 한 사람이 찍은 사진만 있습니다'); return; }
   $('#byWrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -5392,7 +5578,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261114-1426';
+window.APP_VER = '20261119-2028';
 </script>
 </body>
 </html>
