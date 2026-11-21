@@ -1246,7 +1246,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261121-2254 · 2026-11-21 I</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261121-2353 · 2026-11-21 J</b></div>
       </section>
     </main>
   </div>
@@ -5072,9 +5072,23 @@ function openMeasurePick() {
 }
 function inspOptions(cur, cat) {
   const list = svcInsp(state.svc).filter(r => r.stage !== '완료' || r.item === cur || selOf(r.item));
+  /* 같은 공종 회차를 위로, 다른 공종은 아래 묶음으로 (11/21) */
+  const isD = v => /^\d{4}-\d{2}-\d{2}$/.test(String(v || ''));
+  const same = list.filter(r => specCatOfInsp(r.item) === cat), other = list.filter(r => specCatOfInsp(r.item) !== cat);
   let def = cur;
-  if (def === undefined) { const s = state.sel.find(x => specCatOfInsp(x.item) === cat); def = s ? s.item : ''; }
-  return { html: '<option value="">(연결 안 함)</option>' + list.map(r => `<option value="${esc(r.item)}" ${r.item === def ? 'selected' : ''}>${esc(r.item)}</option>`).join(''), def };
+  if (def === undefined) {
+    const s = state.sel.find(x => specCatOfInsp(x.item) === cat);
+    if (s) def = s.item;
+    else {
+      const open = same.filter(r => r.stage !== '완료' && !isD(r.done));
+      const nx = open.filter(r => isD(r.plan)).sort((a, b) => a.plan.localeCompare(b.plan))[0] || open[0] || same[same.length - 1];
+      def = nx ? nx.item : '';
+    }
+  }
+  const opt = r => { const d = isD(r.done) ? r.done : isD(r.plan) ? r.plan : '';
+    return `<option value="${esc(r.item)}" ${r.item === def ? 'selected' : ''}>${esc(r.item)}${d ? ' · ' + d.slice(5).replace('-', '/') : ''}</option>`; };
+  return { html: '<option value="">(연결 안 함)</option>' + same.map(opt).join('')
+    + (other.length ? `<optgroup label="다른 공종">${other.map(opt).join('')}</optgroup>` : ''), def };
 }
 function openMsNew(specId) {
   if (!requireUser()) return;
@@ -6116,7 +6130,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261121-2254';
+window.APP_VER = '20261121-2353';
 </script>
 </body>
 </html>
