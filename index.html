@@ -920,6 +920,43 @@ body.shot-quiet #sheet{visibility:hidden}
 .sg-card .sg-t small{font-size:12px;color:#c4d2e0;line-height:1.45}
 .sg-card .sg-go{flex:0 0 auto;font-size:14px;font-weight:800;color:var(--acc);white-space:nowrap}
 .sg-card:active{transform:scale(.99)}
+
+/* ---- 위 「‹」 뒤로가기 · 머리 안전영역 (11/21) ---- */
+.nav-back{flex:0 0 auto;width:40px;height:40px;margin-left:-6px;border:0;border-radius:10px;background:rgba(255,255,255,.1);color:inherit;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.nav-back .ic{width:24px;height:24px}
+body[data-pg="home"] .nav-back{display:none}
+@media (max-width:1023px){
+  header{padding-top:calc(10px + env(safe-area-inset-top))}
+  body:not([data-pg="home"]) header .logo{display:none}
+}
+@media (min-width:1024px){ .nav-back{background:#eef2f6;color:var(--navy)} }
+/* ---- 현장 관리 화면 다듬기 (11/21) ---- */
+#siteKpi{margin-bottom:12px}
+#siteKpi button{border:1px solid var(--line)!important;border-radius:12px;background:#fff;text-align:left}
+#siteKpi button.o b{color:#A85D10}
+#siteKpi button.on{border-color:var(--navy)!important;box-shadow:0 0 0 1px var(--navy)}
+#siteKpi button.on span{color:var(--navy)}
+.card.filt{padding:12px;display:grid;gap:8px}
+.card.filt .frow{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.card.filt .frow select{font-size:14px;padding-left:10px;padding-right:26px;text-overflow:ellipsis;min-height:44px}
+@media (max-width:1023px){
+  #siteList .stable{background:none;border:0;border-radius:0;overflow:visible;display:grid;gap:10px}
+  #siteList .str{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh);padding:14px 16px;gap:4px 0}
+  #siteList .str:first-of-type{border-top:1px solid var(--line)}
+  #siteList .str.cur{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
+  #siteList .str .nm b{font-size:16px;font-weight:800}
+  #siteList .str{grid-template-columns:1fr auto;grid-template-areas:"st st" "nm nm" "cat cat" "nx pg"}
+  #siteList .str .stc{margin:0 0 4px;justify-self:start}
+  #siteList .str .nm small{margin-top:2px}
+  /* 휴대폰: 위 남색 머리에 같은 제목이 있으니 화면 안 큰 제목은 숨김 (설명 줄은 그대로) */
+  .view:not([data-v="insp"])>.vh h2{display:none}
+  .view:not([data-v="insp"])>.vh{margin-top:2px}
+  #siteList .str .cats{margin-bottom:6px}
+  #siteList .str .nx,#siteList .str .pg{padding-top:10px;border-top:1px solid #EEF2F6}
+  #siteList .str .nx{font-weight:700}
+  #siteList .str .pg{width:auto;min-width:120px;padding-left:12px;text-align:right}
+  #siteList .str .pg .prog{margin-left:auto;width:110px}
+}
 </style>
 </head>
 <body>
@@ -974,6 +1011,7 @@ body.shot-quiet #sheet{visibility:hidden}
 
   <div class="mainwrap">
     <header>
+      <button id="navBack" class="nav-back" aria-label="뒤로" onclick="navBack()"><svg class="ic"><use href="#i-back"/></svg></button>
       <span class="logo m-only"><svg class="ic"><use href="#i-shield"/></svg></span>
       <div class="ttl"><span id="pageTitle">안전점검 통합관리</span><small id="hdrSub">현장 점검 · 사진 → 엑셀 자동 작성</small></div>
       <span class="savest" id="saveSt"></span>
@@ -1034,7 +1072,7 @@ body.shot-quiet #sheet{visibility:hidden}
           <div class="frow">
             <select id="sfCat" onchange="renderSiteList()"></select>
             <select id="sfSt" onchange="renderSiteList()">
-              <option value="">진행 상태 전체</option><option value="ing">진행 중</option><option value="soon">점검 예정 (7일 안)</option>
+              <option value="">상태 전체</option><option value="ing">진행 중</option><option value="soon">점검 예정 (7일 안)</option>
               <option value="late">지연 있음</option><option value="end">완료 (끝난 용역)</option>
             </select>
             <select id="sfMon" onchange="renderSiteList()" title="점검(예정)이 있는 달"><option value="">점검 월 전체</option></select>
@@ -1117,7 +1155,8 @@ body.shot-quiet #sheet{visibility:hidden}
           <span class="sg-t"><b>현장 시험·조사 앱</b><small>Schmidt 강도 · 기울기 · 부동침하 · 부재처짐 · 결함 — 측정값 입력하면 바로 계산·평가, 원본 엑셀 양식으로 출력</small></span>
           <span class="sg-go">열기 ›</span>
         </a>
-        <div class="menu" id="surveyMenu"></div>
+        <div class="menu" id="surveyMenu" hidden></div>
+        <div class="hint">콘크리트 강도 · 기울기 · 부동침하 · 부재처짐 · 결함 조사는 위 「현장 시험·조사 앱」에서 입력하고 결과를 냅니다.</div>
       </section>
 
       <!-- ⑥ 사진 관리 -->
@@ -1144,7 +1183,7 @@ body.shot-quiet #sheet{visibility:hidden}
         </div>
         <div class="rpwrap" id="rpWrap"><div class="card rplist"><div class="ch"><b>보고서 작성 현황</b><small class="muted">점검을 누르면 미리보기</small></div><div id="rpList"></div></div>
           <div class="card rpprev" id="rpPrev"></div></div>
-        <div class="hint">사진대지에는 현황·지적 사진, 체크리스트, 그 점검항목에 연결된 <b>제원 비교표</b>, <b>조사 결과</b>, <b>이전 지적 이행확인</b>이 함께 들어가고 엑셀과 PDF가 같이 만들어집니다.</div>
+        <div class="hint">사진대지에는 현황·지적 사진, 체크리스트, 그 점검항목에 연결된 <b>제원 비교표</b>, <b>이전 지적 이행확인</b>이 함께 들어가고 엑셀과 PDF가 같이 만들어집니다.</div>
       </section>
 
       <!-- ⑧ 시스템 관리 -->
@@ -1160,7 +1199,7 @@ body.shot-quiet #sheet{visibility:hidden}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261121-1843 · 2026-11-21 E</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261121-1848 · 2026-11-21 F</b></div>
       </section>
     </main>
   </div>
@@ -2202,7 +2241,6 @@ function renderSections() {
       <div class="tools4">
         <button class="btn sm red" data-act="defect">${icon('alert', 'sm')} 지적사항</button>
         <button class="btn ghost sm" data-act="ck">${ckLabel}</button>
-        ${surveyOk(m) ? `<button class="btn ghost sm" data-act="survey">${icon('flask', 'sm')} 조사${surveysOf(s.item).length ? ` (${surveysOf(s.item).length})` : ''}</button>` : ''}
       </div>
       ${selbar}
       ${list.length > LIST_SHOW && !showAll[s.item] ? `<button class="btn ghost sm" style="margin:8px 0" data-act="showall">▲ 앞의 ${list.length - LIST_SHOW}건 더 보기 (전체 ${list.length}건)</button>` : ''}
@@ -3247,8 +3285,13 @@ const VIEWS = [
 const LS_RECENT = 'yutoApp.recentSvc';
 let curView = 'home';
 const icon = (n, c) => `<svg class="ic ${c || ''}"><use href="#i-${n}"/></svg>`;
-function go(v) {
+const navStack = [];
+function go(v, opt) {
   if (!VIEWS.some(x => x.v === v)) v = 'home';
+  if (!(opt && opt.back) && curView && curView !== v) {
+    navStack.push(curView); if (navStack.length > 40) navStack.shift();
+    if (!GAS) try { history.pushState({ v }, ''); } catch (e) {}
+  }
   curView = v;
   document.querySelectorAll('.view').forEach(el => el.classList.toggle('on', el.dataset.v === v));
   document.querySelectorAll('#sideNav [data-v], #bNav [data-v]').forEach(b => b.classList.toggle('on', b.dataset.v === v));
@@ -3277,6 +3320,25 @@ document.addEventListener('click', e => {
   go(b.dataset.v);
 });
 /** 메뉴를 누르면 열려 있던 화면(조사 입력 · 목록 등)을 닫고 이동 — 저장 안 한 새 사진이 있으면 먼저 물어봄 */
+/** 위 「‹」 뒤로: 바로 전 화면 (없으면 홈) */
+function navBack() {
+  if (!GAS && navStack.length && history.state && history.state.v) { history.back(); return; }
+  go(navStack.pop() || 'home', { back: true });
+}
+if (!GAS) {
+  try { history.replaceState({ v: 'home', root: 1 }, ''); } catch (e) {}
+  window.addEventListener('popstate', e => {
+    const open = [...document.querySelectorAll('.sheet.on')].some(x => x.id !== 'setup') || ($('#viewer') && $('#viewer').classList.contains('on'));
+    if (open) {                                   // 열린 창이 있으면 그 창만 닫고 화면은 그대로
+      if (closeSheetsForNav()) { try { history.pushState({ v: curView }, ''); } catch (er) {} }
+      else { try { history.pushState({ v: curView }, ''); } catch (er) {} }
+      return;
+    }
+    const v = (e.state && e.state.v) || 'home';
+    navStack.pop();
+    go(v, { back: true });
+  });
+}
 function closeSheetsForNav() {
   if ($('#mk') && $('#mk').classList.contains('on')) { toast('사진 표시 화면을 먼저 저장하거나 닫아 주세요'); return false; }
   if ($('#sheet').classList.contains('on')) { closeEdit(); if ($('#sheet').classList.contains('on')) return false; }
@@ -3307,16 +3369,17 @@ function siteRows() {
 function renderSiteList() {
   if (!$('#siteList')) return;
   const all = siteRows();
-  const k = (l, n, c, sub, f) => `<button class="${c}" onclick="${f}"><span>${l}</span><b>${n}</b><small>${sub}</small></button>`;
-  $('#siteKpi').innerHTML = k('전체 현장', all.length, '', '통합관리 용역', "$('#sfSt').value='';renderSiteList()")
-    + k('진행 중', all.filter(x => !x.end).length, '', '진행중 용역', "$('#sfSt').value='ing';renderSiteList()")
-    + k('점검 예정', all.filter(x => x.soon).length, 'o', '7일 안에 점검', "$('#sfSt').value='soon';renderSiteList()")
-    + k('완료', all.filter(x => x.end).length, '', '끝난 용역', "$('#sfSt').value='end';renderSiteList()");
+  const sv0 = $('#sfSt').value;
+  const k = (l, n, c, sub, v) => `<button class="${c} ${sv0 === v ? 'on' : ''}" onclick="$('#sfSt').value='${v}';renderSiteList()"><span>${l}</span><b>${n}</b><small>${sub}</small></button>`;
+  $('#siteKpi').innerHTML = k('전체 현장', all.length, '', '통합관리 용역', '')
+    + k('진행 중', all.filter(x => !x.end).length, '', '진행중 용역', 'ing')
+    + k('점검 예정', all.filter(x => x.soon).length, 'o', '7일 안에 점검', 'soon')
+    + k('완료', all.filter(x => x.end).length, '', '끝난 용역', 'end');
   const cs = $('#sfCat'), cv = cs.value;
   const cats = [...new Set(all.flatMap(x => x.cats))].sort();
   cs.innerHTML = `<option value="">공종 전체</option>` + cats.map(c => `<option ${c === cv ? 'selected' : ''} value="${esc(c)}">${esc(c === '시스템동바리' ? '거푸집 및 동바리' : c)}</option>`).join('');
   { const ms = $('#sfMon'), mv = ms.value, mons = [...new Set(all.flatMap(x => x.ins.flatMap(r => [r.plan, r.done]).filter(isD).map(d => d.slice(0, 7))))].sort().reverse();
-    ms.innerHTML = '<option value="">점검 월 전체</option>' + mons.map(m => `<option value="${m}" ${m === mv ? 'selected' : ''}>${m.slice(0, 4)}년 ${+m.slice(5)}월</option>`).join(''); }
+    ms.innerHTML = '<option value="">월 전체</option>' + mons.map(m => `<option value="${m}" ${m === mv ? 'selected' : ''}>${m.slice(0, 4)}년 ${+m.slice(5)}월</option>`).join(''); }
   const q = ($('#sfQ').value || '').trim(), st = $('#sfSt').value, mon = $('#sfMon').value;
   const l = all.filter(x => (!q || [x.s.name, x.s.code, x.s.gu, x.s.builder, x.s.scale].join(' ').includes(q))
     && (!cs.value || x.cats.includes(cs.value))
@@ -3384,7 +3447,7 @@ function renderSiteDetail() {
       <div class="menu" style="margin-top:12px"><button class="pri" onclick="openMeasurePick()"><svg class="ic"><use href="#i-ruler"/></svg>현장 실측 입력</button>
       <button onclick="openSpecNew()"><svg class="ic"><use href="#i-plus"/></svg>사전 제원 등록</button>
       <button onclick="go('survey')"><svg class="ic"><use href="#i-flask"/></svg>조사 및 시험 입력</button></div>
-      ${sv.length ? `<div class="card" style="margin-top:12px"><div class="ch"><b>조사 기록</b></div>${sv.slice(-8).reverse().map(x => `<button class="drow" onclick="openSvHub('${esc(x.insp)}')">${icon('flask', 'sm')}<span>${esc((defOf(x.type) || { name: x.type }).name)} · ${esc(x.location || (x.fields && x.fields.location) || '')}</span><em>${esc(x.insp)}</em></button>`).join('')}</div>` : ''}`;
+      `;
   } else if (t === 'result') {
     const made = (boot && boot.made) || {};
     const l = svcInsp(code).filter(r => !r.end);
@@ -3451,7 +3514,7 @@ function reportRows(pick) {
     const pend = srv.items.some(o => o.insp === r.item && SLOTS.some(s2 => o[s2 + 'St'] === '업로드중'));
     const miss = srv.items.filter(o => o.insp === r.item && o.kind === '지적' && o.status !== '조치완료').length;
     return `<div class="rprow ${pick && rp.item === r.item ? 'on' : ''}" ${pick ? `onclick="rpOpen('${esc(r.item)}')"` : ''}><div class="rpt"><b>${esc(r.item)}</b>${x.made && !x.wait ? `<span class="pill g">작성 ${esc(x.made.slice(5))}</span>` : x.made ? '<span class="pill o">작성 후 수정됨</span>' : '<span class="pill o">작성 대기</span>'}</div>
-      <div class="rpc">${ok(ph, '사진 자료')}${ok(ck, '체크리스트')}${ok(msN, `제원 비교 ${msN || ''}`)}${ok(svN || !surveyOk(r), surveyOk(r) ? `조사 ${svN}` : '조사 해당없음')}${miss ? `<span class="noc" style="color:var(--bad)">미조치 지적 ${miss}</span>` : ''}${pend ? '<span class="noc">업로드 중</span>' : ''}</div>
+      <div class="rpc">${ok(ph, '사진 자료')}${ok(ck, '체크리스트')}${ok(msN, `제원 비교 ${msN || ''}`)}${miss ? `<span class="noc" style="color:var(--bad)">미조치 지적 ${miss}</span>` : ''}${pend ? '<span class="noc">업로드 중</span>' : ''}</div>
       <div class="rpb"><button class="btn ghost xs" onclick="event.stopPropagation();go('insp');ensureSel('${esc(r.item)}');showSection('${esc(r.item)}')">입력 화면</button>
       <button class="btn acc xs" onclick="event.stopPropagation();buildOne('${esc(r.item)}')">이 점검 사진대지</button></div></div>`; }).join('') || '<div class="empty">아직 입력된 점검이 없습니다.</div>';
 }
@@ -4351,7 +4414,7 @@ function renderCats() {
     .map(([v, t]) => `<button class="chip ${catFilter === v ? 'on' : ''}" data-c="${esc(v)}" ${v && !cnt(v) ? 'style="opacity:.5"' : ''}>${esc(t)}</button>`).join('');
   $('#catInspSub').textContent = state.sel.length ? `선택 ${state.sel.length}개 · ${state.sel.map(s => s.item).join(', ')}` : '공종별 점검 선택';
   // 조사 메뉴
-  $('#surveyMenu').innerHTML = SURVEY_DEFS.map(d => `<button onclick="openSurveyType('${d.key}')"><svg class="ic"><use href="#i-flask"/></svg>${esc(d.name)}</button>`).join('');
+  $('#surveyMenu').innerHTML = '';   // 조사·시험은 「현장 시험·조사 앱」에서만 (예전 조사 기록은 지우지 않고 그대로 둠)
   // 제원 요약
   const sp = (srv.specs || []).length, ms = (srv.measures || []).length;
   $('#catSpecSub').textContent = sp ? `제원 ${sp}건 · 실측 ${ms}건` : '사전 제원 · 현장 실측 · 기준값 비교';
@@ -5869,7 +5932,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261121-1843';
+window.APP_VER = '20261121-1848';
 </script>
 </body>
 </html>
