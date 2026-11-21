@@ -910,6 +910,16 @@ body.shot-quiet #sheet{visibility:hidden}
 .shot-floor button.on{background:var(--navy);border-color:var(--navy);color:#fff}
 .sh-card.nx{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
 .sh-cam.nx{background:var(--acc);color:#fff}
+
+/* 조사 및 시험 관리: 현장 시험·조사 앱(sigeom) 바로가기 */
+.sg-card{display:flex;align-items:center;gap:14px;margin:0 0 14px;padding:16px;border-radius:16px;background:var(--navy);color:#fff;text-decoration:none;box-shadow:var(--sh2)}
+.sg-card .sg-ic{flex:0 0 52px;height:52px;border-radius:14px;background:var(--acc);display:flex;align-items:center;justify-content:center}
+.sg-card .sg-ic .ic{width:26px;height:26px;color:#fff}
+.sg-card .sg-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.sg-card .sg-t b{font-size:17px;font-weight:800}
+.sg-card .sg-t small{font-size:12px;color:#c4d2e0;line-height:1.45}
+.sg-card .sg-go{flex:0 0 auto;font-size:14px;font-weight:800;color:var(--acc);white-space:nowrap}
+.sg-card:active{transform:scale(.99)}
 </style>
 </head>
 <body>
@@ -1102,6 +1112,11 @@ body.shot-quiet #sheet{visibility:hidden}
       <!-- ⑤ 조사 및 시험 관리 -->
       <section class="view" data-v="survey">
         <div class="vh"><h2>조사 및 시험 관리</h2><small>초기점검 · 건축물 · 1·2종 시설물 점검에만 해당</small></div>
+        <a class="sg-card" id="sgLink" href="sigeom/" target="_blank" rel="noopener">
+          <span class="sg-ic"><svg class="ic"><use href="#i-flask"/></svg></span>
+          <span class="sg-t"><b>현장 시험·조사 앱</b><small>Schmidt 강도 · 기울기 · 부동침하 · 부재처짐 · 결함 — 측정값 입력하면 바로 계산·평가, 원본 엑셀 양식으로 출력</small></span>
+          <span class="sg-go">열기 ›</span>
+        </a>
         <div class="menu" id="surveyMenu"></div>
       </section>
 
@@ -1145,7 +1160,7 @@ body.shot-quiet #sheet{visibility:hidden}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261121-1841 · 2026-11-21 D</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261121-1843 · 2026-11-21 E</b></div>
       </section>
     </main>
   </div>
@@ -3512,7 +3527,8 @@ const AN_SECS = [['construct', '주요 시공 내용'], ['structure', '주요 �
 const AN_DOCS = ['공사개요서', '구조검토서 및 구조계산서', '시공상세도 및 설치도면', '가시설 계획도', '안전관리계획서', '장비 제원 및 배치도', '계측관리계획서', '기타 관련 자료'];
 const AN_COMMON = ['가설공사 공통', '안전관리 공통'];
 const AN_RES = ['적합', '보완 필요', '해당 없음'];
-const AN_LIB = GAS ? 'https://inseon10342-alt.github.io/anjeon/' : '';      // pdf.js · 출력 도구 · 한글 글꼴 (GitHub에 함께 올린 파일)
+const AN_LIB = GAS ? 'https://inseon10342-alt.github.io/anjeon/' : '';
+if (GAS && $('#sgLink')) $('#sgLink').href = AN_LIB + 'sigeom/';      // pdf.js · 출력 도구 · 한글 글꼴 (GitHub에 함께 올린 파일)
 const an = { code: '', d: null, res: [], tab: 'overview', dirty: new Set(), t: null, loading: '', H: [], E: [], pdf: {}, list: null };
 
 /* ---------- 불러오기 · 정리 ---------- */
@@ -5853,7 +5869,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261121-1841';
+window.APP_VER = '20261121-1843';
 </script>
 </body>
 </html>
