@@ -892,6 +892,14 @@ img,svg,table,video{max-width:100%}
 .shot-bar{background:#fff;padding:2px 16px 12px}
 .shot-bar span{display:block;height:6px;border-radius:99px;background:#E9EEF3;overflow:hidden}
 .shot-bar i{display:block;height:100%;background:var(--acc);border-radius:99px}
+
+/* 아이폰 날짜 칸: 글자가 위로 붙는 것 바로잡기 (가운데 정렬) */
+input[type="date"]{-webkit-appearance:none;appearance:none}
+input[type="date"]::-webkit-date-and-time-value{text-align:left;margin:0}
+@media (max-width:1023px){
+  .tb2 input[type="date"]{display:block;line-height:40px;padding-top:0;padding-bottom:0}
+  .tb2 input[type="date"]::-webkit-date-and-time-value{line-height:40px}
+}
 </style>
 </head>
 <body>
@@ -1127,7 +1135,7 @@ img,svg,table,video{max-width:100%}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261121-1230 · 2026-11-21 B</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261121-1345 · 2026-11-21 C</b></div>
       </section>
     </main>
   </div>
@@ -5791,7 +5799,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261121-1230';
+window.APP_VER = '20261121-1345';
 </script>
 </body>
 </html>
