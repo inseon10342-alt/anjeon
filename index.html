@@ -967,6 +967,43 @@ body[data-pg="home"] .nav-back{display:none}
 .sg-back .ic{width:22px;height:22px}
 .sg-new{min-width:64px;text-align:right;color:#c4d2e0;font-size:13px;font-weight:700;text-decoration:none}
 #sgFrame{flex:1;width:100%;border:0;background:#fff}
+
+/* ---- 제원 입력: 한 줄 입력 · 묶음 · 빠른 선택 · 붙여넣기 (11/21) ---- */
+.sp-grp{font-size:13px;font-weight:800;color:var(--navy);margin:14px 2px 6px;padding-bottom:4px;border-bottom:2px solid var(--navy)}
+.sp-grp:first-child{margin-top:2px}
+.sp-item{padding:8px;margin-bottom:6px;background:#fff}
+.sp-item.has{border-color:#b9c6d6;background:#f7fafd}
+.sp-row{display:grid;grid-template-columns:minmax(0,1fr) 64px 44px;grid-template-areas:'lb lb lb' 'v u m';gap:4px 6px;align-items:center}
+.sp-row .sp-lb{grid-area:lb;min-height:30px!important}.sp-row .sp-v{grid-area:v}.sp-row .sp-u{grid-area:u}.sp-row .sp-more{grid-area:m}
+@media (min-width:1024px){.sp-row{grid-template-columns:minmax(0,1.1fr) minmax(0,1.6fr) 72px 44px;grid-template-areas:'lb v u m'}}
+.sp-row input{min-width:0;min-height:42px;padding:0 9px;font-size:15px}
+.sp-row .sp-lb{font-weight:700;background:transparent;border-color:transparent;padding-left:2px}
+.sp-row .sp-lb:focus{background:#fff;border-color:var(--line)}
+.sp-row .sp-u{text-align:center;padding:0 4px;color:var(--muted)}
+.sp-more{height:42px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--muted);font-size:16px;cursor:pointer}
+.sp-quick{display:flex;gap:5px;overflow-x:auto;margin-top:6px;scrollbar-width:none}
+.sp-quick::-webkit-scrollbar{display:none}
+.sp-quick button{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:99px;padding:5px 10px;font-size:12px;font-weight:700;color:var(--ink);font-family:inherit;cursor:pointer}
+.sp-quick button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.sp-quick{display:none}
+.sp-item.act .sp-quick,.sp-item.open .sp-quick{display:flex}
+.sp-det{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+.sp-mv{display:flex;gap:6px;margin-top:6px}
+.sp-mv button{flex:1;border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px;font-size:13px;font-family:inherit;color:var(--ink)}
+.sp-mv button.x{color:var(--bad)}
+.sp-paste{margin-top:10px;display:grid;gap:8px;background:#f7fafd;border:1px dashed #b9c6d6;border-radius:12px;padding:10px}
+.sp-paste textarea{width:100%;font-size:15px;line-height:1.5;border:1px solid var(--line);border-radius:8px;padding:8px}
+.sp-paste .row{display:flex;gap:6px;justify-content:flex-end}
+
+
+/* 촬영 목록: 공통 / 공종 필터 */
+.shot-sec{display:flex;gap:6px;overflow-x:auto;background:#fff;padding:10px 14px;border-bottom:1px solid var(--line);scrollbar-width:none}
+.shot-sec:empty{display:none}
+.shot-sec::-webkit-scrollbar{display:none}
+.shot-sec button{flex:0 0 auto;height:36px;padding:0 14px;border:1px solid var(--line);border-radius:99px;background:#fff;font-weight:700;font-size:14px;color:var(--ink);font-family:inherit;cursor:pointer}
+.shot-sec button em{font-style:normal;font-weight:600;font-size:12px;color:var(--muted);margin-left:2px}
+.shot-sec button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.shot-sec button.on em{color:#c4d2e0}
 </style>
 </head>
 <body>
@@ -1209,7 +1246,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261121-2059 · 2026-11-21 H</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261121-2254 · 2026-11-21 I</b></div>
       </section>
     </main>
   </div>
@@ -1248,6 +1285,7 @@ body[data-pg="home"] .nav-back{display:none}
     <input type="file" id="shotCam" accept="image/*" capture="environment" hidden onchange="shotQuickFile(this)">
     <div id="shotPick"></div>
     <div class="shot-tabs" id="shotTabs"></div>
+    <div class="shot-sec" id="shotSec"></div>
     </div>
     <div id="shotList" class="shot-list"></div>
     <div class="shot-foot"><button class="btn shot-addbtn" onclick="shotAdd()">+ 새 캡션 항목 추가</button></div>
@@ -1436,10 +1474,16 @@ body[data-pg="home"] .nav-back{display:none}
       <div class="hint">판정방식: <b>일치</b>(같아야 함) · <b>이하</b>(기준 이하면 일치) · <b>이상</b>(기준 이상이면 일치) · <b>기록</b>(판정 안 함).<br>
         허용오차를 비워 두면 숫자가 달라도 「불일치」로만 표시하고 적합·부적합은 판정하지 않습니다.</div>
       <div id="spItems" style="margin-top:10px"></div>
-      <div class="hint" id="spMatHint" style="display:none">「사용 자재 1~8」, 「수직재 2」, 「1차~5차 타설 높이」는 필요한 만큼만 채우세요. <b>비워 둔 칸은 저장할 때 빠집니다.</b></div>
+      <div class="hint" id="spMatHint" style="display:none">필요한 칸만 채우세요 (「사용 자재 1~8」 · 「1차~5차 타설 높이」 · 묶음 템플릿 칸). <b>비워 둔 칸은 저장할 때 빠집니다.</b></div>
       <div class="tools">
         <button class="btn ghost sm" onclick="spAddItem()">＋ 항목 추가</button>
         <button class="btn ghost sm" onclick="spLoadTemplate()">↺ 공종 템플릿 불러오기</button>
+        <button class="btn ghost sm" onclick="spPasteToggle()">📋 붙여넣기로 채우기</button>
+      </div>
+      <div class="sp-paste" id="spPaste" hidden>
+        <div class="hint">한 줄에 한 항목씩 「항목: 값」 또는 표(| 항목 | 값 | 단위 |)를 붙여넣으세요. 이름이 맞는 칸은 채우고, 없는 항목은 새로 추가합니다.</div>
+        <textarea id="spPasteT" rows="7" placeholder="흙막이 공법: C.I.P 주열식 벽체 (Φ500)&#10;CIP 간격 (C.T.C): 500 mm&#10;띠장 규격: H-300×300×10×15 (SS275, 고재)"></textarea>
+        <div class="row"><button class="btn ghost sm" onclick="spPasteToggle()">닫기</button><button class="btn sm" onclick="spPasteApply()">채우기</button></div>
       </div>
       <button class="btn ghost sm" style="margin-top:8px;width:100%" onclick="spSaveTemplate()"><svg class="ic sm"><use href="#i-download"/></svg>이 항목 구성을 공종 템플릿으로 저장</button>
     </div>
@@ -2132,12 +2176,24 @@ function onSvcChange(v) {
   const fl = parseScale(svcObj() && svcObj().scale);
   state.above = fl.above; state.below = fl.below;
   svcInsp(v).filter(r => r.stage !== '완료' && r.plan && r.plan === state.date).forEach(r => state.sel.push({ item: r.item, tag: '', ck: null }));
+  state.dateManual = false; autoDate();
   srv = lsGet(LS_SRV + v) || { code: v, stamp: '', items: [] };
   saveDraft(); renderAll(); refreshList(true);
 }
 ['date','above','below'].forEach(k => {
-  $('#' + k).addEventListener('input', e => { state[k] = e.target.value; saveDraft(); });
+  $('#' + k).addEventListener('input', e => { state[k] = e.target.value; if (k === 'date') state.dateManual = true; saveDraft(); });
 });
+/** 점검일 자동: 고른 점검의 점검일(완료일 → 예정일), 안 골랐으면 다음 점검 예정일. 직접 바꾸면 그대로 둠 */
+function autoDate() {
+  if (state.dateManual || !state.svc) return;
+  const isD = v => /^\d{4}-\d{2}-\d{2}$/.test(String(v || ''));
+  const all = svcInsp(state.svc);
+  let r = state.sel.length ? all.find(x => x.item === state.sel[0].item) : null;
+  let d = r ? (isD(r.done) ? r.done : isD(r.plan) ? r.plan : '') : '';
+  if (!d && !state.sel.length) { const nx = all.filter(x => x.stage !== '완료' && !isD(x.done) && isD(x.plan)).sort((a, b) => a.plan.localeCompare(b.plan))[0]; d = nx ? nx.plan : ''; }
+  if (!d || d === state.date) return;
+  state.date = d; if ($('#date')) $('#date').value = d; saveDraft();
+}
 function renderChips() {
   const box = $('#inspChips');
   if (!state.svc) { box.innerHTML = '<div class="hint">먼저 용역을 선택하세요.</div>'; return; }
@@ -2155,7 +2211,7 @@ $('#inspChips').onclick = e => {
   const item = b.dataset.i;
   const opening = !selOf(item);
   if (!opening) state.sel = state.sel.filter(x => x.item !== item);      // 해제해도 서버 사진은 그대로
-  else state.sel.push({ item, tag: '', ck: null });
+  else { state.sel.push({ item, tag: '', ck: null }); if (state.sel.length === 1) autoDate(); }
   saveDraft(); renderAll();
   if (opening) showSection(item);
 };
@@ -4184,11 +4240,19 @@ function renderShot() {
   $('#shotBar').innerHTML = `<span><i style="width:${list.length ? Math.round(nDone / list.length * 100) : 0}%"></i></span>`;
   $('#shotN').innerHTML = `<b>${nDone}</b> / ${list.length}`;
   $('#shotPick').innerHTML = state.sel.length > 1 ? `<div class="shot-pick">${state.sel.map(s => `<button class="${s.item === insp ? 'on' : ''}" onclick="openShot('${esc(s.item)}')">${esc(s.item)}</button>`).join('')}</div>` : '';
-  $('#shotTabs').innerHTML = [['all', '전체', list.length], ['todo', '미촬영', nTodo], ['done', '완료', nDone]]
+  // 공통 / 공종 / 기타 묶음 필터
+  const secOf = e => e.sec === '공통' ? 'com' : (e.sec === '직접 추가' || e.sec === '그 밖에 찍은 사진') ? 'etc' : 'grp';
+  const secs = [['', '전체'], ['com', '공통'], ['grp', grp || '공종별'], ['etc', '기타']].filter(([k]) => !k || list.some(e => secOf(e) === k));
+  if (shot.sec && !secs.some(([k]) => k === shot.sec)) shot.sec = '';
+  const fl = shot.sec ? list.filter(e => secOf(e) === shot.sec) : list;
+  $('#shotSec').innerHTML = secs.length > 2 ? secs.map(([k, l]) => { const sub = k ? list.filter(e => secOf(e) === k) : list;
+    return `<button class="${(shot.sec || '') === k ? 'on' : ''}" onclick="shot.sec='${k}';renderShot()">${esc(l)} <em>${sub.filter(e => e.st === 'done').length}/${sub.length}</em></button>`; }).join('') : '';
+  const fDone = fl.filter(e => e.st === 'done').length;
+  $('#shotTabs').innerHTML = [['all', '전체', fl.length], ['todo', '미촬영', fl.length - fDone], ['done', '완료', fDone]]
     .map(([k, l, n]) => `<button class="${shot.tab === k ? 'on' : ''}" onclick="shot.tab='${k}';renderShot()">${l} (${n})</button>`).join('');
-  const show = list.map((e, i) => ({ e, i })).filter(({ e }) => shot.tab === 'all' || (shot.tab === 'done' ? e.st === 'done' : e.st !== 'done'));
+  const show = list.map((e, i) => ({ e, i })).filter(({ e }) => (!shot.sec || secOf(e) === shot.sec) && (shot.tab === 'all' || (shot.tab === 'done' ? e.st === 'done' : e.st !== 'done')));
   window._shot = list;
-  { const k = list.findIndex(e => e.st === 'todo' && !e.o); if (k >= 0) list[k].nx = true; }
+  { const k = list.findIndex(e => e.st === 'todo' && !e.o && (!shot.sec || (e.sec === '공통' ? 'com' : (e.sec === '직접 추가' || e.sec === '그 밖에 찍은 사진') ? 'etc' : 'grp') === shot.sec)); if (k >= 0) list[k].nx = true; }
   let lastSec = '';
   $('#shotList').innerHTML = (shot.adding ? `<div class="shot-new"><input id="shotNewT" type="text" placeholder="새 캡션 (예: 3층 슬래브 거푸집 설치 상태)" maxlength="80">
       <div class="row"><button class="btn ghost sm" onclick="shot.adding=false;renderShot()">취소</button><button class="btn sm" onclick="shotAddSave(false)">목록에 추가</button><button class="btn acc sm" onclick="shotAddSave(true)">추가하고 바로 촬영</button></div></div>` : '')
@@ -4476,7 +4540,7 @@ function pickInsp(title, list, cb) {
   info(title, list.length ? list.map(r => `<div class="lrow" onclick="closePicker('infoSheet');window._pickCb('${esc(r.item)}')"><div class="m"><b>${esc(r.item)}</b><div class="a">${esc(r.type || '')} ${r.stage ? '· ' + esc(r.stage) : ''}</div></div></div>`).join('')
     : '<div class="empty">해당하는 점검항목이 없습니다.</div>');
 }
-function ensureSel(item) { if (!selOf(item)) { state.sel.push({ item, tag: '', ck: null }); saveDraft(); renderAll(); } }
+function ensureSel(item) { if (!selOf(item)) { state.sel.push({ item, tag: '', ck: null }); if (state.sel.length === 1) autoDate(); saveDraft(); renderAll(); } }
 function quickPhoto() { openShot(); }
 function showBy() {
   if ($('#byWrap').style.display === 'none') { toast('아직 한 사람이 찍은 사진만 있습니다'); return; }
@@ -4769,7 +4833,47 @@ $('#spListBody').onclick = e => {
   }
 };
 function tplItems(cat) {
-  return (((boot && boot.templates) || {})[cat] || []).map(x => ({ k: uid().slice(0, 8), label: x.label, unit: x.unit, type: x.type, std: '', mode: x.mode || 'eq', tol: x.tol || '', note: x.note || '' }));
+  const srvT = (((boot && boot.templates) || {})[cat] || []).map(x => ({ k: uid().slice(0, 8), label: x.label, unit: x.unit, type: x.type, std: '', mode: x.mode || 'eq', tol: x.tol || '', note: x.note || '' }));
+  const rich = RICH_TPL[cat]; if (!rich) return srvT;
+  const nk = t => String(t || '').replace(/\s+/g, '');
+  const out = [];
+  rich.forEach(([grp, rows]) => rows.forEach(([label, unit, type, mode]) => {
+    const sv = srvT.find(x => nk(x.label) === nk(label));
+    out.push(Object.assign(sv || { k: uid().slice(0, 8), label, unit, type, std: '', mode: mode || 'eq', tol: '', note: '' }, { grp, opt: true }));
+  }));
+  srvT.filter(x => !out.some(o => nk(o.label) === nk(x.label))).forEach(x => out.push(Object.assign(x, { grp: '그 밖의 항목', opt: true })));
+  return out;
+}
+/** 도면 순서대로 묶은 템플릿 (비워 둔 칸은 저장할 때 빠짐) — [묶음, [[항목, 단위, 형식, 판정]]] */
+const RICH_TPL = {
+  '흙막이 가시설': [
+    ['벽체', [['흙막이 공법', '', 'text'], ['CIP 직경', 'mm', 'num'], ['CIP 간격 (C.T.C)', 'mm', 'num'], ['CIP 콘크리트 강도 (fck)', 'MPa', 'num', 'min'], ['엄지말뚝 규격', '', 'text'], ['엄지말뚝 간격', 'mm', 'num'], ['토류판 두께', 'mm', 'num', 'min']]],
+    ['지지', [['지지 공법', '', 'text'], ['띠장 규격', '', 'text'], ['버팀보 규격', '', 'text'], ['버팀보 수평 간격', 'm', 'num', 'max'], ['버팀보 단 간격 (수직)', 'm', 'num', 'max'], ['주형보 규격', '', 'text'], ['POST PILE 규격', '', 'text'], ['SIDE PILE 규격', '', 'text'], ['사보강재 규격', '', 'text'], ['어스앵커 간격', 'm', 'num', 'max']]],
+    ['차수', [['차수 공법', '', 'text'], ['차수 직경', 'mm', 'num'], ['차수 간격 (C.T.C)', 'mm', 'num']]],
+    ['굴착', [['굴착 공법', '', 'text'], ['최대 굴착 깊이', 'm', 'num'], ['굴착 규모', '㎡', 'num']]]
+  ]
+};
+/** 빠른 선택 칸: 항목명에 맞는 자주 쓰는 값 */
+const SP_QUICK = [
+  [/규격|PILE|주형보|사보강/, ['H-300×300×10×15', 'H-298×201×9×14', 'H-250×250×9×14', 'H-350×350×12×19', 'H-400×400×13×21', 'H-588×300×12×20', 'H-600×300×12×20', 'SS275', 'SS400', '신재', '고재']],
+  [/^흙막이 공법/, ['C.I.P 주열식 벽체', 'H-PILE + 토류판', 'S.C.W', '슬러리월', 'SHEET PILE']],
+  [/^지지 공법/, ['STRUT', '어스앵커', 'RAKER', 'STRUT + 어스앵커']],
+  [/^차수 공법/, ['L.W 그라우팅', 'S.G.R', 'J.S.P', 'S.C.W']],
+  [/^굴착 공법/, ['OPEN CUT', 'ISLAND CUT', 'TRENCH CUT']]
+];
+function spQuickOf(x) { const r = SP_QUICK.find(q => q[0].test(String(x.label || '').trim())); return r ? r[1] : null; }
+/** 규격 칸: 「H-… (SS275, 고재)」 모양으로 합치기, 공법 칸: 그대로 넣기 */
+function spQuickApply(i, v) {
+  const x = sp.items[i]; if (!x) return;
+  if (/^(SS\d+|신재|고재)$/.test(v) || /^H-/.test(v)) {
+    const cur = String(x.std || '');
+    let size = (cur.match(/H-[\d×x*.]+/) || [''])[0], mat = (cur.match(/SS\d+/) || [''])[0], age = (cur.match(/신재|고재/) || [''])[0];
+    if (/^H-/.test(v)) size = v; else if (/^SS/.test(v)) mat = mat === v ? '' : v; else age = age === v ? '' : v;
+    const extra = [mat, age].filter(Boolean).join(', ');
+    x.std = (size || '') + (extra ? (size ? ' ' : '') + '(' + extra + ')' : '');
+  } else x.std = v;
+  x.type = x.type || 'text';
+  renderSpItems(i);
 }
 function openSpecNew(cat) {
   if (!needSvc()) return;
@@ -4800,26 +4904,46 @@ const STD_EX = [[/^사용 자재/, 'H-300*300*10*15 엄지말뚝'], [/^면판$/,
   [/^보 사이즈$/, '400x700'], [/^(수직재|수평재|가새재)/, 'Ø48.6x2.3T'], [/^파이프서포트$/, 'V2 (2.0~3.5m)'], [/^경사재$/, 'ㅁ-125x100x10'], [/^앵커볼트$/, 'M16 L=200'],
   [/^흙막이 공법$/, 'H-PILE+토류판'], [/^지반 보강$/, 'SGR'], [/^차수 공법$/, 'LW 그라우팅']];
 const stdEx = (x) => { const r = STD_EX.find(e => e[0].test(String(x.label || ''))); return r ? '예) ' + r[1] : (x.type === 'num' ? '숫자' : '문자'); };
-function renderSpItems() {
-  const mh = $('#spMatHint'); if (mh) mh.style.display = sp.items.some(x => OPT_RE.test(String(x.label))) ? '' : 'none';
-  $('#spItems').innerHTML = sp.items.length ? sp.items.map((x, i) => `<div class="sp-item" data-i="${i}">
-    <div class="mh"><input data-f="label" value="${esc(x.label)}" placeholder="항목명">
-      <button data-a="up">▲</button><button data-a="down">▼</button><button class="x" data-a="del">✕</button></div>
-    <div class="g4">
-      <div><label>기준값</label><input data-f="std" value="${esc(x.std)}" ${x.type === 'num' ? 'inputmode="decimal"' : ''} placeholder="${esc(stdEx(x))}"></div>
-      <div><label>단위</label><input data-f="unit" value="${esc(x.unit)}" placeholder="mm"></div>
-      <div><label>판정방식</label><select data-f="mode">${Object.keys(MODES).map(m => `<option value="${m}" ${x.mode === m ? 'selected' : ''}>${MODES[m]}</option>`).join('')}</select></div>
-      <div><label>허용오차 ±</label><input data-f="tol" value="${esc(x.tol)}" inputmode="decimal" placeholder="없음" ${x.type === 'text' || x.mode === 'rec' ? 'disabled' : ''}></div>
+function renderSpItems(focusI) {
+  const mh = $('#spMatHint'); if (mh) mh.style.display = sp.items.some(x => OPT_RE.test(String(x.label)) || x.opt) ? '' : 'none';
+  let lastGrp = null;
+  $('#spItems').innerHTML = sp.items.length ? sp.items.map((x, i) => {
+    const head = x.grp && x.grp !== lastGrp ? `<div class="sp-grp">${esc(x.grp)}</div>` : ''; lastGrp = x.grp || lastGrp;
+    const q = spQuickOf(x), on = !!x._open;
+    return head + `<div class="sp-item ${on ? 'open' : ''} ${String(x.std || '').trim() ? 'has' : ''}" data-i="${i}">
+    <div class="sp-row">
+      <input class="sp-lb" data-f="label" value="${esc(x.label)}" placeholder="항목명">
+      <input class="sp-v" data-f="std" value="${esc(x.std)}" ${x.type === 'num' ? 'inputmode="decimal"' : ''} placeholder="${esc(stdEx(x))}">
+      <input class="sp-u" data-f="unit" value="${esc(x.unit)}" placeholder="단위">
+      <button class="sp-more" data-a="more" aria-label="세부 설정">${on ? '▴' : '⋯'}</button>
     </div>
-    <div class="g4" style="grid-template-columns:1fr 3fr"><div><label>형식</label><select data-f="type"><option value="num" ${x.type === 'num' ? 'selected' : ''}>수치</option><option value="text" ${x.type === 'text' ? 'selected' : ''}>문자</option></select></div>
-      <div><label>비고</label><input data-f="note" value="${esc(x.note || '')}"></div></div>
-  </div>`).join('') : '<div class="empty">항목이 없습니다. 「＋ 항목 추가」를 누르세요.</div>';
+    ${q ? `<div class="sp-quick">${q.map(v => `<button type="button" data-q="${esc(v)}" class="${String(x.std || '').includes(v) ? 'on' : ''}">${esc(v)}</button>`).join('')}</div>` : ''}
+    ${on ? `<div class="sp-det">
+      <div class="g4">
+        <div><label>판정방식</label><select data-f="mode">${Object.keys(MODES).map(m => `<option value="${m}" ${x.mode === m ? 'selected' : ''}>${MODES[m]}</option>`).join('')}</select></div>
+        <div><label>허용오차 ±</label><input data-f="tol" value="${esc(x.tol)}" inputmode="decimal" placeholder="없음" ${x.type === 'text' || x.mode === 'rec' ? 'disabled' : ''}></div>
+        <div><label>형식</label><select data-f="type"><option value="num" ${x.type === 'num' ? 'selected' : ''}>수치</option><option value="text" ${x.type === 'text' ? 'selected' : ''}>문자</option></select></div>
+        <div><label>비고</label><input data-f="note" value="${esc(x.note || '')}"></div>
+      </div>
+      <div class="sp-mv"><button data-a="up">▲ 위로</button><button data-a="down">▼ 아래로</button><button class="x" data-a="del">✕ 항목 삭제</button></div>
+    </div>` : ''}
+  </div>`; }).join('') : '<div class="empty">항목이 없습니다. 「＋ 항목 추가」를 누르세요.</div>';
+  if (focusI != null) { const el = document.querySelector(`#spItems .sp-item[data-i="${focusI}"] .sp-v`); if (el) { el.focus(); try { el.setSelectionRange(el.value.length, el.value.length); } catch (e) {} } }
 }
 $('#spItems').oninput = e => {
   const el = e.target.closest('[data-f]'), box = e.target.closest('[data-i]'); if (!el || !box) return;
   const x = sp.items[+box.dataset.i]; x[el.dataset.f] = el.value;
   if (el.dataset.f === 'type' || el.dataset.f === 'mode') { if (x.type === 'text' || x.mode === 'rec') x.tol = ''; renderSpItems(); }
 };
+$('#spItems').addEventListener('focusin', e => {
+  const b = e.target.closest('.sp-item'); if (!b || b.classList.contains('act')) return;
+  document.querySelectorAll('#spItems .sp-item.act').forEach(x => x.classList.remove('act')); b.classList.add('act');
+});
+$('#spItems').addEventListener('click', e => {
+  const box = e.target.closest('[data-i]'); if (!box) return; const i = +box.dataset.i;
+  const qb = e.target.closest('[data-q]'); if (qb) { e.preventDefault(); spQuickApply(i, qb.dataset.q); return; }
+  if (e.target.closest('[data-a="more"]')) { sp.items[i]._open = !sp.items[i]._open; renderSpItems(); }
+}, true);
 $('#spItems').onchange = $('#spItems').oninput;
 $('#spItems').onclick = e => {
   const b = e.target.closest('[data-a]'), box = e.target.closest('[data-i]'); if (!b || !box) return;
@@ -4829,6 +4953,34 @@ $('#spItems').onclick = e => {
   else if (a === 'down' && i < sp.items.length - 1) [sp.items[i + 1], sp.items[i]] = [sp.items[i], sp.items[i + 1]];
   renderSpItems();
 };
+function spPasteToggle() { const b = $('#spPaste'); b.hidden = !b.hidden; if (!b.hidden) $('#spPasteT').focus(); }
+/** 「항목: 값 단위」 / 표 줄 / 탭 구분 → 이름이 맞는 칸에 채우기 */
+function spPasteApply() {
+  const txt = $('#spPasteT').value; if (!txt.trim()) { toast('붙여넣을 내용이 없습니다'); return; }
+  const nk = t => String(t || '').replace(/[\s()（）·.]/g, '').toLowerCase();
+  let fill = 0, add = 0;
+  txt.split(/\r?\n/).forEach(line => {
+    let L = line.trim(); if (!L || /^[-|:\s]+$/.test(L)) return;
+    let parts;
+    if (L.includes('|')) parts = L.replace(/^\||\|$/g, '').split('|').map(t => t.trim());
+    else if (L.includes('\t')) parts = L.split('\t').map(t => t.trim());
+    else { const m = L.match(/^([^:：]+)[:：]\s*(.*)$/); if (!m) return; parts = [m[1].trim(), m[2].trim()]; }
+    let [label, val, unit] = parts; label = String(label || '').replace(/^[-*•\d.)\s]+/, '').trim(); val = String(val || '').trim(); unit = String(unit || '').trim();
+    if (!label || !val || /^(항목|칸)$/.test(label) || /^(기준값|입력값|값)$/.test(val)) return;
+    if (/^[–—-]$/.test(unit)) unit = '';
+    let x = sp.items.find(y => nk(y.label) === nk(label)) || sp.items.find(y => nk(y.label) && (nk(y.label).includes(nk(label)) || nk(label).includes(nk(y.label))));
+    if (!x) { x = { k: uid().slice(0, 8), label, unit: '', type: 'text', std: '', mode: 'eq', tol: '', note: '' }; sp.items.push(x); add++; } else fill++;
+    if (!unit && x.unit) { const re = new RegExp('\\s*' + x.unit.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$'); val = val.replace(re, ''); }
+    val = val.replace(/^(fck|fy|ctc|c\.t\.c)\s*[=:]\s*(?=[\d.])/i, '');
+    const num = val.match(/^([\d.,]+)\s*([a-zA-Z㎡㎜㎝%°]*)$/);
+    if (num) { x.std = num[1].replace(/,/g, ''); if (num[2] && !x.unit) x.unit = num[2]; if (x.type !== 'text' || !x.std) x.type = 'num'; }
+    else { x.std = val; if (x.type === 'num' && !/^[\d.]+$/.test(val)) x.type = 'text'; }
+    if (unit && !x.unit) x.unit = unit;
+  });
+  renderSpItems();
+  toast(`채움 ${fill}칸 · 새 항목 ${add}개`);
+  if (fill || add) { $('#spPaste').hidden = true; $('#spPasteT').value = ''; }
+}
 function spAddItem() { sp.items.push({ k: uid().slice(0, 8), label: '', unit: '', type: 'num', std: '', mode: 'eq', tol: '', note: '' }); renderSpItems(); const l = document.querySelectorAll('#spItems .sp-item input[data-f="label"]'); if (l.length) l[l.length - 1].focus(); }
 function spCatChanged() {
   sp.cat = $('#sp_cat').value;
@@ -4852,8 +5004,9 @@ function saveSp() {
   sp.cat = $('#sp_cat').value;
   if (!sp.name) { toast('대상명을 입력하세요'); return; }
   if (sp.items.some(x => !String(x.label).trim())) { toast('이름 없는 항목이 있습니다'); return; }
-  const empty = sp.items.filter(x => OPT_RE.test(String(x.label).trim()) && !String(x.std || '').trim());
+  const empty = sp.items.filter(x => (OPT_RE.test(String(x.label).trim()) || x.opt) && !String(x.std || '').trim());
   if (empty.length) sp.items = sp.items.filter(x => !empty.includes(x));          // 비워 둔 선택 칸(사용 자재 n · n차 타설 높이 · 수직재 2)은 빼고 저장
+  sp.items = sp.items.map(x => { const y = Object.assign({}, x); delete y._open; delete y.opt; delete y.grp; return y; });
   const cur = sp;
   if (!cur.id && !cur.newId) cur.newId = uid();
   busy('저장하는 중...');
@@ -5291,7 +5444,7 @@ function showResults(rs) {
 }
 function closeResult(finish) {
   $('#result').classList.remove('on');
-  if (finish) { state.sel = []; state.date = today(); saveDraft(); window.scrollTo(0, 0); }
+  if (finish) { state.sel = []; state.date = today(); state.dateManual = false; saveDraft(); window.scrollTo(0, 0); }
   renderAll();
 }
 
@@ -5963,7 +6116,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261121-2059';
+window.APP_VER = '20261121-2254';
 </script>
 </body>
 </html>
