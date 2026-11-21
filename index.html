@@ -900,6 +900,16 @@ input[type="date"]::-webkit-date-and-time-value{text-align:left;margin:0}
   .tb2 input[type="date"]{display:block;line-height:40px;padding-top:0;padding-bottom:0}
   .tb2 input[type="date"]::-webkit-date-and-time-value{line-height:40px}
 }
+
+/* ---- 빠른 촬영 (11/21) ---- */
+body.shot-quiet #sheet{visibility:hidden}
+.shot-floor{display:flex;align-items:center;gap:6px;overflow-x:auto;background:#fff;padding:0 14px 12px;scrollbar-width:none}
+.shot-floor::-webkit-scrollbar{display:none}
+.shot-floor .lb{flex:0 0 auto;font-size:12px;font-weight:800;color:var(--muted);margin-right:2px}
+.shot-floor button{flex:0 0 auto;min-width:44px;height:36px;padding:0 12px;border:1px solid var(--line);border-radius:99px;background:#fff;color:var(--ink);font-weight:700;font-size:13px;font-family:inherit}
+.shot-floor button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.sh-card.nx{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
+.sh-cam.nx{background:var(--acc);color:#fff}
 </style>
 </head>
 <body>
@@ -1135,7 +1145,7 @@ input[type="date"]::-webkit-date-and-time-value{text-align:left;margin:0}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261121-1345 · 2026-11-21 C</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261121-1841 · 2026-11-21 D</b></div>
       </section>
     </main>
   </div>
@@ -1162,6 +1172,8 @@ input[type="date"]::-webkit-date-and-time-value{text-align:left;margin:0}
     <div class="shot-top">
     <div class="shot-head"><button class="shot-back" aria-label="뒤로" onclick="closeShot()"><svg class="ic"><use href="#i-back"/></svg></button><h2 id="shotT">촬영 목록</h2><span id="shotN" class="shot-n"></span></div>
     <div class="shot-bar" id="shotBar"></div>
+    <div class="shot-floor" id="shotFloor"></div>
+    <input type="file" id="shotCam" accept="image/*" capture="environment" hidden onchange="shotQuickFile(this)">
     <div id="shotPick"></div>
     <div class="shot-tabs" id="shotTabs"></div>
     </div>
@@ -2616,6 +2628,7 @@ function saveEdit() {
   const pairs = [];                                             // [칸 이름, 사진] — 빈 칸 없이 앞에서부터
   ['b', 'a'].forEach(g => GSL[g].forEach((s, i) => { const p = edit.ph[g][i] || null; payload[s] = slot(p); if (p) pairs.push([s, p]); }));
   const e0 = edit;
+  e0._saving = true;
   busy('저장하는 중...');
   saveItemQ(payload).then(o => {
     bindRoleUploads(o, pairs);
@@ -2649,6 +2662,7 @@ function saveEdit() {
       } else { closeEdit(true); refreshList(true); }
     } else if (/^DELETED:/.test(m)) { alert(errMsg(err)); closeEdit(true); refreshList(true); }
     else toast('저장 실패: ' + errMsg(err) + ' — 다시 저장을 눌러 주세요');
+    e0._saving = false;
   }).finally(() => busy(false));
 }
 
@@ -4004,6 +4018,8 @@ async function openShot(insp) {
   }
   ensureSel(insp);
   shot.insp = insp; shot.tab = 'all'; shot.adding = false;
+  if (shot.floor == null) shot.floor = lastFloor || '';
+  if (shot.floor && !floorList().includes(shot.floor)) shot.floor = '';
   shotCustom = (await KV.cget(shotKey(insp))) || []; shotCustomCache[shotKey(insp)] = shotCustom;
   $('#shotSheet').classList.add('on'); $('#shotSheet').scrollTop = 0;
   renderShot();
@@ -4052,6 +4068,9 @@ function renderShot() {
   const nDone = list.filter(e => e.st === 'done').length, nTodo = list.filter(e => e.st !== 'done').length;
   const grp = shotGroup(insp);
   $('#shotT').innerHTML = `<small>${esc(sv ? sv.name : state.svc)}</small>${esc(insp)}${grp ? ' · ' + esc(grp) : ''}`;
+  const FL = floorList();
+  $('#shotFloor').innerHTML = `<span class="lb">층</span><button class="${shot.floor ? '' : 'on'}" onclick="shot.floor='';renderShot()">안 고름</button>`
+    + FL.map(f => `<button class="${shot.floor === f ? 'on' : ''}" onclick="shot.floor='${esc(f)}';renderShot()">${esc(shortFloor(f))}</button>`).join('');
   $('#shotBar').innerHTML = `<span><i style="width:${list.length ? Math.round(nDone / list.length * 100) : 0}%"></i></span>`;
   $('#shotN').innerHTML = `<b>${nDone}</b> / ${list.length}`;
   $('#shotPick').innerHTML = state.sel.length > 1 ? `<div class="shot-pick">${state.sel.map(s => `<button class="${s.item === insp ? 'on' : ''}" onclick="openShot('${esc(s.item)}')">${esc(s.item)}</button>`).join('')}</div>` : '';
@@ -4059,6 +4078,7 @@ function renderShot() {
     .map(([k, l, n]) => `<button class="${shot.tab === k ? 'on' : ''}" onclick="shot.tab='${k}';renderShot()">${l} (${n})</button>`).join('');
   const show = list.map((e, i) => ({ e, i })).filter(({ e }) => shot.tab === 'all' || (shot.tab === 'done' ? e.st === 'done' : e.st !== 'done'));
   window._shot = list;
+  { const k = list.findIndex(e => e.st === 'todo' && !e.o); if (k >= 0) list[k].nx = true; }
   let lastSec = '';
   $('#shotList').innerHTML = (shot.adding ? `<div class="shot-new"><input id="shotNewT" type="text" placeholder="새 캡션 (예: 3층 슬래브 거푸집 설치 상태)" maxlength="80">
       <div class="row"><button class="btn ghost sm" onclick="shot.adding=false;renderShot()">취소</button><button class="btn sm" onclick="shotAddSave(false)">목록에 추가</button><button class="btn acc sm" onclick="shotAddSave(true)">추가하고 바로 촬영</button></div></div>` : '')
@@ -4073,11 +4093,11 @@ function renderShot() {
         : e.st === 'todo' ? '<span class="sh-tag todo">미촬영</span>' : '';
       const right = e.st === 'done' || (o && src)
         ? `<button class="sh-th" onclick="event.stopPropagation();openViewer('${esc(o.id)}','${photoSlots(o)[0] || 'b'}')">${src ? `<img src="${src}" alt="">` : ''}${more > 0 ? `<em>+${more}</em>` : ''}</button>`
-        : `<button class="sh-cam" aria-label="촬영" onclick="event.stopPropagation();shotTake(${i})"><svg class="ic"><use href="#i-camera"/></svg></button>`;
+        : `<button class="sh-cam ${e.nx ? 'nx' : ''}" aria-label="촬영" onclick="event.stopPropagation();shotQuick(${i})"><svg class="ic"><use href="#i-camera"/></svg></button>`;
       const floors = [...new Set(e.os.map(x => x.floor).filter(Boolean))];
-      return head + `<div class="sh-card ${e.st}" onclick="shotTap(${i})">
+      return head + `<div class="sh-card ${e.st} ${e.nx ? 'nx' : ''}" data-i="${i}" onclick="shotTap(${i})">
         <div class="sh-m"><div class="sh-t">${badge}<span class="sh-no">${no}</span><span class="sh-cap">${esc(e.t)}</span></div>
-        ${tag || o || e.src === 'custom' ? `<div class="sh-sub">${tag}${floors.length ? `<span class="sh-loc">${esc(floors.join(' · '))}</span>` : ''}${o && e.src !== 'item' ? `<button class="sh-more" onclick="event.stopPropagation();shotTake(${i},true)">+ 다른 층 추가 촬영</button>` : ''}${e.src === 'custom' && !o ? `<button class="sh-del" onclick="event.stopPropagation();shotDel(${i})">목록에서 빼기</button>` : ''}</div>` : ''}</div>
+        ${tag || o || e.src === 'custom' ? `<div class="sh-sub">${tag}${floors.length ? `<span class="sh-loc">${esc(floors.join(' · '))}</span>` : ''}${o && e.src !== 'item' ? `<button class="sh-more" onclick="event.stopPropagation();shotQuick(${i})">+ 다른 층 추가 촬영</button>` : ''}${e.src === 'custom' && !o ? `<button class="sh-del" onclick="event.stopPropagation();shotDel(${i})">목록에서 빼기</button>` : ''}</div>` : ''}</div>
         ${right}</div>`;
     }).join('') || `<div class="empty">${shot.tab === 'done' ? '아직 찍은 사진이 없습니다.' : shot.tab === 'todo' ? '모두 찍었습니다.' : '찍을 캡션이 없습니다. 아래 「새 캡션 항목 추가」를 누르거나 기본캡션에 현황 문구를 넣어 주세요.'}</div>`);
   fetchThumbs(list.filter(e => e.o).map(e => e.o));
@@ -4094,6 +4114,40 @@ function shotTake(i, again) {
   $('#f_caption').value = e.t;
   takePhoto('b', -1, true);   // 누른 그 순간에 카메라를 열어야 아이폰에서도 바로 뜸
   renderShot();
+}
+/* ---- 빠른 촬영: 카메라 → 「사진 사용」 → 편집 화면 없이 그 캡션 · 고른 층으로 바로 저장 ---- */
+function shotQuick(i) {
+  const e = window._shot[i]; if (!e) return;
+  if (edit) { toast('열려 있는 편집 화면을 먼저 닫아 주세요'); return; }
+  shot.q = { t: e.t };
+  const inp = $('#shotCam'); inp.value = ''; inp.click();       // 누른 그 순간에 카메라 (아이폰)
+}
+async function shotQuickFile(input) {
+  const files = [...(input.files || [])]; input.value = '';
+  const q = shot.q; shot.q = null;
+  if (!q || !files.length || !shot.insp) return;
+  if (edit) { toast('열려 있는 편집 화면을 먼저 닫아 주세요'); return; }
+  document.body.classList.add('shot-quiet');
+  try {
+    shot.cur = q.t;
+    openEdit(null, '현황', shot.insp);
+    if (!edit) return;
+    const e0 = edit;
+    e0.floor = shot.floor || '';
+    $('#f_caption').value = q.t;
+    await onFile('b', { files: [files[0]], value: '' });
+    if (edit !== e0) return;
+    if (!e0.ph.b.length) { closeEdit(true); return; }            // 같은 사진이라 안 올리기로 한 경우 등
+    saveEdit();
+    for (let k = 0; k < 600 && edit === e0 && e0._saving; k++) await new Promise(r => setTimeout(r, 50));
+    if (edit === e0) { document.body.classList.remove('shot-quiet'); return; }   // 저장 실패: 편집 화면을 보여 줌
+    toast(`저장했습니다 · ${q.t}${e0.floor ? ' · ' + shortFloor(e0.floor) : ''}`);
+  } finally {
+    if (!edit) document.body.classList.remove('shot-quiet');
+    renderShot();
+    const n = document.querySelector('#shotList .sh-card.nx');
+    if (n) n.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
 }
 function shotAdd() { shot.adding = true; shot.tab = 'all'; renderShot(); $('#shotSheet').scrollTop = 0; }
 async function shotAddSave(go) {
@@ -5799,7 +5853,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261121-1345';
+window.APP_VER = '20261121-1841';
 </script>
 </body>
 </html>
