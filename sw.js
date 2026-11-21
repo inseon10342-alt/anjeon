@@ -11,6 +11,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const req = e.request, url = new URL(req.url);
   if (req.method !== 'GET' || url.origin !== location.origin) return;          // 서버 요청은 그대로
+  if (url.pathname.includes('/sigeom/')) return;                              // 시험·조사 앱(sigeom)은 별도 앱: 자체 서비스워커가 처리
   const key = req.mode === 'navigate' ? './index.html' : req;
   e.respondWith(caches.open(CACHE).then(async c => {
     const hit = await c.match(key, { ignoreSearch: true });
