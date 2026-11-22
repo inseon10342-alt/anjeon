@@ -1247,7 +1247,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261122-0931 · 2026-11-22 A</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261122-0938 · 2026-11-22 B</b></div>
       </section>
     </main>
   </div>
@@ -4783,7 +4783,7 @@ function judgeAll(m) {
   const rows = (m.items || []).map(it => { const x = (m.vals || {})[it.k] || {}; const j = judge(it, x.v); c[j.r]++; return { it, x, j }; });
   return { c, rows };
 }
-const sumHtml = c => `<span class="jb" style="background:#eef2f7">전체 ${c.total}</span>` + JKEYS.filter(k => c[k]).map(k => `${jb(k)}<b style="font-size:12px;margin:0 4px 0 -2px">${c[k]}</b>`).join('');
+const sumHtml = c => `<span class="jb" style="background:#eef2f7">전체 ${c.total}</span>` + JKEYS.filter(k => c[k]).map(k => `<span class="jb j-${k.replace(/\s/g, '')}">${esc(k)} ${c[k]}</span>`).join('');   // 숫자를 칩 안으로 (11/22)
 const specOf = id => (srv.specs || []).find(s => s.id === id);
 function latestMeasures() {
   const by = {};
@@ -6131,7 +6131,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261122-0931';
+window.APP_VER = '20261122-0938';
 </script>
 </body>
 </html>
