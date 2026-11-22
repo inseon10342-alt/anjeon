@@ -52,6 +52,7 @@ a.btn{text-align:center;text-decoration:none}
 .ichip{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 8px;text-align:left;color:var(--ink);position:relative}
 .ichip b{display:block;font-size:15px}
 .ichip small{display:block;font-size:11px;color:var(--muted);margin-top:2px}
+.ichip.fin:not(.on){background:var(--bg,#f4f6f9)}.ichip.fin:not(.on) b{color:var(--muted)}
 .ichip i{position:absolute;top:6px;right:8px;font-style:normal;font-size:12px;color:var(--ok)}
 .ichip.on{background:var(--pri);border-color:var(--pri);color:#fff}
 .ichip.on small,.ichip.on i{color:#dfe8f7}
@@ -1246,7 +1247,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261121-2353 · 2026-11-21 J</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261122-0931 · 2026-11-22 A</b></div>
       </section>
     </main>
   </div>
@@ -2197,13 +2198,13 @@ function autoDate() {
 function renderChips() {
   const box = $('#inspChips');
   if (!state.svc) { box.innerHTML = '<div class="hint">먼저 용역을 선택하세요.</div>'; return; }
-  const list = svcInsp(state.svc).filter(r => (r.stage !== '완료' || selOf(r.item)) && (!catFilter || inspCat(r.item) === catFilter));
+  const list = svcInsp(state.svc).filter(r => !catFilter || inspCat(r.item) === catFilter);   // 완료된 회차도 같은 목록에 (11/22)
   if (!list.length) { box.innerHTML = `<div class="hint">${catFilter ? `${esc(catFilter)} 점검항목이 없습니다.` : '남은 점검항목이 없습니다. 「직접 추가」를 이용하세요.'}</div>`; return; }
   const made = (boot && boot.made) || {};
   box.innerHTML = list.map(r => {
     const n = itemsOf(r.item).length;
     const sub = [r.manual ? '직접추가' : r.stage, r.plan ? '예정 ' + r.plan.slice(5).replace('-', '/') : '', n ? `사진 ${n}` : ''].filter(Boolean).join(' · ');
-    return `<button class="ichip ${selOf(r.item) ? 'on' : ''}" data-i="${esc(r.item)}"><b>${esc(r.item)}</b><small>${esc(sub)}</small>${made[state.svc + '|' + r.item] ? '<i>✔ 작성</i>' : ''}</button>`;
+    return `<button class="ichip ${selOf(r.item) ? 'on' : ''} ${r.stage === '완료' ? 'fin' : ''}" data-i="${esc(r.item)}"><b>${esc(r.item)}</b><small>${esc(sub)}</small>${made[state.svc + '|' + r.item] ? '<i>✔ 작성</i>' : ''}</button>`;
   }).join('');
 }
 $('#inspChips').onclick = e => {
@@ -4179,7 +4180,7 @@ async function openShot(insp) {
   if (!needSvc()) return;
   if (!insp) {
     if (state.sel.length === 1) insp = state.sel[0].item;
-    else { const list = state.sel.length ? state.sel.map(s => meta(s.item)) : svcInsp(state.svc).filter(r => r.stage !== '완료');
+    else { const list = state.sel.length ? state.sel.map(s => meta(s.item)) : svcInsp(state.svc);
       return pickInsp('어느 점검의 사진인가요?', list, it => { ensureSel(it); openShot(it); }); }
   }
   ensureSel(insp);
@@ -4478,13 +4479,13 @@ function sysLog(u, keep) {
 function ckFirst() {
   if (!needSvc()) return;
   if (state.sel.length === 1) return openChecklist(state.sel[0].item);
-  const list = state.sel.length ? state.sel.map(s => meta(s.item)) : svcInsp(state.svc).filter(r => r.stage !== '완료');
+  const list = state.sel.length ? state.sel.map(s => meta(s.item)) : svcInsp(state.svc);
   pickInsp('어느 점검의 체크리스트인가요?', list, it => { ensureSel(it); openChecklist(it); });
 }
 function quickDefect() {
   if (!needSvc()) return;
   if (state.sel.length === 1) return openEdit(null, '지적', state.sel[0].item);
-  const list = state.sel.length ? state.sel.map(s => meta(s.item)) : svcInsp(state.svc).filter(r => r.stage !== '완료');
+  const list = state.sel.length ? state.sel.map(s => meta(s.item)) : svcInsp(state.svc);
   pickInsp('어느 점검의 지적사항인가요? (사진을 찍으면 위치 표시 화면이 열립니다)', list, it => { ensureSel(it); openEdit(null, '지적', it); });
 }
 /* ---- 저장 상태 표시 (저장 중 · 저장 완료 · 저장 실패 · 저장 대기) ---- */
@@ -4503,7 +4504,7 @@ function renderSaveSt() {
 function renderCats() {
   ['site', 'insp', 'spec', 'survey', 'photo', 'report'].forEach(k => { const el = $('#cat-' + k); if (el) el.classList.toggle('open', !!catOpen[k]); });
   // 공종 칩
-  const list = svcInsp(state.svc).filter(r => r.stage !== '완료');
+  const list = svcInsp(state.svc);
   const cnt = c => list.filter(r => inspCat(r.item) === c).length;
   $('#catChips').innerHTML = [['', `전체 ${list.length}`]].concat(INSP_CATS.map(c => [c, `${c === '시스템동바리' ? '거푸집 및 동바리' : c} ${cnt(c)}`]))
     .map(([v, t]) => `<button class="chip ${catFilter === v ? 'on' : ''}" data-c="${esc(v)}" ${v && !cnt(v) ? 'style="opacity:.5"' : ''}>${esc(t)}</button>`).join('');
@@ -4658,7 +4659,7 @@ function backToCal() { hideCalBack(); renderCal(); $('#calSheet').classList.add(
 function openProgress() {
   if (!needSvc()) return;
   const made = (boot && boot.made) || {};
-  const list = svcInsp(state.svc).filter(r => r.stage !== '완료' || selOf(r.item));
+  const list = svcInsp(state.svc);
   info('현장별 진행 현황', `<div class="hint">${esc((svcObj() || {}).name || state.svc)}</div>
     <table class="pt ptv"><tr><th>점검항목</th><th>현황</th><th>지적</th><th>조사</th><th>실측</th><th>사진대지</th></tr>
     ${list.map(r => `<tr><td style="text-align:left">${esc(r.item)}</td><td>${itemsOf(r.item).filter(o => o.kind === '현황').length}</td>
@@ -5071,7 +5072,7 @@ function openMeasurePick() {
       <div class="a">${esc(s.loc || '')} · 항목 ${s.items.length}개${m ? ` · 최근 실측 ${esc(m.date)}` : ''}</div></div></div>`; }).join(''));
 }
 function inspOptions(cur, cat) {
-  const list = svcInsp(state.svc).filter(r => r.stage !== '완료' || r.item === cur || selOf(r.item));
+  const list = svcInsp(state.svc);   // 완료된 회차도 같은 목록에 (11/22)
   /* 같은 공종 회차를 위로, 다른 공종은 아래 묶음으로 (11/21) */
   const isD = v => /^\d{4}-\d{2}-\d{2}$/.test(String(v || ''));
   const same = list.filter(r => specCatOfInsp(r.item) === cat), other = list.filter(r => specCatOfInsp(r.item) !== cat);
@@ -5086,7 +5087,7 @@ function inspOptions(cur, cat) {
     }
   }
   const opt = r => { const d = isD(r.done) ? r.done : isD(r.plan) ? r.plan : '';
-    return `<option value="${esc(r.item)}" ${r.item === def ? 'selected' : ''}>${esc(r.item)}${d ? ' · ' + d.slice(5).replace('-', '/') : ''}</option>`; };
+    return `<option value="${esc(r.item)}" ${r.item === def ? 'selected' : ''}>${esc(r.item)}${d ? ' · ' + d.slice(5).replace('-', '/') : ''}${r.stage === '완료' ? ' (완료)' : ''}</option>`; };
   return { html: '<option value="">(연결 안 함)</option>' + same.map(opt).join('')
     + (other.length ? `<optgroup label="다른 공종">${other.map(opt).join('')}</optgroup>` : ''), def };
 }
@@ -6130,7 +6131,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261121-2353';
+window.APP_VER = '20261122-0931';
 </script>
 </body>
 </html>
