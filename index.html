@@ -1249,7 +1249,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261122-1100 · 2026-11-22 E</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261122-1104 · 2026-11-22 F</b></div>
       </section>
     </main>
   </div>
@@ -4197,7 +4197,7 @@ async function openShot(insp) {
 function closeShot() { shot.cur = ''; $('#shotSheet').classList.remove('on'); renderAll(); }
 /* 촬영 캡션 (고정) — 공통은 모든 공종, 공종별은 그 공종에서만. 층수는 따로 고름. 이름은 바꾸지 않음 */
 const SHOT_CAPS = {
-  '공통': ['현장 전경(정면)','현장 전경(배면)','현장 전경(우측)','현장 전경(좌측)','설치상태 전경','내부 계단 난간','임시분전반','현장 주변도로','인접 건축물 현황','안전난간','위험물 저장소','CCTV','CCTV모니터링','안전교육일지','안전교육사진','공사안내판','개구부 추락방지','세륜시설','가설휀스','안전표지판','보행자 이동통로','품질시험실','소방시설','점검 지적사항','현장 시정조치','시정 완료 확인'],
+  '공통': ['현장 전경(정면)','현장 전경(배면)','현장 전경(우측)','현장 전경(좌측)','설치상태 전경','내부 계단 난간','임시분전반','현장 주변도로','인접 건축물 현황','안전난간','위험물 저장소','CCTV','CCTV모니터링','안전교육일지','안전교육사진','공사안내판','개구부 추락방지','세륜시설','가설휀스','안전표지판','보행자 이동통로','품질시험실','소방시설','미세먼지 및 소음측정기','점검 지적사항','현장 시정조치','시정 완료 확인'],
   '흙막이지보공': ['부재 규격','설치 간격','계측기 설치','띠장','STRUT','버팀보','토류판','CORNER STRUT','ANGLE','BRACKET','CIP벽체','띠장 연결부','STRUT 연결부','버팀보 접합부','굴착면 균열·침하','지하수 및 용수 상태'],
   '합벽지지대': ['부재규격','설치간격','설치높이','앵커볼트 규격','거푸집 설치상태','수평연결재','자재손상상태','앵커볼트 체결상태','지지대 연결부','지지대 수직도','지지대 변형'],
   '거푸집 및 동바리': ['수직재, 수평재 체결상태','수직재 규격','수평재 규격','가새재 규격','U헤드잭','상부 멍에','거푸집 설치상태','잭베이스 지면 이격거리','잭베이스 설치상태','가새재 설치상태','수직재 설치상태','수평재 설치상태','설치간격','수직,수평도 측정','설치높이 측정','하부 지반 상태','받침목 및 깔판','연결핀 체결상태','U헤드잭 고정상태'],
@@ -6138,7 +6138,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261122-1100';
+window.APP_VER = '20261122-1104';
 </script>
 </body>
 </html>
