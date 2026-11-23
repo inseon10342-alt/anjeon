@@ -1251,7 +1251,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261123-1214 · 2026-11-23 C</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261123-1229 · 2026-11-23 D</b></div>
       </section>
     </main>
   </div>
@@ -2823,6 +2823,7 @@ function startUpload(key) {
     .catch(e => {
       if (u.cancel) return;
       if (isNetErr(e)) { u.status = '대기'; u.net = true; netWait.add(key); }        // 신호 끊김 → 휴대폰에 두고 연결되면 다시
+      else if (isBusyMsg(errMsg(e)) && (u.busy = (u.busy || 0) + 1) <= 30) { u.status = '대기'; setTimeout(() => { if (!u.cancel && u.status === '대기') enqueue(key); }, 8000); }   // 서버 바쁨 → 잠시 뒤 자동 재시도 (11/23)
       else { u.status = '실패'; u.err = errMsg(e); toast('업로드 실패: ' + u.err); }
     })
     .finally(() => { activeUploads--; refreshViews(); renderNet(); pump(); });
@@ -6180,7 +6181,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261123-1214';
+window.APP_VER = '20261123-1229';
 </script>
 </body>
 </html>
