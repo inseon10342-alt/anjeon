@@ -326,7 +326,7 @@ table.pt tr.end td{background:#f3f4f6;color:#9aa3ad}.ev.예정{background:var(--
 .calrow{display:flex;gap:8px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff;margin-bottom:6px;cursor:pointer}
 .calrow .m{flex:1;min-width:0}.calrow b{font-size:15px}.calrow .a{font-size:12px;color:var(--muted)}
 header #calBack{background:#fff;color:#16324f;border-color:#fff;font-weight:700;font-size:14px;padding:8px 12px;white-space:nowrap}
-#netBar{position:sticky;top:0;z-index:9;padding:9px 12px;font-size:13px;font-weight:700;text-align:center;cursor:pointer;color:#fff;background:#6b7785}
+#netBar{position:sticky;top:0;z-index:9;padding:calc(9px + env(safe-area-inset-top, 0px)) 12px 9px;font-size:13px;font-weight:700;text-align:center;cursor:pointer;color:#fff;background:#6b7785}
 #netBar.off{background:#d98a00}#netBar.sync{background:var(--pri)}#netBar.fail{background:var(--bad)}
 h3.sub{font-size:14px;margin:14px 0 6px}
 .busy{position:fixed;inset:0;background:rgba(255,255,255,.92);display:none;z-index:30;align-items:center;justify-content:center;flex-direction:column;gap:14px;font-weight:700;padding:20px;text-align:center}
@@ -1251,7 +1251,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261123-0955 · 2026-11-23 A</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261123-1208 · 2026-11-23 B</b></div>
       </section>
     </main>
   </div>
@@ -6156,7 +6156,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261123-0955';
+window.APP_VER = '20261123-1208';
 </script>
 </body>
 </html>
