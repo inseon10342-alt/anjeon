@@ -1251,7 +1251,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261123-1208 · 2026-11-23 B</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261123-1214 · 2026-11-23 C</b></div>
       </section>
     </main>
   </div>
@@ -1650,7 +1650,7 @@ body[data-pg="home"] .nav-back{display:none}
 <!-- 저장 대기 · 전송 실패 -->
 <div class="sheet" id="outSheet">
   <div class="panel">
-    <div class="top"><button onclick="closePicker('outSheet')">← 닫기</button><h2>저장 대기</h2><button onclick="flushOut().then(openOutSheet)">지금 보내기</button></div>
+    <div class="top"><button onclick="closePicker('outSheet')">← 닫기</button><h2>저장 대기</h2><button onclick="outSendNow()">지금 보내기</button></div>
     <div id="outBody"></div>
   </div>
 </div>
@@ -5573,7 +5573,7 @@ async function runSave(fn, args, opt) {
   };
   if (OUT.length || !navigator.onLine) return queue();         // 앞서 쌓인 것이 있으면 순서를 지키려고 뒤에 붙임
   try { return await run(fn, ...args); }
-  catch (e) { if (isNetErr(e)) { flushSoon(); return queue(); } throw e; }
+  catch (e) { if (isNetErr(e) || isBusyMsg(e && e.message || e)) { flushSoon(); return queue(); } throw e; }   // 서버 바쁨도 대기에 넣고 자동 재전송 (11/23)
 }
 const queuedToast = r => { if (r && r._queued) toast('연결 안 됨 — 휴대폰에 저장했습니다 (연결되면 자동 전송)'); return r; };
 
@@ -5669,7 +5669,7 @@ async function flushOut() {
   if (flushing || !outReady) return;
   if (!OUT.length && !netWait.size) return;
   flushing = true; renderNet();
-  let sent = 0, failed = 0;
+  let sent = 0, failed = 0, busy = false;
   try {
     while (OUT.length) {
       const op = OUT[0];
@@ -5682,8 +5682,9 @@ async function flushOut() {
       try { r = await run(op.fn, ...op.args); }
       catch (e) {
         if (isNetErr(e)) break;
-        OUT.shift();
         const m = String((e && e.message) || e);
+        if (isBusyMsg(m)) { busy = true; break; }               // 서버가 잠깐 바쁨: 실패로 넘기지 않고 잠시 뒤 다시 (11/23)
+        OUT.shift();
         OUT_FAIL.push({ op, msg: errMsg(e), type: /^CONFLICT:/.test(m) ? 'conflict' : /^DELETED:/.test(m) ? 'deleted' : 'error', at: nowStr() });
         failed++; outSave(); continue;
       }
@@ -5691,6 +5692,7 @@ async function flushOut() {
       afterSent(op, r);
     }
   } finally { flushing = false; }
+  if (busy) { clearTimeout(flushT); flushT = setTimeout(flushOut, 20000); }
   // 연결된 김에 미뤄 둔 사진 업로드도 다시
   if (navigator.onLine) { [...netWait].forEach(k => { netWait.delete(k); const u = uploads[k]; if (u && !u.cancel && u.status === '대기') enqueue(k); }); }
   renderNet();
@@ -5747,7 +5749,7 @@ function openOutSheet() {
   const row = (op, extra) => `<div class="it"><div class="meta"><b>${esc(op.label)}</b><div class="who">${esc(op.at)}${op.code !== state.svc ? ' · 다른 현장 ' + esc(op.code) : ''}</div>${extra || ''}</div></div>`;
   $('#outBody').innerHTML =
     (OUT_FAIL.length ? `<h3 class="sub">⚠ 보내지 못한 것 ${OUT_FAIL.length}건</h3>` + OUT_FAIL.map((x, i) => row(x.op,
-      `<p style="color:var(--bad)">${esc(x.msg)}</p><div class="acts">${x.type === 'conflict' ? `<button onclick="retryFail(${i})">내 내용으로 덮어쓰기</button>` : ''}<button onclick="dropFail(${i})">버리기</button></div>`)).join('') : '') +
+      `<p style="color:var(--bad)">${esc(x.msg)}</p><div class="acts">${x.type === 'conflict' ? `<button onclick="retryFail(${i})">내 내용으로 덮어쓰기</button>` : x.type === 'error' ? `<button onclick="resendFail(${i})">다시 보내기</button>` : ''}<button onclick="dropFail(${i})">버리기</button></div>`)).join('') : '') +
     `<h3 class="sub">저장 대기 ${OUT.length}건</h3>` + (OUT.length ? OUT.map(op => row(op)).join('') : '<div class="empty">보낼 것이 없습니다.</div>') +
     `<div class="hint" style="margin-top:10px">${navigator.onLine ? '연결되어 있습니다.' : '지금은 연결이 안 되어 있습니다. 신호가 잡히면 자동으로 보냅니다.'}
       이 화면을 닫거나 앱을 다시 열어도 대기분은 휴대폰에 남아 있습니다.</div>`;
@@ -5757,6 +5759,27 @@ function dropFail(i) {
   const x = OUT_FAIL[i]; if (!x) return;
   if (!confirm('이 내용을 버릴까요? (되돌릴 수 없음)')) return;
   OUT_FAIL.splice(i, 1); outSave(); openOutSheet(); refreshList(true);
+}
+/* 「다른 사용자의 작업이 많습니다」(서버 잠금 대기 초과)는 저장 전에 멈춘 것이라 그대로 다시 보내면 됨 (11/23) */
+const isBusyMsg = m => /작업이 많습니다|잠시 후 다시 시도/.test(String(m || ''));
+function requeueBusy() {
+  const keep = [], back = [];
+  OUT_FAIL.forEach(x => (x.type === 'error' && isBusyMsg(x.msg) ? back : keep).push(x));
+  if (!back.length) return 0;
+  OUT_FAIL = keep; back.forEach(x => OUT.push(x.op)); outSave(); renderNet();
+  return back.length;
+}
+function resendFail(i) {
+  const x = OUT_FAIL[i]; if (!x) return;
+  OUT_FAIL.splice(i, 1); OUT.push(x.op); outSave(); renderNet();
+  flushOut().then(openOutSheet);
+}
+async function outSendNow() {
+  requeueBusy();
+  if (!OUT.length) { toast(OUT_FAIL.length ? '다시 보낼 수 있는 대기분이 없습니다. 아래 항목별 버튼을 눌러 주세요' : '보낼 것이 없습니다'); openOutSheet(); return; }
+  if (!navigator.onLine) { toast('지금은 연결이 안 되어 있습니다'); return; }
+  toast('보내는 중...');
+  await flushOut(); openOutSheet();
 }
 function retryFail(i) {
   const x = OUT_FAIL[i]; if (!x) return;
@@ -5772,6 +5795,7 @@ function retryFail(i) {
 async function outInit() {
   try {
     OUT = (await KV.get('out')) || []; OUT_FAIL = (await KV.get('outFail')) || [];
+    { const k = OUT_FAIL.filter(x => !(x.type === 'error' && isBusyMsg(x.msg))); if (k.length < OUT_FAIL.length) { OUT_FAIL.filter(x => !k.includes(x)).forEach(x => OUT.push(x.op)); OUT_FAIL = k; KV.set('out', OUT); KV.set('outFail', OUT_FAIL); } }   // 예전에 「작업이 많습니다」로 실패한 것은 자동으로 다시 대기
     const ups = await KV.all('up:');
     Object.keys(ups).forEach(k => {
       const o = ups[k], key = o && o.key;
@@ -6156,7 +6180,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261123-1208';
+window.APP_VER = '20261123-1214';
 </script>
 </body>
 </html>
