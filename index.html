@@ -802,11 +802,12 @@ body:has(#shotAgain:not([hidden])) .toast{bottom:calc(190px + env(safe-area-inse
 .hm .drow{padding:12px 4px}
 .hm #dLog .lg{padding:10px 2px;border-top:1px solid #E3E8EE}.hm #dLog .lg:first-child{border-top:0}
 @media (min-width:1024px){
-  .hm{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 16px;grid-template-areas:"hero act act" "check sched log" "recent month month";align-items:stretch}
+  .hm{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 16px;grid-template-areas:"hero act act" "check sched sched" "recent month month";align-items:stretch}
   .hm-hero{grid-area:hero;align-content:space-between}
   .hm-act{grid-area:act;grid-template-rows:auto 1fr}
   .hm-tiles button{min-height:104px;font-size:14px;gap:8px}
   .hm-check,.hm-sched,.hm-log,.hm-recent,.hm-month{display:flex;flex-direction:column}
+  .hm-log[hidden]{display:none}
   .hm-check>.card,.hm-sched>.card,.hm-log>.card,.hm-recent>.card,.hm-month>.card{flex:1}
   .hm-tiles button .ic{width:26px;height:26px}
   .hm-check{grid-area:check}.hm-sched{grid-area:sched}.hm-log{grid-area:log}.hm-recent{grid-area:recent}.hm-month{grid-area:month}
@@ -1109,7 +1110,7 @@ body[data-pg="home"] .nav-back{display:none}
             </div>
           </div>
           <div class="hm-sched"><div class="ch"><h3 class="sec-t">점검 일정</h3><button class="lnk" onclick="openCal()">달력</button></div><div id="dSched" class="hm-cards"></div></div>
-          <div class="hm-log"><div class="ch"><h3 class="sec-t">최근 수정 내역</h3><button class="lnk" onclick="loadRecentLog(true)">새로고침</button></div><div class="card"><div id="dLog"></div></div></div>
+          <div class="hm-log" hidden><div class="ch"><h3 class="sec-t">최근 수정 내역</h3><button class="lnk" onclick="loadRecentLog(true)">새로고침</button></div><div class="card"><div id="dLog"></div></div></div>
           <div class="hm-recent"><div class="ch"><h3 class="sec-t">최근 작업 현장</h3><button class="lnk" onclick="go('site')">전체</button></div><div class="card"><div id="dRecentSvc"></div></div></div>
           <div class="hm-month"><div class="ch"><h3 class="sec-t">월별 점검 현황</h3><span class="lgd"><i class="p"></i>예정 <i class="d"></i>완료</span></div><div class="card"><div id="dMonth"></div></div></div>
         </div>
@@ -1251,7 +1252,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261123-1229 · 2026-11-23 D</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261123-2003 · 2026-11-23 E</b></div>
       </section>
     </main>
   </div>
@@ -4467,7 +4468,7 @@ function hmShoot() { if (!needSvc()) return; const a = state.sel.length === 1 ? 
 function hmDots() { document.querySelectorAll('.hm-row').forEach(r => { const v = r.querySelector('b').textContent.trim(); r.classList.toggle('has', !!v && v !== '0' && v !== '-'); }); }
 let logAt = 0;
 function loadRecentLog(force) {
-  if (!$('#dLog') || (!force && Date.now() - logAt < 30000)) return;
+  if (!$('#dLog') || $('#dLog').closest('[hidden]') || (!force && Date.now() - logAt < 30000)) return;   // 홈에서 숨긴 동안은 불러오지 않음
   logAt = Date.now();
   if (!navigator.onLine) { $('#dLog').innerHTML = '<div class="empty">연결되면 보입니다.</div>'; return; }
   run('recentLog', state.svc || '', 8).then(l => {
@@ -6181,7 +6182,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261123-1229';
+window.APP_VER = '20261123-2003';
 </script>
 </body>
 </html>
