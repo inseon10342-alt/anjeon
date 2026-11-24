@@ -1,5 +1,5 @@
 // 오프라인 캐시: 화면은 네트워크 우선(업데이트 즉시 반영), 실패 시 캐시 사용
-const CACHE = 'anjeon-app-cf3c8f6860';
+const CACHE = 'anjeon-app-e2557aec10';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
