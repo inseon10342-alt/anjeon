@@ -357,6 +357,7 @@ header{background:var(--navy);padding:10px 14px;gap:10px;font-size:17px}
 header .logo{display:flex;width:34px;height:34px;border-radius:6px;background:rgba(255,255,255,.12);align-items:center;justify-content:center}
 header .ttl{min-width:0}
 header .ttl span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header .ttl small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 header button{display:flex;align-items:center;gap:5px;border-radius:6px;white-space:nowrap}
 header button.on{background:var(--acc);border-color:var(--acc)}
 header #calBack{background:#fff;color:var(--navy);border-color:#fff;font-weight:700}
@@ -760,7 +761,8 @@ body:has(#shotAgain:not([hidden])) .toast{bottom:calc(190px + env(safe-area-inse
 .hm{display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}
 .hm .card{margin:0}
 .hm .ch{margin-bottom:8px}
-.hm-hero{border:0;border-radius:16px;box-shadow:var(--sh2);padding:18px;display:grid;gap:14px}
+.hm-hero{border:0;border-radius:16px;box-shadow:var(--sh2);padding:18px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px}   /* 긴 점검명이 카드를 넓히지 않게 (11/25) */
+.hm-hero>*{min-width:0}
 .hh-r1{display:flex;align-items:center;gap:16px}
 .hh-r1 .donut{flex:0 0 auto}
 .hh-t{flex:1;min-width:0;display:grid;gap:4px}
@@ -1252,7 +1254,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261123-2003 · 2026-11-23 E</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261125-2013 · 2026-11-25 A</b></div>
       </section>
     </main>
   </div>
@@ -6182,7 +6184,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261123-2003';
+window.APP_VER = '20261125-2013';
 </script>
 </body>
 </html>
