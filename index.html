@@ -1255,7 +1255,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261126-1511 · 2026-11-26 D</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261126-1521 · 2026-11-26 E</b></div>
       </section>
     </main>
   </div>
@@ -5592,9 +5592,13 @@ async function hwpxBuild(item, label) {
     for (;;) { try { d = bigCache[o.bId] || await run('getPhoto', o.bId); break; } catch (e) { if (isNetErr(e) && ++tries < 6) { await sleep(3000); continue; } throw e; } }
     const c = d.indexOf(','), mime = (d.slice(5, c).split(';')[0]) || 'image/jpeg', bin = atob(d.slice(c + 1)), bytes = new Uint8Array(bin.length);
     for (let j = 0; j < bin.length; j++) bytes[j] = bin.charCodeAt(j);
-    let w = 0, h = 0;                                      // 원본 픽셀 크기 (사진 비율 유지용)
-    try { const im = new Image(); im.src = d; await im.decode(); w = im.naturalWidth; h = im.naturalHeight; } catch (e) { w = +o.bW || 0; h = +o.bH || 0; }
-    photos.push({ bytes, mime, cap, w, h });               // 원본 바이트 그대로 (자르기·변환·재압축 없음)
+    let w = 0, h = 0, im = null;                           // 원본 픽셀 크기 (사진 비율 유지용)
+    try { im = new Image(); im.src = d; await im.decode(); w = im.naturalWidth; h = im.naturalHeight; } catch (e) { im = null; w = +o.bW || 0; h = +o.bH || 0; }
+    if (im && h > w) {                                     // 세로 사진 → 시계 방향 90° 돌려 가로 사진과 같은 크기로 (11/26)
+      const r = hwRotate(im, w, h);
+      if (r) { photos.push({ bytes: r, mime: 'image/jpeg', cap, w: h, h: w }); continue; }
+    }
+    photos.push({ bytes, mime, cap, w, h });               // 가로 사진은 원본 바이트 그대로 (자르기·변환·재압축 없음)
   }
   const parts = HWPX.build(hwMeta(item), photos);
   const name = `${String(made).slice(0, 10)}_${item}_${svc.name || state.svc}`.replace(/[\\/:*?"<>|#%\r\n]+/g, ' ').slice(0, 90).trim() + '_사진대지.hwpx';
@@ -5618,6 +5622,16 @@ async function hwpxBuild(item, label) {
   hwReady[item].drive = r;
   hwBtns();
   return Object.assign({ photos: photos.length }, r);
+}
+/** 세로 사진을 시계 방향 90° 돌린 JPEG (고화질 0.95). 실패하면 null → 원본 그대로 */
+function hwRotate(im, w, h) {
+  try {
+    const c = document.createElement('canvas'); c.width = h; c.height = w;
+    const x = c.getContext('2d'); x.translate(h, 0); x.rotate(Math.PI / 2); x.drawImage(im, 0, 0, w, h);
+    const d = c.toDataURL('image/jpeg', 0.95), bin = atob(d.slice(d.indexOf(',') + 1)), u = new Uint8Array(bin.length);
+    for (let j = 0; j < bin.length; j++) u[j] = bin.charCodeAt(j);
+    return u.length > 100 ? u : null;
+  } catch (e) { return null; }
 }
 async function hwpxMake(item) {
   const ready = hwReady[item];
@@ -6398,7 +6412,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261126-1511';
+window.APP_VER = '20261126-1521';
 </script>
 </body>
 </html>
