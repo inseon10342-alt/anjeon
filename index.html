@@ -1255,7 +1255,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261126-1440 · 2026-11-26 B</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261126-1454 · 2026-11-26 C</b></div>
       </section>
     </main>
   </div>
@@ -5453,8 +5453,9 @@ const HWPX = (() => {
   const para = (inner, { pr = 20, ch = 11 } = {}) =>
     `<hp:p id="${nid()}" paraPrIDRef="${pr}" styleIDRef="0" pageBreak="0" columnBreak="0" merged="0"><hp:run charPrIDRef="${ch}">${inner}</hp:run></hp:p>`;
   const text = t => t ? `<hp:t>${esc(t)}</hp:t>` : '<hp:t/>';
-  function pic(binId) {
-    const id = nid(), w = PIC_W, h = PIC_H;           // 표시 크기 80 × 60mm 고정 (원본 비율과 상관없이)
+  function pic(binId, iw, ih) {
+    const sc = Math.min(PIC_W / (iw || 4), PIC_H / (ih || 3));   // 80 × 60mm 칸 안에 원본 비율 그대로 (늘이거나 자르지 않음)
+    const id = nid(), w = Math.round((iw || 4) * sc), h = Math.round((ih || 3) * sc);
     return `<hp:pic id="${id}" zOrder="1" numberingType="PICTURE" textWrap="TOP_AND_BOTTOM" textFlow="BOTH_SIDES" lock="0" dropcapstyle="None" href="" groupLevel="0" instid="${id}" reverse="0"><hp:offset x="0" y="0"/><hp:orgSz width="${w}" height="${h}"/><hp:curSz width="${w}" height="${h}"/><hp:flip horizontal="0" vertical="0"/><hp:rotationInfo angle="0" centerX="${w >> 1}" centerY="${h >> 1}" rotateimage="1"/><hp:renderingInfo><hc:transMatrix e1="1" e2="0" e3="0" e4="0" e5="1" e6="0"/><hc:scaMatrix e1="1" e2="0" e3="0" e4="0" e5="1" e6="0"/><hc:rotMatrix e1="1" e2="0" e3="0" e4="0" e5="1" e6="0"/></hp:renderingInfo><hp:imgRect><hc:pt0 x="0" y="0"/><hc:pt1 x="${w}" y="0"/><hc:pt2 x="${w}" y="${h}"/><hc:pt3 x="0" y="${h}"/></hp:imgRect><hp:imgClip left="0" right="${w}" top="0" bottom="${h}"/><hp:inMargin left="0" right="0" top="0" bottom="0"/><hp:imgDim dimwidth="${w}" dimheight="${h}"/><hc:img binaryItemIDRef="${binId}" bright="0" contrast="0" effect="REAL_PIC" alpha="0"/><hp:effects/><hp:sz width="${w}" widthRelTo="ABSOLUTE" height="${h}" heightRelTo="ABSOLUTE" protect="0"/><hp:pos treatAsChar="1" affectLSpacing="0" flowWithText="1" allowOverlap="0" holdAnchorAndSO="0" vertRelTo="PARA" horzRelTo="COLUMN" vertAlign="TOP" horzAlign="CENTER" vertOffset="0" horzOffset="0"/><hp:outMargin left="0" right="0" top="0" bottom="0"/><hp:shapeComment/></hp:pic>`;
   }
   const cell = (col, row, h, inner, { bf = 3, span = 1 } = {}) =>
@@ -5468,7 +5469,7 @@ const HWPX = (() => {
     ];
     for (let i = 0; i < pairs; i++) {
       const a = list[i * 2], b = list[i * 2 + 1], r = 2 + i * 2;
-      const pc = (x, c) => cell(c, r, R_PH, para(x ? (x.bin ? pic(x.bin) : text('(사진 없음)')) : text('')));
+      const pc = (x, c) => cell(c, r, R_PH, para(x ? (x.bin ? pic(x.bin, x.w, x.h) : text('(사진 없음)')) : text('')));
       const cc = (x, c) => cell(c, r + 1, R_CAP, para(text(x ? x.cap : '')));
       rows.push(`<hp:tr>${pc(a, 0)}${pc(b, 1)}</hp:tr>`, `<hp:tr>${cc(a, 0)}${cc(b, 1)}</hp:tr>`);
     }
@@ -5477,7 +5478,7 @@ const HWPX = (() => {
   }
   /** meta: {head: '■ 공종 N회차', band: '제N차 정기안전점검 사진'}, photos: [{bytes, mime, cap}] → section0.xml */
   function section(meta, photos) {
-    const list = photos.map(p => ({ bin: p.bin || '', cap: p.cap }));
+    const list = photos.map(p => ({ bin: p.bin || '', cap: p.cap, w: p.w, h: p.h }));
     const pages = [];
     for (let i = 0; i < Math.max(list.length, 1); i += PER_PAGE) pages.push(list.slice(i, i + PER_PAGE));
     const out = pages.map((pg, k) => `<hp:p id="${k ? nid() : 0}" paraPrIDRef="20" styleIDRef="0" pageBreak="${k ? 1 : 0}" columnBreak="0" merged="0">`
@@ -5571,7 +5572,9 @@ async function hwpxBuild(item, label) {
     for (;;) { try { d = bigCache[o.bId] || await run('getPhoto', o.bId); break; } catch (e) { if (isNetErr(e) && ++tries < 6) { await sleep(3000); continue; } throw e; } }
     const c = d.indexOf(','), mime = (d.slice(5, c).split(';')[0]) || 'image/jpeg', bin = atob(d.slice(c + 1)), bytes = new Uint8Array(bin.length);
     for (let j = 0; j < bin.length; j++) bytes[j] = bin.charCodeAt(j);
-    photos.push({ bytes, mime, cap });                     // 원본 바이트 그대로 (자르기·변환·재압축 없음)
+    let w = 0, h = 0;                                      // 원본 픽셀 크기 (사진 비율 유지용)
+    try { const im = new Image(); im.src = d; await im.decode(); w = im.naturalWidth; h = im.naturalHeight; } catch (e) { w = +o.bW || 0; h = +o.bH || 0; }
+    photos.push({ bytes, mime, cap, w, h });               // 원본 바이트 그대로 (자르기·변환·재압축 없음)
   }
   const parts = HWPX.build(hwMeta(item), photos);
   const name = `${String(made).slice(0, 10)}_${item}_${svc.name || state.svc}`.replace(/[\\/:*?"<>|#%\r\n]+/g, ' ').slice(0, 90).trim() + '_사진대지.hwpx';
@@ -6375,7 +6378,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261126-1440';
+window.APP_VER = '20261126-1454';
 </script>
 </body>
 </html>
