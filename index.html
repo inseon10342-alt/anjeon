@@ -1255,7 +1255,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261126-1521 · 2026-11-26 E</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261126-1525 · 2026-11-26 F</b></div>
       </section>
     </main>
   </div>
@@ -4203,14 +4203,53 @@ async function openShot(insp) {
 }
 function closeShot() { shotAgainHide(); shot.cur = ''; $('#shotSheet').classList.remove('on'); renderAll(); }
 /* 촬영 캡션 (고정) — 공통은 모든 공종, 공종별은 그 공종에서만. 층수는 따로 고름. 이름은 바꾸지 않음 */
-const SHOT_CAPS = {
-  '공통': ['현장 전경(정면)','현장 전경(배면)','현장 전경(우측)','현장 전경(좌측)','설치상태 전경','내부 계단 난간','임시분전반','현장 주변도로','인접 건축물 현황','안전난간','위험물 저장소','CCTV','CCTV모니터링','안전교육일지','안전교육사진','공사안내판','개구부 추락방지','세륜시설','가설휀스','안전표지판','보행자 이동통로','품질시험실','소방시설','미세먼지 및 소음측정기','안전현수막','가설계단','점검 지적사항','현장 시정조치','시정 완료 확인'],
-  '흙막이지보공': ['부재 규격','설치 간격','CIP벽체','CAP BEAM','엄지말뚝','토류판','중간말뚝','띠장','띠장 연결부','버팀보','버팀보 접합부','STRUT','STRUT 연결부','CORNER STRUT','레이커','BRACKET','ANGLE','잭','스티프너','볼트체결상태','부재 용접상태','굴착바닥상태','굴착면 균열·침하','침하흔적','흙막이 벽체 누수','토사유출','지하수 및 용수 상태','굴착부 안전난간','계측기 설치'],
-  '합벽지지대': ['부재규격','설치간격','설치높이','앵커볼트 규격','거푸집 설치상태','수평연결재','자재손상상태','앵커볼트 체결상태','지지대 연결부','지지대 수직도','지지대 변형'],
-  '거푸집 및 동바리': ['수직재, 수평재 체결상태','수직재 규격','수평재 규격','가새재 규격','U헤드잭','상부 멍에','거푸집 설치상태','잭베이스 지면 이격거리','잭베이스 설치상태','가새재 설치상태','수직재 설치상태','수평재 설치상태','설치간격','수직,수평도 측정','설치높이 측정','하부 지반 상태','받침목 및 깔판','연결핀 체결상태','U헤드잭 고정상태'],
-  '천공기 및 항타기': ['번호판','운전실 조작부','건설기계실명제카드','무한궤도 트랙','하부 누유','상부 리더','와이어로프','드럼','천공상태','CIP시공상태','천공 시 수직도 점검','제원 확인','백스테이','방진막 설치','각종 볼트류 점검','전도방지 철판','신호수 배치','작업반경 출입통제','유압호스 및 연결부','리더 연결핀','장비 하부 지반상태'],
+const SHOT_CAPS = {   // 캡션 작성 규칙(11/26): 뭉뚱그린 캡션 대신 「무엇을 · 어디서」 / 규격은 「부재명 규격 확인 (설계 규격)」 / 제원 용어 그대로
+  '공통': ['현장 전경(정면)','현장 전경(배면)','현장 전경(우측)','현장 전경(좌측)','설치상태 전경','내부 계단 난간','임시분전반','현장 주변도로','인접 건축물 현황','안전난간','위험물 저장소','CCTV','CCTV 모니터링','안전교육일지','안전교육사진','공사안내판','개구부 추락방지','세륜시설','가설울타리','안전표지판','보행자 이동통로','품질시험실','소방시설','미세먼지 및 소음측정기','안전현수막','가설계단','점검 지적사항','현장 시정조치','시정 완료 확인'],
+  '흙막이지보공': [
+    'POST PILE(중간말뚝) 규격 확인','엄지말뚝(H-PILE) 규격 확인','띠장(WALE) 규격 확인','STRUT(버팀보) 규격 확인','합성버팀대 규격 확인','BRACKET(보걸이) 규격 확인','RAKER 규격 확인',
+    '엄지말뚝 간격 측정','STRUT 수평간격 측정','STRUT 수직간격(단 간격) 측정',
+    'C.I.P 벽체 설치상태','C.I.P 상부 토류판 설치상태','CAP BEAM 설치상태','엄지말뚝(H-PILE) 설치상태','토류판 설치상태','POST PILE(중간말뚝) 설치상태',
+    '띠장(WALE) 설치상태','띠장 연결부 설치상태','STRUT(버팀보) 설치상태','STRUT 연결부 설치상태','띠장·버팀대 접합부 설치상태','CORNER STRUT 설치상태','RAKER 설치상태',
+    'BRACKET(보걸이) 설치상태','ANGLE 설치상태','잭(JACK) 설치상태','스티프너 설치상태',
+    '볼트체결상태 (버팀대 교차부)','볼트체결상태 (띠장·버팀대 접합부)','볼트체결상태 (버팀대 연결부)','부재 용접상태',
+    '굴착바닥 상태','굴착면 균열·침하','침하 흔적','흙막이 벽체 누수','토사 유출','지하수 및 용수 상태','굴착부 안전난간',
+    '지중경사계 설치상태','지하수위계 설치상태','변형률계 설치상태','하중계 설치상태','지표침하계 설치상태','인접 건축물 건물경사계 설치상태'],
+  '합벽지지대': ['수직재 규격 확인','경사재 규격 확인','수평연결재 규격 확인','앵커볼트 규격 확인','설치간격 측정','설치높이 측정','거푸집 설치상태','수평연결재 설치상태','자재 손상상태','앵커볼트 체결상태','지지대 연결부 설치상태','지지대 수직도','지지대 변형'],
+  '거푸집 및 동바리': ['수직재·수평재 체결상태','수직재 규격 확인','수평재 규격 확인','가새재 규격 확인','U헤드잭','상부 멍에','거푸집 설치상태','잭베이스 지면 이격거리','잭베이스 설치상태','가새재 설치상태','수직재 설치상태','수평재 설치상태','설치간격 측정','수직·수평도 측정','설치높이 측정','하부 지반 상태','받침목 및 깔판','연결핀 체결상태','U헤드잭 고정상태'],
+  '천공기 및 항타기': ['번호판','운전실 조작부','건설기계실명제카드','무한궤도 트랙','하부 누유','상부 리더','와이어로프','드럼','천공상태','C.I.P 시공상태','천공 시 수직도 점검','제원 확인','백스테이','방진막 설치','각종 볼트류 점검','전도방지 철판','신호수 배치','작업반경 출입통제','유압호스 및 연결부','리더 연결핀','장비 하부 지반상태'],
   '1.2종 시설물': ['태양광 설비','옥상 난간','태양광 설비 기초','내부 마감재','외부 마감재']
 };
+/** 이름을 바꾼 캡션: 예전 이름으로 찍은 사진도 그대로 「찍음」으로 셈 (새 이름 ← 예전 이름들) */
+const SHOT_ALIAS = {
+  'CCTV 모니터링': ['CCTV모니터링'], '가설울타리': ['가설휀스', '가설펜스'],
+  'C.I.P 벽체 설치상태': ['CIP벽체'], 'CAP BEAM 설치상태': ['CAP BEAM'], '엄지말뚝(H-PILE) 설치상태': ['엄지말뚝'], '토류판 설치상태': ['토류판'],
+  'POST PILE(중간말뚝) 설치상태': ['중간말뚝'], '띠장(WALE) 설치상태': ['띠장'], '띠장 연결부 설치상태': ['띠장 연결부'], 'STRUT(버팀보) 설치상태': ['STRUT', '버팀보'],
+  'STRUT 연결부 설치상태': ['STRUT 연결부'], '띠장·버팀대 접합부 설치상태': ['버팀보 접합부'], 'CORNER STRUT 설치상태': ['CORNER STRUT'], 'RAKER 설치상태': ['레이커'],
+  'BRACKET(보걸이) 설치상태': ['BRACKET', '브래킷', '브라켓'], 'ANGLE 설치상태': ['ANGLE'], '잭(JACK) 설치상태': ['잭'], '스티프너 설치상태': ['스티프너'],
+  '굴착바닥 상태': ['굴착바닥상태'], '침하 흔적': ['침하흔적'], '토사 유출': ['토사유출'],
+  '앵커볼트 규격 확인': ['앵커볼트 규격'], '설치간격 측정': ['설치간격'], '설치높이 측정': ['설치높이'], '자재 손상상태': ['자재손상상태'], '지지대 연결부 설치상태': ['지지대 연결부'],
+  '수직재·수평재 체결상태': ['수직재, 수평재 체결상태'], '수직재 규격 확인': ['수직재 규격'], '수평재 규격 확인': ['수평재 규격'], '가새재 규격 확인': ['가새재 규격'],
+  '수직·수평도 측정': ['수직,수평도 측정'], 'C.I.P 시공상태': ['CIP시공상태']
+};
+/** 「○○ 규격 확인」 캡션 뒤에 이 현장 제원의 설계 규격을 붙임 — 제원 항목 이름에 들어 있는 낱말로 찾음 */
+const SHOT_SPEC = {
+  'POST PILE(중간말뚝) 규격 확인': ['POST PILE', '중간말뚝', '중간파일', '센터파일'], '엄지말뚝(H-PILE) 규격 확인': ['엄지말뚝', 'H-PILE', '사이드파일'],
+  '띠장(WALE) 규격 확인': ['띠장', 'WALE'], 'STRUT(버팀보) 규격 확인': ['버팀보', 'STRUT', '버팀대'], '합성버팀대 규격 확인': ['합성버팀대'],
+  'BRACKET(보걸이) 규격 확인': ['BRACKET', '브라켓', '브래킷', '보걸이'], 'RAKER 규격 확인': ['RAKER', '레이커'],
+  '수직재 규격 확인': ['수직재'], '경사재 규격 확인': ['경사재'], '수평연결재 규격 확인': ['수평연결재', '수평재'], '앵커볼트 규격 확인': ['앵커'],
+  '수평재 규격 확인': ['수평재'], '가새재 규격 확인': ['가새재', '경사재']
+};
+const SHOT_SPEC_CAT = { '흙막이지보공': '흙막이 가시설', '합벽지지대': '합벽지지대', '거푸집 및 동바리': '시스템동바리' };
+function shotSpecVal(cap, grp) {
+  const kw = SHOT_SPEC[cap], cat = SHOT_SPEC_CAT[grp]; if (!kw || !cat) return '';
+  const sps = (srv.specs || []).filter(x => !x.del && (!x.code || x.code === state.svc) && x.cat === cat);
+  for (const sp of sps) for (const it of (sp.items || [])) {
+    const lb = String(it.label || ''), v = String(it.std || '').trim();
+    if (!v || /간격|높이|깊이|길이|수량|개수|단 수/.test(lb)) continue;
+    if (kw.some(k => lb.toUpperCase().includes(k.toUpperCase()))) return v + (it.unit && !/[A-Za-z가-힣]$/.test(v) ? it.unit : '');
+  }
+  return '';
+}
 /** 점검유형(없으면 점검항목 이름)으로 공종 찾기 */
 function shotGroup(insp) {
   const m = meta(insp), t = (m.type || '') + ' ' + insp;
@@ -4219,12 +4258,16 @@ function shotGroup(insp) {
 }
 function shotEntries(insp = shot.insp, custom = shotCustom) {
   const grp = shotGroup(insp), plan = [];
-  const add = (t, src, sec) => { if (!plan.some(x => shotNorm(x.t) === shotNorm(t))) plan.push({ t, src, sec }); };
+  const add = (t, src, sec, base) => { if (!plan.some(x => shotNorm(x.t) === shotNorm(t))) plan.push({ t, src, sec, base: base || t }); };
+  const withSpec = (t, g) => { const v = shotSpecVal(t, g); return v ? `${t} (${v})` : t; };
   SHOT_CAPS['공통'].forEach(t => add(t, 'plan', '공통'));
-  if (grp) SHOT_CAPS[grp].forEach(t => add(t, 'plan', grp));
+  if (grp) SHOT_CAPS[grp].forEach(t => add(withSpec(t, grp), 'plan', grp, t));
   custom.forEach(t => add(t, 'custom', '직접 추가'));
   const items = srv.items.filter(o => o.insp === insp && o.kind === '현황' && !o.del), used = new Set();
-  plan.forEach(e => { const n = shotNorm(e.t); e.os = items.filter(o => shotNorm(o.caption) === n); e.os.forEach(o => used.add(o.id)); });
+  plan.forEach(e => {                                     // 설계 규격이 바뀌었거나 예전 이름으로 찍은 사진도 같은 캡션으로 셈
+    const keys = new Set([e.t, e.base].concat(SHOT_ALIAS[e.base] || []).map(shotNorm)), b = shotNorm(e.base);
+    e.os = items.filter(o => !used.has(o.id) && (keys.has(shotNorm(o.caption)) || (e.base !== e.t && shotNorm(o.caption).startsWith(b + ' ('))));
+    e.os.forEach(o => used.add(o.id)); });
   const rest = items.filter(o => !used.has(o.id)), byCap = {};
   rest.forEach(o => { const k = shotNorm(o.caption) || '(캡션 없음)'; (byCap[k] = byCap[k] || []).push(o); });
   Object.entries(byCap).forEach(([t, os]) => plan.push({ t, src: 'item', sec: '그 밖에 찍은 사진', os }));
@@ -6412,7 +6455,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261126-1521';
+window.APP_VER = '20261126-1525';
 </script>
 </body>
 </html>
