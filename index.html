@@ -1255,7 +1255,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261126-1454 · 2026-11-26 C</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261126-1511 · 2026-11-26 D</b></div>
       </section>
     </main>
   </div>
@@ -5453,10 +5453,10 @@ const HWPX = (() => {
   const para = (inner, { pr = 20, ch = 11 } = {}) =>
     `<hp:p id="${nid()}" paraPrIDRef="${pr}" styleIDRef="0" pageBreak="0" columnBreak="0" merged="0"><hp:run charPrIDRef="${ch}">${inner}</hp:run></hp:p>`;
   const text = t => t ? `<hp:t>${esc(t)}</hp:t>` : '<hp:t/>';
-  function pic(binId, iw, ih) {
+  function pic(binId, iw, ih, dw, dh) {   // dw·dh: 사진 전체 크기(HWPUNIT) — 한글은 자르기 범위를 이 크기 기준으로 읽음
     const sc = Math.min(PIC_W / (iw || 4), PIC_H / (ih || 3));   // 80 × 60mm 칸 안에 원본 비율 그대로 (늘이거나 자르지 않음)
     const id = nid(), w = Math.round((iw || 4) * sc), h = Math.round((ih || 3) * sc);
-    return `<hp:pic id="${id}" zOrder="1" numberingType="PICTURE" textWrap="TOP_AND_BOTTOM" textFlow="BOTH_SIDES" lock="0" dropcapstyle="None" href="" groupLevel="0" instid="${id}" reverse="0"><hp:offset x="0" y="0"/><hp:orgSz width="${w}" height="${h}"/><hp:curSz width="${w}" height="${h}"/><hp:flip horizontal="0" vertical="0"/><hp:rotationInfo angle="0" centerX="${w >> 1}" centerY="${h >> 1}" rotateimage="1"/><hp:renderingInfo><hc:transMatrix e1="1" e2="0" e3="0" e4="0" e5="1" e6="0"/><hc:scaMatrix e1="1" e2="0" e3="0" e4="0" e5="1" e6="0"/><hc:rotMatrix e1="1" e2="0" e3="0" e4="0" e5="1" e6="0"/></hp:renderingInfo><hp:imgRect><hc:pt0 x="0" y="0"/><hc:pt1 x="${w}" y="0"/><hc:pt2 x="${w}" y="${h}"/><hc:pt3 x="0" y="${h}"/></hp:imgRect><hp:imgClip left="0" right="${w}" top="0" bottom="${h}"/><hp:inMargin left="0" right="0" top="0" bottom="0"/><hp:imgDim dimwidth="${w}" dimheight="${h}"/><hc:img binaryItemIDRef="${binId}" bright="0" contrast="0" effect="REAL_PIC" alpha="0"/><hp:effects/><hp:sz width="${w}" widthRelTo="ABSOLUTE" height="${h}" heightRelTo="ABSOLUTE" protect="0"/><hp:pos treatAsChar="1" affectLSpacing="0" flowWithText="1" allowOverlap="0" holdAnchorAndSO="0" vertRelTo="PARA" horzRelTo="COLUMN" vertAlign="TOP" horzAlign="CENTER" vertOffset="0" horzOffset="0"/><hp:outMargin left="0" right="0" top="0" bottom="0"/><hp:shapeComment/></hp:pic>`;
+    return `<hp:pic id="${id}" zOrder="1" numberingType="PICTURE" textWrap="TOP_AND_BOTTOM" textFlow="BOTH_SIDES" lock="0" dropcapstyle="None" href="" groupLevel="0" instid="${id}" reverse="0"><hp:offset x="0" y="0"/><hp:orgSz width="${w}" height="${h}"/><hp:curSz width="${w}" height="${h}"/><hp:flip horizontal="0" vertical="0"/><hp:rotationInfo angle="0" centerX="${w >> 1}" centerY="${h >> 1}" rotateimage="1"/><hp:renderingInfo><hc:transMatrix e1="1" e2="0" e3="0" e4="0" e5="1" e6="0"/><hc:scaMatrix e1="1" e2="0" e3="0" e4="0" e5="1" e6="0"/><hc:rotMatrix e1="1" e2="0" e3="0" e4="0" e5="1" e6="0"/></hp:renderingInfo><hp:imgRect><hc:pt0 x="0" y="0"/><hc:pt1 x="${w}" y="0"/><hc:pt2 x="${w}" y="${h}"/><hc:pt3 x="0" y="${h}"/></hp:imgRect><hp:imgClip left="0" right="${dw || w}" top="0" bottom="${dh || h}"/><hp:inMargin left="0" right="0" top="0" bottom="0"/><hp:imgDim dimwidth="${dw || w}" dimheight="${dh || h}"/><hc:img binaryItemIDRef="${binId}" bright="0" contrast="0" effect="REAL_PIC" alpha="0"/><hp:effects/><hp:sz width="${w}" widthRelTo="ABSOLUTE" height="${h}" heightRelTo="ABSOLUTE" protect="0"/><hp:pos treatAsChar="1" affectLSpacing="0" flowWithText="1" allowOverlap="0" holdAnchorAndSO="0" vertRelTo="PARA" horzRelTo="COLUMN" vertAlign="TOP" horzAlign="CENTER" vertOffset="0" horzOffset="0"/><hp:outMargin left="0" right="0" top="0" bottom="0"/><hp:shapeComment/></hp:pic>`;
   }
   const cell = (col, row, h, inner, { bf = 3, span = 1 } = {}) =>
     `<hp:tc name="" header="0" hasMargin="0" protect="0" editable="0" dirty="0" borderFillIDRef="${bf}"><hp:subList id="" textDirection="HORIZONTAL" lineWrap="BREAK" vertAlign="CENTER" linkListIDRef="0" linkListNextIDRef="0" textWidth="0" textHeight="0" hasTextRef="0" hasNumRef="0">${inner}</hp:subList><hp:cellAddr colAddr="${col}" rowAddr="${row}"/><hp:cellSpan colSpan="${span}" rowSpan="1"/><hp:cellSz width="${CW * span}" height="${h}"/><hp:cellMargin left="${PAD}" right="${PAD}" top="${PAD}" bottom="${PAD}"/></hp:tc>`;
@@ -5469,16 +5469,36 @@ const HWPX = (() => {
     ];
     for (let i = 0; i < pairs; i++) {
       const a = list[i * 2], b = list[i * 2 + 1], r = 2 + i * 2;
-      const pc = (x, c) => cell(c, r, R_PH, para(x ? (x.bin ? pic(x.bin, x.w, x.h) : text('(사진 없음)')) : text('')));
+      const pc = (x, c) => cell(c, r, R_PH, para(x ? (x.bin ? pic(x.bin, x.w, x.h, x.dw, x.dh) : text('(사진 없음)')) : text('')));
       const cc = (x, c) => cell(c, r + 1, R_CAP, para(text(x ? x.cap : '')));
       rows.push(`<hp:tr>${pc(a, 0)}${pc(b, 1)}</hp:tr>`, `<hp:tr>${cc(a, 0)}${cc(b, 1)}</hp:tr>`);
     }
     const H = R_HEAD + R_BAND + pairs * (R_PH + R_CAP);
     return `<hp:tbl id="${nid()}" zOrder="0" numberingType="TABLE" textWrap="TOP_AND_BOTTOM" textFlow="BOTH_SIDES" lock="0" dropcapstyle="None" pageBreak="CELL" repeatHeader="0" rowCnt="${2 + pairs * 2}" colCnt="2" cellSpacing="0" borderFillIDRef="3" noAdjust="0"><hp:sz width="${CW * 2}" widthRelTo="ABSOLUTE" height="${H}" heightRelTo="ABSOLUTE" protect="0"/><hp:pos treatAsChar="1" affectLSpacing="0" flowWithText="1" allowOverlap="0" holdAnchorAndSO="0" vertRelTo="PARA" horzRelTo="COLUMN" vertAlign="TOP" horzAlign="CENTER" vertOffset="0" horzOffset="0"/><hp:outMargin left="0" right="0" top="0" bottom="0"/><hp:inMargin left="${PAD}" right="${PAD}" top="${PAD}" bottom="${PAD}"/>${rows.join('')}</hp:tbl>`;
   }
+  /** 사진 파일의 해상도(dpi) → 1픽셀당 HWPUNIT. JPEG JFIF에 dpi가 없으면 96dpi(=75) */
+  function huPerPx(b) {
+    try {
+      if (b[0] === 0xFF && b[1] === 0xD8) {
+        for (let i = 2; i + 4 < b.length && i < 65536;) {
+          if (b[i] !== 0xFF) break;
+          const mk = b[i + 1], len = (b[i + 2] << 8) | b[i + 3];
+          if (mk === 0xE0 && b[i + 4] === 0x4A && b[i + 5] === 0x46 && b[i + 6] === 0x49 && b[i + 7] === 0x46) {
+            const units = b[i + 11], xd = (b[i + 12] << 8) | b[i + 13];
+            const dpi = units === 1 ? xd : units === 2 ? xd * 2.54 : 0;
+            return dpi >= 30 && dpi <= 1200 ? 7200 / dpi : 75;
+          }
+          if (mk === 0xDA) break;
+          i += 2 + len;
+        }
+      }
+    } catch (e) { /* 기본값 */ }
+    return 75;
+  }
   /** meta: {head: '■ 공종 N회차', band: '제N차 정기안전점검 사진'}, photos: [{bytes, mime, cap}] → section0.xml */
   function section(meta, photos) {
-    const list = photos.map(p => ({ bin: p.bin || '', cap: p.cap, w: p.w, h: p.h }));
+    const list = photos.map(p => { const u = p.bytes ? huPerPx(p.bytes) : 75;   // 자르기 없이 사진 전체가 보이게: 전체 크기 = 픽셀 × (7200 ÷ dpi)
+      return { bin: p.bin || '', cap: p.cap, w: p.w, h: p.h, dw: Math.round((p.w || 0) * u), dh: Math.round((p.h || 0) * u) }; });
     const pages = [];
     for (let i = 0; i < Math.max(list.length, 1); i += PER_PAGE) pages.push(list.slice(i, i + PER_PAGE));
     const out = pages.map((pg, k) => `<hp:p id="${k ? nid() : 0}" paraPrIDRef="20" styleIDRef="0" pageBreak="${k ? 1 : 0}" columnBreak="0" merged="0">`
@@ -6378,7 +6398,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261126-1454';
+window.APP_VER = '20261126-1511';
 </script>
 </body>
 </html>
