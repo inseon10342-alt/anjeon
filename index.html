@@ -1516,7 +1516,7 @@ body,input,select,textarea,button{font-family:"Pretendard Variable",Pretendard,-
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261128-2247 · 2026-11-28 I</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261128-2307 · 2026-11-28 J</b></div>
       </section>
     </main>
   </div>
@@ -6007,8 +6007,8 @@ const HWPX = (() => {
   let idc = 1000;
   const nid = () => String(++idc);
   // 글자 모양(양식): 7 = 「관련사진」 · 9 = 「내용」 · 10 = 설명 · 11 = 대제목(14pt 굵게) · 12 = 구분 소제목(12pt 굵게) / 문단: 20·21 가운데 · 22 왼쪽 · 23 제목(왼쪽, 다음과 함께)
-  const para = (inner, { pr = 21, ch = 10 } = {}) =>
-    `<hp:p id="${nid()}" paraPrIDRef="${pr}" styleIDRef="0" pageBreak="0" columnBreak="0" merged="0"><hp:run charPrIDRef="${ch}">${inner}</hp:run></hp:p>`;
+  const para = (inner, { pr = 21, ch = 10, pb = 0 } = {}) =>
+    `<hp:p id="${nid()}" paraPrIDRef="${pr}" styleIDRef="0" pageBreak="${pb ? 1 : 0}" columnBreak="0" merged="0"><hp:run charPrIDRef="${ch}">${inner}</hp:run></hp:p>`;
   const text = t => t ? `<hp:t>${esc(t)}</hp:t>` : '<hp:t/>';
   function pic(binId, iw, ih, dw, dh) {
     const w = PIC_W, h = PIC_H, id = nid();             // 표시 크기 68 × 50mm (세로 사진은 미리 가로로 돌려 둠)
@@ -6059,7 +6059,8 @@ const HWPX = (() => {
     let no = 0;
     for (const g of order) {
       const gl = list.filter(x => x.grp === g); if (!gl.length) continue;
-      if (g) out.push(para(text(`${++no}. ${g}`), { pr: 23, ch: 12 }));
+      // 구분마다 새 쪽에서 시작 (첫 구분은 대제목 바로 아래) · 번호는 보고서 구분 번호 그대로 (촬영 목록과 같음)
+      if (g) out.push(para(text(`${order.indexOf(g) + 1}. ${g}`), { pr: 23, ch: 12, pb: no++ > 0 }));
       for (let i = 0; i < gl.length; i += PER_TABLE)
         out.push(`<hp:p id="${nid()}" paraPrIDRef="22" styleIDRef="0" pageBreak="0" columnBreak="0" merged="0"><hp:run charPrIDRef="10">${table(gl.slice(i, i + PER_TABLE))}<hp:t/></hp:run></hp:p>`);
     }
@@ -6985,7 +6986,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261128-2247';
+window.APP_VER = '20261128-2307';
 </script>
 </body>
 </html>
