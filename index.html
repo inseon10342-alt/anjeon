@@ -1246,7 +1246,6 @@ body,input,select,textarea,button{font-family:"Pretendard Variable",Pretendard,-
   .fab{display:flex;position:fixed;z-index:30;left:calc(20px + env(safe-area-inset-left));bottom:calc(20px + env(safe-area-inset-bottom));width:56px;height:56px;border-radius:50%;border:0;background:#3182F6;color:#fff;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(49,130,246,.3);transition:transform .12s}
   .fab:active{transform:scale(.94)}
   .fab .ic{width:26px;height:26px;color:#fff;stroke-width:2}
-  body[data-pg="insp"] .fab{bottom:calc(100px + env(safe-area-inset-bottom))}
   body:has(.sheet.on) .fab,body:has(#sgSheet.on) .fab,body:has(.bsh.on) .fab,body:has(.phmenu.on) .fab,body:has(#viewer.on) .fab,body:has(#setup.on) .fab,body:has(#result.on) .fab{display:none}
   main{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
 }
@@ -1254,8 +1253,7 @@ body,input,select,textarea,button{font-family:"Pretendard Variable",Pretendard,-
 /* ==== 11/28 G-2: 점검 카드 → 화면 전환 · 아래 버튼과 촬영 버튼 나란히 ==== */
 @media (max-width:1023px){
   .bar{bottom:0!important}
-  body[data-pg="insp"] .bar{padding-left:calc(var(--t-gx) + 56px + 12px)}
-  body[data-pg="insp"] .fab{bottom:calc(12px + env(safe-area-inset-bottom))}
+  .view[data-v="insp"]>.bar{display:none!important}        /* 휴대폰은 촬영 중심 — 엑셀·PDF·한글 출력은 PC에서 */
   body.insp-det .view[data-v="insp"]>:not(#inspArea):not(.bar){display:none!important}
   body.insp-det #secH{display:none!important}
   body.insp-det #sections [data-insp]{margin-top:0;box-shadow:none!important;border:0!important;padding:4px 0 0!important;background:transparent}
@@ -1518,7 +1516,7 @@ body,input,select,textarea,button{font-family:"Pretendard Variable",Pretendard,-
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261128-2057 · 2026-11-28 H</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261128-2247 · 2026-11-28 I</b></div>
       </section>
     </main>
   </div>
@@ -6987,7 +6985,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261128-2057';
+window.APP_VER = '20261128-2247';
 </script>
 </body>
 </html>
