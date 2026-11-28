@@ -1250,6 +1250,19 @@ body,input,select,textarea,button{font-family:"Pretendard Variable",Pretendard,-
   body:has(.sheet.on) .fab,body:has(#sgSheet.on) .fab,body:has(.bsh.on) .fab,body:has(.phmenu.on) .fab,body:has(#viewer.on) .fab,body:has(#setup.on) .fab,body:has(#result.on) .fab{display:none}
   main{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
 }
+
+/* ==== 11/28 G-2: 점검 카드 → 화면 전환 · 아래 버튼과 촬영 버튼 나란히 ==== */
+@media (max-width:1023px){
+  .bar{bottom:0!important}
+  body[data-pg="insp"] .bar{padding-left:calc(var(--t-gx) + 56px + 12px)}
+  body[data-pg="insp"] .fab{bottom:calc(12px + env(safe-area-inset-bottom))}
+  body.insp-det .view[data-v="insp"]>:not(#inspArea):not(.bar){display:none!important}
+  body.insp-det #secH{display:none!important}
+  body.insp-det #sections [data-insp]{margin-top:0;box-shadow:none!important;border:0!important;padding:4px 0 0!important;background:transparent}
+  body.insp-det #sections [data-insp]>.ihead>b{display:none}
+}
+
+@media (max-width:1023px){ body.hm-dash[data-pg="home"] .nav-back{display:flex} #moreGrid [data-v="home"]>span::after{content:' (일정·현황)';color:var(--t-hint);font-size:14px} }
 </style>
 </head>
 <body>
@@ -1505,7 +1518,7 @@ body,input,select,textarea,button{font-family:"Pretendard Variable",Pretendard,-
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261128-2046 · 2026-11-28 G</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261128-2057 · 2026-11-28 H</b></div>
       </section>
     </main>
   </div>
@@ -2458,6 +2471,23 @@ function fltLabels() {
   if ($('#hmInfoV')) $('#hmInfoV').textContent = [d ? d.slice(5).replace('-', '/') : '', w && w !== '-' ? w : ''].filter(Boolean).join(' · ') || '설정';
 }
 setTimeout(() => ['renderShot', 'renderChips', 'renderSpList', 'renderCats'].forEach(n => { const f = window[n]; if (typeof f === 'function') window[n] = function () { const r = f.apply(this, arguments); try { fltLabels(); } catch (e) {} return r; }; }), 0);
+/** 휴대폰 점검항목: 목록(카드) ↔ 한 회차 화면 전환 — 선택(state.sel)·저장 흐름은 그대로 */
+var inspDet = '';
+function inspOpen(item) {
+  if (!selOf(item)) { state.sel.push({ item, tag: '', ck: null }); if (state.sel.length === 1) autoDate(); saveDraft(); }
+  inspDet = item; document.body.classList.add('insp-det');
+  let st = $('#detStyle'); if (!st) { st = document.createElement('style'); st.id = 'detStyle'; document.head.appendChild(st); }
+  st.textContent = `body.insp-det #sections [data-insp]:not([data-insp="${CSS.escape(item)}"]){display:none}`;
+  renderAll(); $('#pageTitle').textContent = item;
+  if (!GAS) try { history.pushState({ v: 'insp', det: 1 }, ''); } catch (e) {}
+  try { window.scrollTo(0, 0); } catch (e) {}
+}
+function inspExit(quiet) {
+  if (!inspDet) return; inspDet = ''; document.body.classList.remove('insp-det');
+  const st = $('#detStyle'); if (st) st.textContent = '';
+  if (curView === 'insp') $('#pageTitle').textContent = VIEWS.find(x => x.v === 'insp').t;
+  if (!quiet) { renderAll(); try { window.scrollTo(0, 0); } catch (e) {} }
+}
 /** 촬영 바로가기: 이 현장에서 마지막으로 찍던 공종·회차 캡션 목록, 없으면 기존 선택 흐름 */
 const LS_LASTSHOT = 'yutoApp.lastShot';
 function fabShoot() {
@@ -2513,6 +2543,7 @@ function renderChips() {
     return `<button class="ichip ${selOf(r.item) ? 'on' : ''} ${r.stage === '완료' ? 'fin' : ''}" data-i="${esc(r.item)}"><b>${esc(r.item)}</b><small>${esc(sub)}</small>${made[state.svc + '|' + r.item] ? '<i>✔ 작성</i>' : ''}</button>`;
   };
   if (!isMob()) { box.innerHTML = list.map(chip).join(''); return; }
+  if (inspDet && !selOf(inspDet)) inspExit(true);           // 상세에서 「닫기」로 점검을 내리면 목록으로
   const all = svcInsp(state.svc), fin = r => r.stage === '완료', nd = all.filter(fin).length;
   const now = list.filter(r => selOf(r.item)), rest = list.filter(r => !selOf(r.item) && !fin(r)), done = list.filter(r => !selOf(r.item) && fin(r));
   box.innerHTML = `<div class="iprog"><div><b>점검 진행</b><span><em>${nd}</em> / ${all.length}</span></div><i><u style="width:${all.length ? Math.round(nd / all.length * 100) : 0}%"></u></i></div>`
@@ -2523,6 +2554,7 @@ function renderChips() {
 $('#inspChips').onclick = e => {
   const b = e.target.closest('.ichip'); if (!b) return;
   const item = b.dataset.i;
+  if (isMob()) { inspOpen(item); return; }                 // 휴대폰: 카드 누르면 그 점검 화면으로 전환
   const opening = !selOf(item);
   if (!opening) state.sel = state.sel.filter(x => x.item !== item);      // 해제해도 서버 사진은 그대로
   else { state.sel.push({ item, tag: '', ck: null }); if (state.sel.length === 1) autoDate(); }
@@ -3682,6 +3714,7 @@ function go(v, opt) {
     navStack.push(curView); if (navStack.length > 40) navStack.shift();
     if (!GAS) try { history.pushState({ v }, ''); } catch (e) {}
   }
+  if (inspDet) inspExit(true);
   curView = v; hdrSite(); bsClose(true); setTimeout(fltLabels, 0);
   document.body.classList.toggle('hm-dash', !!(opt && opt.dash) && v === 'home');   // 휴대폰: 메뉴 「대시보드」는 예전 홈(일정·현황), 기본 홈은 4칸
   document.querySelectorAll('.view').forEach(el => el.classList.toggle('on', el.dataset.v === v));
@@ -3701,7 +3734,7 @@ function go(v, opt) {
 }
 function renderNav() {
   $('#sideNav').innerHTML = VIEWS.map(x => `<button data-v="${x.v}" class="${x.v === curView ? 'on' : ''}">${icon(x.i)}<span>${esc(x.t)}</span></button>`).join('');
-  $('#moreGrid').innerHTML = VIEWS.map(x => `<button data-v="${x.v}"${x.v === 'home' ? ' data-dash="1"' : ''}>${icon(x.i)}<span>${esc(x.t)}</span></button>`).join('')
+  $('#moreGrid').innerHTML = `<button class="m-only3" onclick="$('#moreMenu').classList.remove('on');go('home')">${icon('home')}<span>홈</span></button>` + VIEWS.map(x => `<button data-v="${x.v}"${x.v === 'home' ? ' data-dash="1"' : ''}>${icon(x.i)}<span>${esc(x.t)}</span></button>`).join('')
     + `<button onclick="openCal()">${icon('cal')}<span>점검 달력</span></button>`
     + `<button class="m-only2" onclick="$('#moreMenu').classList.remove('on');toggleAdmin()">${icon('lock')}<span>관리자</span></button>`;
 }
@@ -3714,12 +3747,15 @@ document.addEventListener('click', e => {
 /** 메뉴를 누르면 열려 있던 화면(조사 입력 · 목록 등)을 닫고 이동 — 저장 안 한 새 사진이 있으면 먼저 물어봄 */
 /** 위 「‹」 뒤로: 바로 전 화면 (없으면 홈) */
 function navBack() {
+  if (document.body.classList.contains('hm-dash')) { go('home'); return; }       // 휴대폰 대시보드 → 4칸 홈
+  if (document.body.classList.contains('insp-det')) { if (!GAS && history.state && history.state.det) history.back(); else inspExit(); return; }
   if (!GAS && navStack.length && history.state && history.state.v) { history.back(); return; }
   go(navStack.pop() || 'home', { back: true });
 }
 if (!GAS) {
   try { history.replaceState({ v: 'home', root: 1 }, ''); } catch (e) {}
   window.addEventListener('popstate', e => {
+    if (document.body.classList.contains('insp-det')) { inspExit(); return; }   // 휴대폰 점검 상세 → 목록
     if (sgClosing) { sgClosing = false; return; }                       // 「‹ 안전점검」으로 닫은 것
     if ($('#sgSheet') && $('#sgSheet').classList.contains('on')) { $('#sgSheet').classList.remove('on'); return; }   // 시험·조사 창은 밀어서 닫기
     const open = [...document.querySelectorAll('.sheet.on')].some(x => x.id !== 'setup') || ($('#viewer') && $('#viewer').classList.contains('on'));
@@ -3998,7 +4034,7 @@ function sgLight() {
       + 'html,body{font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif!important}.kv div{background:#F9FAFB}'
       + '.brand b,.nav.on,.btn:hover,.home h1,.basis b,.mod .mt b,.wp h5,.rw b,.toolbar:before,.tool:hover,.empty-dwg b,.sph h2,.sec>h5,.inp.t,select.inp,.result .big,details.sec summary,.modal h3,.msub b{color:#191F28!important}'
       + '.btn.dark{background:#3182F6;border-color:#3182F6;color:#fff}.inp,.inp:focus,.pinbar input{background:#fff;color:#191F28;border-color:#D1D6DB;border-bottom-color:#3182F6}.inp:focus{box-shadow:0 0 0 2px rgba(49,130,246,.2)}'
-      + '.result{background:#E8F3FF;border-color:#C9E2FF}.sbar,.bbar{background:#fff;border-top-color:#E5E8EB}.toast{background:#fff;color:#191F28;border-color:#E5E8EB;box-shadow:0 4px 16px rgba(0,0,0,.12)}.modal{background:rgba(0,0,0,.4)}.stage{background-color:#F9FAFB}.btn.pri,.btn.acc,.btn.pri:hover,.btn.acc:hover,.seg button.on,.sb-save{color:#fff!important}.btn.pri:hover,.btn.acc:hover{background:#1B64DA}@media (max-width:1023px){.side,.mhead,.crumb,.home .eyebrow,.home h1,.home .sub,.home .basis,.home aside,.home .foot,.home .lh span,.mod .st{display:none!important}.app.v-home #bUndo,.app.v-home #bRedo,.app.v-home .bbar [data-act=backup],.app.v-home .bbar [data-act=restore]{display:none!important}.app.v-home .bbar:not(:has(.mres)){display:none!important}.app{grid-template-columns:1fr!important}.top{background:#fff!important;border-bottom:1px solid #F2F4F6!important}.home{padding:8px 0!important}.hgrid{display:block!important}.home .lh{padding:8px 20px!important;border:0!important}.home .lh b{font-size:20px!important;font-weight:700;color:#191F28}.home .lh b i{display:none}.mods{display:flex!important;flex-direction:column;gap:0!important;border:0!important}.mod{display:flex!important;align-items:center;gap:14px;border:0!important;border-radius:0!important;background:#fff!important;padding:16px 20px!important;min-height:72px;box-shadow:inset 0 -1px 0 #F2F4F6!important;text-align:left}.mod .no{width:40px;height:40px;border-radius:12px;background:#E8F3FF;color:#3182F6!important;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 auto}.mod .mt b{font-size:17px!important;font-weight:600}.mod .mt small{font-size:13px;color:#8B95A1}.mod .go,.mod>.arr{color:#B0B8C1}body{background:#fff!important}.top .btn{color:#191F28!important;border-color:#E5E8EB!important}}::selection{background:rgba(49,130,246,.2)}*{scrollbar-color:#D1D6DB transparent}';
+      + '.result{background:#E8F3FF;border-color:#C9E2FF}.sbar,.bbar{background:#fff;border-top-color:#E5E8EB}.toast{background:#fff;color:#191F28;border-color:#E5E8EB;box-shadow:0 4px 16px rgba(0,0,0,.12)}.modal{background:rgba(0,0,0,.4)}.stage{background-color:#F9FAFB}.btn.pri,.btn.acc,.btn.pri:hover,.btn.acc:hover,.seg button.on,.sb-save{color:#fff!important}.btn.pri:hover,.btn.acc:hover{background:#1B64DA}@media (max-width:1023px){.side,.mhead,.crumb,.home .eyebrow,.home h1,.home .sub,.home .basis,.home aside,.home .foot,.home .lh span,.mod .st{display:none!important}.app.v-home #bUndo,.app.v-home #bRedo,.app.v-home .bbar [data-act=backup],.app.v-home .bbar [data-act=restore]{display:none!important}.app.v-home .bbar:not(:has(.mres)){display:none!important}.app{grid-template-columns:1fr!important;grid-template-rows:auto 1fr auto!important}.app>.main{min-height:0;overflow:auto;-webkit-overflow-scrolling:touch}.top .btn svg,.bbar .btn:not(.acc):not(.pri) svg{stroke:#191F28!important}.bbar .btn:not(.acc):not(.pri){color:#191F28!important}.top{background:#fff!important;border-bottom:1px solid #F2F4F6!important}.home{padding:8px 0!important}.hgrid{display:block!important}.home .lh{padding:8px 20px!important;border:0!important}.home .lh b{font-size:20px!important;font-weight:700;color:#191F28}.home .lh b i{display:none}.mods{display:flex!important;flex-direction:column;gap:0!important;border:0!important}.mod{display:flex!important;align-items:center;gap:14px;border:0!important;border-radius:0!important;background:#fff!important;padding:16px 20px!important;min-height:72px;box-shadow:inset 0 -1px 0 #F2F4F6!important;text-align:left}.mod .no{width:40px;height:40px;border-radius:12px;background:#E8F3FF;color:#3182F6!important;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 auto}.mod .mt b{font-size:17px!important;font-weight:600}.mod .mt small{font-size:13px;color:#8B95A1}.mod .go,.mod>.arr{color:#B0B8C1}body{background:#fff!important}.top .btn{color:#191F28!important;border-color:#E5E8EB!important}}::selection{background:rgba(49,130,246,.2)}*{scrollbar-color:#D1D6DB transparent}';
     d.head.appendChild(st);
   } catch (e) {}
 }
@@ -6951,7 +6987,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261128-2046';
+window.APP_VER = '20261128-2057';
 </script>
 </body>
 </html>
