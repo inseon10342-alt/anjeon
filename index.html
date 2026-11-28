@@ -420,7 +420,8 @@ main{max-width:680px;padding:12px}
 .bnav .shoot .ic{width:26px;height:26px;color:#fff;background:var(--acc);border-radius:50%;padding:11px;box-sizing:content-box;margin-top:-22px;border:3px solid #fff}
 .bnav .shoot span{color:var(--acc2);font-weight:700}
 .bar{bottom:calc(60px + env(safe-area-inset-bottom));display:none;padding:8px 12px}
-body[data-pg="insp"] .bar{display:block}
+body[data-pg="insp"] .bar{display:flex;gap:8px}
+#buildBtn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#buildXBtn{flex:0 0 auto;width:auto;padding:0 16px;white-space:nowrap}
 body[data-pg="insp"]{padding-bottom:calc(140px + env(safe-area-inset-bottom))}
 .moregrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .moregrid button{display:flex;align-items:center;gap:10px;height:54px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:14px;font-weight:700;color:var(--ink);font-family:inherit}
@@ -461,7 +462,7 @@ body[data-pg="insp"]{padding-bottom:calc(140px + env(safe-area-inset-bottom))}
   .dash3 .card{margin:0}
   #inspArea #sections{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
   #inspArea #sections>.card{margin:0}
-  .bar,body[data-pg="insp"] .bar{display:block;position:sticky;bottom:0;left:auto;right:auto;margin:12px -24px -18px;padding:12px 24px;border-top:1px solid var(--line)}
+  .bar,body[data-pg="insp"] .bar{display:flex;gap:8px;justify-content:flex-end;position:sticky;bottom:0;left:auto;right:auto;margin:12px -24px -18px;padding:12px 24px;border-top:1px solid var(--line)}
   #buildBtn{max-width:420px;margin-left:auto}
   .sheet{left:248px}
   .sheet .panel{max-width:900px;padding:18px 24px 60px}
@@ -1188,7 +1189,7 @@ body[data-pg="home"] .nav-back{display:none}
           <h3 class="sec-h" id="secH" style="display:none">진행 중인 점검</h3>
           <div id="sections"></div>
         </div>
-        <div class="bar"><button class="btn" id="buildBtn" onclick="buildAll()" disabled>사진대지 만들기</button></div>
+        <div class="bar"><button class="btn" id="buildBtn" onclick="buildAll()" disabled>사진대지 만들기</button><button class="btn ghost" id="buildXBtn" onclick="buildAll('xlsx')" disabled>엑셀·PDF</button></div>
       </section>
 
       <!-- ④ 제원 및 실측 관리 -->
@@ -1233,14 +1234,15 @@ body[data-pg="home"] .nav-back{display:none}
       <section class="view" data-v="report">
         <div class="vh"><h2>보고서 및 출력 관리</h2><small>점검 결과 정리 · 사진대지 · 비교 결과표 · 엑셀/PDF</small></div>
         <div class="menu">
-          <button class="pri" onclick="go('insp');buildAll()"><svg class="ic"><use href="#i-file"/></svg><span class="ml">사진대지 만들기<small>엑셀 · PDF</small></span></button>
+          <button class="pri" onclick="go('insp');buildAll()"><svg class="ic"><use href="#i-file"/></svg><span class="ml">사진대지 만들기<small>한글(HWPX) · 드라이브 저장</small></span></button>
+          <button onclick="go('insp');buildAll('xlsx')"><svg class="ic"><use href="#i-download"/></svg><span class="ml">엑셀 · PDF 만들기<small>체크리스트 · 제원 비교 포함</small></span></button>
           <button onclick="openReportWait()"><svg class="ic"><use href="#i-list"/></svg><span class="ml">점검 결과 정리<small>작성 대기 · 완료</small></span></button>
           <button onclick="exportCompareUI()"><svg class="ic"><use href="#i-scale"/></svg><span class="ml">비교 결과표<small>엑셀 · PDF</small></span></button>
           <button onclick="openProgress()"><svg class="ic"><use href="#i-chart"/></svg>현장별 작성 현황</button>
         </div>
         <div class="rpwrap" id="rpWrap"><div class="card rplist"><div class="ch"><b>보고서 작성 현황</b><small class="muted">점검을 누르면 미리보기</small></div><div id="rpList"></div></div>
           <div class="card rpprev" id="rpPrev"></div></div>
-        <div class="hint">사진대지에는 현황·지적 사진, 체크리스트, 그 점검항목에 연결된 <b>제원 비교표</b>, <b>이전 지적 이행확인</b>이 함께 들어가고 엑셀과 PDF가 같이 만들어집니다. 현황 사진은 <b>한글(HWPX)</b> 파일로도 같은 폴더에 저장됩니다.</div>
+        <div class="hint">사진대지에는 현황·지적 사진, 체크리스트, 그 점검항목에 연결된 <b>제원 비교표</b>, <b>이전 지적 이행확인</b>이 함께 들어가고 엑셀과 PDF가 같이 만들어집니다. 「사진대지 만들기」는 현황 사진을 <b>한글(HWPX)</b>로 만들어 구글 드라이브에 저장하고, 엑셀·PDF는 「엑셀·PDF」를 따로 누르면 만들어집니다.</div>
       </section>
 
       <!-- ⑧ 시스템 관리 -->
@@ -1256,7 +1258,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261128-1014 · 2026-11-28 A</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261128-1037 · 2026-11-28 B</b></div>
       </section>
     </main>
   </div>
@@ -2368,8 +2370,9 @@ function renderBar() {
   const cnt = state.sel.reduce((a, s) => a + itemsOf(s.item).length, 0);
   const up = Object.values(uploads).filter(u => u.status === '대기' || u.status === '업로드 중').length;
   const b = $('#buildBtn');
-  b.textContent = n ? `사진대지 만들기 (${n}개 점검 · ${cnt}건)${up ? ` · 업로드 ${up}` : ''}` : (up ? `업로드 중 ${up}장` : '사진대지 만들기');
+  b.textContent = n ? `사진대지(한글) ${n}개 · ${cnt}건${up ? ` · 업로드 ${up}` : ''}` : (up ? `업로드 중 ${up}장` : '사진대지(한글) 만들기');
   b.disabled = !n;
+  const x = $('#buildXBtn'); if (x) x.disabled = !n;
 }
 function renderAll() { renderSvc(); renderBy(); renderSections(); renderBar(); renderUpPanel(); renderCats(); if (typeof renderShot === 'function') renderShot(); }
 
@@ -3550,7 +3553,8 @@ function renderSiteDetail() {
   } else if (t === 'ana') {
     renderAnaTab(); setTimeout(anAfterSetup, 0);
   } else if (t === 'report') {
-    B.innerHTML = `<div class="menu" style="margin-bottom:12px"><button class="pri" onclick="go('insp');buildAll()"><svg class="ic"><use href="#i-file"/></svg>사진대지 만들기</button>
+    B.innerHTML = `<div class="menu" style="margin-bottom:12px"><button class="pri" onclick="go('insp');buildAll()"><svg class="ic"><use href="#i-file"/></svg>사진대지 만들기 (한글)</button>
+      <button onclick="go('insp');buildAll('xlsx')"><svg class="ic"><use href="#i-download"/></svg>엑셀 · PDF</button>
       <button onclick="exportCompareUI()"><svg class="ic"><use href="#i-scale"/></svg><span class="ml">비교 결과표<small>엑셀 · PDF</small></span></button></div>
       <div class="card"><div class="ch"><b>보고서 작성 현황</b><small class="muted">점검별 자료 준비 상태</small></div>${reportRows(false)}</div>`;
   }
@@ -3624,7 +3628,7 @@ function rpPreview() {
   const bad = ck ? ck.rows.filter(r2 => /부적정|미시행/.test(res[r2.no] || '')).length : 0;
   const ms = (srv.measures || []).filter(m => m.insp === item), sv = surveysOf(item);
   const th = (o, s2) => slotSrc(o, s2) ? `<img src="${slotSrc(o, s2)}" loading="lazy" alt="">` : '<span class="noimg"></span>';
-  P.innerHTML = `<div class="ch"><button class="lnk rpback" onclick="rp.item='';renderReport()">◀ 목록</button><b>${esc(item)}</b><span class="rp-acts">${cur.length ? hwBtn(item) : ''}<button class="btn acc xs" onclick="buildOne('${esc(item)}')">사진대지 만들기</button></span></div>
+  P.innerHTML = `<div class="ch"><button class="lnk rpback" onclick="rp.item='';renderReport()">◀ 목록</button><b>${esc(item)}</b><span class="rp-acts">${hwReady[item] ? hwBtn(item) : ''}<button class="btn acc xs" onclick="buildOne('${esc(item)}')">사진대지 (한글)</button><button class="btn ghost xs" onclick="buildOne('${esc(item)}','xlsx')">엑셀·PDF</button></span></div>
     <div class="shstat"><div><b>${cur.length}</b><small>현황</small></div><div><b>${def.length}</b><small>지적</small></div><div><b>${ck ? Object.keys(res).length + '/' + ck.rows.length : '-'}</b><small>체크리스트</small></div><div class="${bad ? 'r' : ''}"><b>${bad}</b><small>부적정·미시행</small></div></div>
     ${cur.length ? `<h4 class="rph">현황 사진 (사진대지 순서)</h4><div class="rpg">${cur.map(o => `<button onclick="openViewer('${esc(o.id)}','b')">${th(o, 'b')}<span>${esc(o.caption || '')}</span></button>`).join('')}</div>` : ''}
     ${def.length ? `<h4 class="rph">지적사항 (조치 전 | 조치 후)</h4>${def.map((o, i) => `<div class="rpd"><button onclick="openViewer('${esc(o.id)}','b')">${th(o, 'b')}</button><button onclick="openViewer('${esc(o.id)}','a')">${th(o, 'a')}</button>
@@ -3656,12 +3660,12 @@ function renderInspTodo() {
   B.innerHTML = out.length ? `<div class="card todo"><div class="ch"><b>미완료 항목 바로가기</b><small class="muted">${out.length}건</small></div><div class="tchips">${out.join('')}</div></div>` : '';
 }
 /** 한 점검만 사진대지 */
-async function buildOne(item) {
+async function buildOne(item, mode) {
   const keep = state.sel.slice();
   if (!selOf(item)) state.sel.push({ item, tag: '', ck: null });
   const one = selOf(item); if (!keep.includes(one)) keep.push(one);
   state.sel = [one];
-  try { go('insp'); await buildAll(); } finally { state.sel = keep; saveDraft(); renderAll(); }
+  try { go('insp'); await buildAll(mode); } finally { state.sel = keep; saveDraft(); renderAll(); }
 }
 
 
@@ -5753,11 +5757,11 @@ function hwMeta(item) {
   return { head: `■ ${grp} ${/초기점검/.test(item) ? '초기점검' : n ? n + '회차' : item}`, band: tag ? band.replace(' 사진', ` (${tag}) 사진`) : band, by: me() };
 }
 /** 파일 만들기(+드라이브 저장). 결과 {name, url, download} 또는 오류. quiet: 사진대지 만들기 중 자동 */
-async function hwpxBuild(item, label) {
+async function hwpxBuild(item, label, date) {
   const list = itemsOf(item).filter(o => o.kind === '현황');
   if (!list.length) throw new Error('현황 사진이 없습니다');
   const svc = svcObj() || { name: state.svc }, sig = hwSig(item);
-  const made = (boot && boot.made && boot.made[state.svc + '|' + item]) || state.date;
+  const made = date || (boot && boot.made && boot.made[state.svc + '|' + item]) || state.date;
   const photos = [];
   for (let k = 0; k < list.length; k++) {
     const o = list[k];
@@ -5791,11 +5795,13 @@ async function hwpxBuild(item, label) {
     const sub = buf.subarray(k * CH, Math.min(buf.length, (k + 1) * CH)); let bs = '';
     for (let j = 0; j < sub.length; j += 32768) bs += String.fromCharCode.apply(null, sub.subarray(j, j + 32768));
     const data = btoa(bs); let tries = 0;
-    for (;;) { try { r = await run('hwpxPart', { job, i: k, n, data, code: state.svc, item, name, user: me() }); break; } catch (e) { if (isNetErr(e) && ++tries < 8) { await sleep(4000); continue; }
+    for (;;) { try { r = await run('hwpxPart', { job, i: k, n, data, code: state.svc, item, name, user: me(),
+        date: String(made).slice(0, 10), svcName: svc.name || '', photos: photos.filter(x => x.bytes).length, tag: (selOf(item) || {}).tag || '', manual: !!(meta(item) || {}).manual, inspector: me() }); break; } catch (e) { if (isNetErr(e) && ++tries < 8) { await sleep(4000); continue; }
       if (/알 수 없는 요청|not found|is not a function|hwpxPart/i.test(errMsg(e))) throw new Error('서버(Apps Script)에 새 Code.gs가 아직 적용되지 않아 드라이브에 저장하지 못했습니다. 「한글 파일 저장」으로 휴대폰에 받을 수 있어요.');
       throw e; } }
   }
   hwReady[item].drive = r;
+  if (boot) { boot.made = boot.made || {}; boot.made[state.svc + '|' + item] = String(made).slice(0, 10); lsSet(LS_BOOT, boot); }   // 작성 표시
   hwBtns();
   return Object.assign({ photos: photos.length }, r);
 }
@@ -5828,7 +5834,8 @@ async function hwpxSave(item) {
 }
 
 /* ---------- 사진대지 만들기 ---------- */
-async function buildAll() {
+async function buildAll(mode) {
+  const xl = mode === 'xlsx';                                   // 11/28: 기본은 한글(HWPX)만 드라이브에, 엑셀·PDF는 따로
   if (!state.svc) { toast('용역을 선택하세요'); return; }
   if (!requireUser()) return;
   const jobs = state.sel.filter(hasWork);
@@ -5848,6 +5855,15 @@ async function buildAll() {
   const results = [];
   for (let k = 0; k < jobs.length; k++) {
     const s = jobs[k], m = meta(s.item);
+    if (!xl) {                                                  // 한글 사진대지 (현황 사진)
+      const n = itemsOf(s.item).filter(o => o.kind === '현황').length;
+      if (!n) { results.push({ item: s.item, hwp: true, error: '현황 사진이 없습니다 (엑셀·PDF는 「엑셀·PDF」로 만들 수 있습니다)' }); continue; }
+      const r = { item: s.item, hwp: true, count: { photo: n } };
+      try { r.hwpx = await hwpxBuild(s.item, `사진대지(한글) 만드는 중 (${k + 1}/${jobs.length})`, state.date); }
+      catch (e) { r.hwErr = errMsg(e); }
+      results.push(r);
+      continue;
+    }
     busy(`사진대지 만드는 중 (${k + 1}/${jobs.length})<br>${esc(s.item)}<br><span style="font-weight:400;font-size:13px">사진이 많으면 1~2분 걸립니다. 화면을 닫지 마세요.</span>`);
     const payload = {
       code: state.svc, name: svc.name, item: s.item, type: m.type || '', timing: m.timing || '',
@@ -5868,10 +5884,6 @@ async function buildAll() {
       }
       results.push(r);
       if (boot) { boot.made = boot.made || {}; boot.made[state.svc + '|' + s.item] = state.date; lsSet(LS_BOOT, boot); }
-      if (r && r.count && r.count.photo) {                      // 한글(HWPX)도 같은 폴더에 자동 저장 — 실패해도 엑셀·PDF는 그대로
-        try { r.hwpx = await hwpxBuild(s.item, `사진대지 만드는 중 (${k + 1}/${jobs.length})`); }
-        catch (e) { r.hwErr = errMsg(e); }
-      }
     } catch (e) { results.push({ item: s.item, error: errMsg(e) }); }
   }
   busy(false);
@@ -5879,15 +5891,17 @@ async function buildAll() {
   showResults(results);
 }
 function showResults(rs) {
-  $('#resList').innerHTML = rs.map(r => r.error
+  $('#resList').innerHTML = rs.map(r => r.hwp && !r.error
+    ? `<div class="card"><b>${esc(r.item)}</b><div class="hint">한글 사진대지 · 현황 ${r.count.photo}장${r.hwpx ? ' · 구글 드라이브에 저장했습니다' : ''}</div>
+       <div class="links">${r.hwpx ? `<a href="${r.hwpx.download}" target="_blank"><svg class="ic sm"><use href="#i-download"/></svg>한글 파일 (HWPX) 다운로드</a><a href="${r.hwpx.url}" target="_blank"><svg class="ic sm"><use href="#i-folder"/></svg>드라이브에서 보기</a>` : ''}</div>
+       ${r.hwErr ? `<div class="hint" style="color:var(--bad)">${esc(r.hwErr)}</div>` : ''}
+       <div class="hw-links">${hwReady[r.item] ? hwBtn(r.item, 'hwbtn') : ''}<button class="hwbtn" data-x="${esc(r.item)}" onclick="closeResult(false);buildOne(this.dataset.x,'xlsx')"><svg class="ic sm"><use href="#i-file"/></svg><span>엑셀·PDF도 만들기</span></button></div></div>`
+    : r.error
     ? `<div class="card"><b>${esc(r.item)}</b><div class="hint" style="color:var(--bad)">실패: ${esc(r.error)}</div></div>`
     : `<div class="card"><b>${esc(r.item)}</b><div class="hint">현황 ${r.count.photo}장 · 지적 ${r.count.defect}건${r.count.open ? ` (미조치 ${r.count.open})` : ''}${r.count.survey ? ` · 조사 ${r.count.survey}건` : ''}${r.count.follow ? ` · 이전 지적 ${r.count.follow}건 (이행완료 ${r.count.followDone})` : ''}</div>
        <div class="links"><a href="${r.xlsxDownload}" target="_blank"><svg class="ic sm"><use href="#i-download"/></svg>엑셀 다운로드</a>
        ${r.pdfUrl ? `<a href="${r.pdfUrl}" target="_blank"><svg class="ic sm"><use href="#i-file"/></svg>PDF 보기</a>` : ''}
-       ${r.hwpx ? `<a href="${r.hwpx.download}" target="_blank"><svg class="ic sm"><use href="#i-download"/></svg>한글 파일 (HWPX) 다운로드</a>` : ''}
-       <a href="${r.folderUrl}" target="_blank"><svg class="ic sm"><use href="#i-folder"/></svg>저장 폴더</a></div>
-       ${r.hwErr ? `<div class="hint" style="color:var(--bad)">한글 파일: ${esc(r.hwErr)}</div>` : ''}
-       ${r.count.photo ? `<div class="hw-links">${hwBtn(r.item, 'hwbtn')}<small class="hint">${r.hwpx ? '휴대폰에 바로 받기' : '한글 파일 다시 만들기'} · 현황 사진만 · 「&lt;사진n&gt;」 번호 없이</small></div>` : ''}</div>`).join('');
+       <a href="${r.folderUrl}" target="_blank"><svg class="ic sm"><use href="#i-folder"/></svg>저장 폴더</a></div></div>`).join('');
   $('#result').classList.add('on'); $('#result').scrollTop = 0;
 }
 function closeResult(finish) {
@@ -6588,7 +6602,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261128-1014';
+window.APP_VER = '20261128-1037';
 </script>
 </body>
 </html>
