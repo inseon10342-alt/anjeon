@@ -1006,6 +1006,7 @@ body[data-pg="home"] .nav-back{display:none}
 
 
 /* 촬영 목록: 공통 / 공종 필터 */
+.sn-f{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.sn-f .lb{font-size:13px;color:var(--muted);font-weight:700;margin-right:2px}.sn-f button{height:34px;padding:0 12px;border:1px solid var(--line);border-radius:99px;background:#fff;font:inherit;font-weight:700;font-size:13px;color:var(--ink);cursor:pointer}.sn-f button.on{background:var(--navy);border-color:var(--navy);color:#fff}.sn-f .sn-x{width:28px;padding:0;margin-left:-4px;border-radius:50%;color:var(--muted)}.sn-f .sn-add{border-style:dashed}.sn-c{display:inline-flex;align-items:center;gap:2px}
 .shot-sec{display:flex;gap:6px;overflow-x:auto;background:#fff;padding:10px 14px;border-bottom:1px solid var(--line);scrollbar-width:none}
 .shot-sec:empty{display:none}
 .shot-sec::-webkit-scrollbar{display:none}
@@ -1255,7 +1256,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261126-1525 · 2026-11-26 F</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261128-1014 · 2026-11-28 A</b></div>
       </section>
     </main>
   </div>
@@ -1835,7 +1836,7 @@ function askCode(wrong, bad) {
   return v;
 }
 const FN_KO = { getBootstrap: '앱 정보 받기', listItems: '목록 받기', getThumbs: '썸네일 받기', uploadPhoto: '사진 업로드', saveItem: '저장',
-  setItemPhoto: '사진 연결', checkDuplicate: '중복 확인', deleteItems: '삭제', getPhoto: '크게 보기', buildInspection: '사진대지 만들기', hwpxPart: '한글 파일 저장',
+  setItemPhoto: '사진 연결', checkDuplicate: '중복 확인', deleteItems: '삭제', getPhoto: '크게 보기', buildInspection: '사진대지 만들기', hwpxPart: '한글 파일 저장', getShotLib: '촬영 캡션 받기', shotLibOp: '촬영 캡션 저장',
   saveSurvey: '조사 저장', registerUser: '사용자 등록', getChecklist: '체크리스트 받기', openSession: '시작 정보 받기',
   saveSpec: '제원 저장', saveMeasure: '실측 저장', exportCompare: '비교표 출력', buildContinue: '사진대지 이어서', syncNow: '통합관리 반영', setItemMark: '원본·표시본 연결', saveSurvey_q: '조사 저장',
   deleteItems_q: '삭제', anaGet: '자료분석 받기', anaImport: '자료분석 가져오기', anaSavePart: '자료분석 저장', anaResSave: '자료분석 기록', anaResList: '자료분석 기록 받기', backupNow: '백업', listBackups: '백업 목록', restoreBackup: '복원' };
@@ -3353,7 +3354,7 @@ function saveSv() {
  * ==================================================================== */
 // 동바리(높이 5m 이상 거푸집 및 동바리)와 갱폼(작업발판 일체형 거푸집)은 따로
 const CAT_RULES = [['비계', /^(비계|브라켓)/], ['시스템동바리', /^동바리/], ['갱폼', /^갱폼/], ['천공기', /^천공기/], ['항타기', /^항타기/],
-  ['흙막이 가시설', /^(지보공|굴착|흙막이)/], ['합벽지지대', /^합벽/], ['타워크레인', /^타워/]];
+  ['흙막이 가시설', /^(지보공|굴착|흙막이)/], ['합벽지지대', /^합벽/], ['타워크레인', /^타워/], ['해체공사', /^해체/]];
 const INSP_CATS = CAT_RULES.map(x => x[0]).concat(['기타 점검']);
 const inspCat = item => { const r = CAT_RULES.find(x => x[1].test(String(item || ''))); return r ? r[0] : '기타 점검'; };
 const specCatOfInsp = item => { const c = inspCat(item); return c === '기타 점검' ? '기타 점검 대상' : c; };
@@ -4173,8 +4174,67 @@ const shotNorm = t => String(t || '').replace(/\s+/g, ' ').trim();
 const shotKey = insp => `shotPlan:${state.svc}|${insp}`;
 let shotCustom = [];
 const shotCustomCache = {};
-/** 이 기기에서 추가한 캡션 (없으면 읽어 두고 다시 그림) */
+/* ---- 촬영 캡션 공용 목록 (11/28): 직접 추가한 캡션·사용자 필터를 서버 시트 「촬영캡션」에 두고 모두 같이 씀 ----
+ *  · 5초(촬영 목록 열림) / 30초(그 밖) 마다 바뀐 것만 받아 새로고침 없이 반영
+ *  · 연결이 끊겨도 추가·수정·삭제는 휴대폰에 두었다가 연결되면 전송 (서버가 같은 캡션은 다시 만들지 않음)
+ *  · 서버가 예전 버전(Code.gs 교체 전)이면 전처럼 이 기기에만 저장 */
+let shotLib = { stamp: '', caps: [], filters: [], ok: null }, libAt = 0;
+setTimeout(() => KV.cget('shotLib').then(c => { if (c && Array.isArray(c.caps) && !shotLib.stamp) { shotLib = Object.assign({ ok: null }, c); libChanged(); } }).catch(() => {}), 0);   // 지난번 받은 목록 (연결 전에도 보이게)
+function libApply(caps, filters, p) {
+  const n = shotNorm;
+  if (p.op === 'addCap' && !caps.some(c => c.sec === p.sec && n(c.t) === n(p.t))) caps = caps.concat([{ id: p.tmp, sec: p.sec, t: n(p.t), old: [], tmp: true }]);
+  if (p.op === 'editCap') caps = caps.map(c => c.id === p.id ? Object.assign({}, c, { t: n(p.t), sec: p.sec, old: (c.old || []).concat([c.t]) }) : c);
+  if (p.op === 'delCap') caps = caps.filter(c => c.id !== p.id);
+  if (p.op === 'addFilter' && !filters.some(f => f.name === n(p.name))) filters = filters.concat([{ id: p.tmp, name: n(p.name), tmp: true }]);
+  if (p.op === 'delFilter') filters = filters.filter(f => f.id !== p.id);
+  return [caps, filters];
+}
+/** 서버 목록 + 아직 못 보낸 작업 */
+function libView() {
+  let caps = shotLib.caps.slice(), filters = shotLib.filters.slice();
+  OUT.filter(x => x.fn === 'shotLibOp').forEach(x => { [caps, filters] = libApply(caps, filters, x.args[0]); });
+  return { caps, filters };
+}
+function libSet(r) { shotLib = { stamp: r.stamp, caps: r.caps || [], filters: r.filters || [], ok: true }; KV.cset('shotLib', shotLib); libChanged(); }
+function libChanged() {
+  clearTimeout(libChanged.t);
+  libChanged.t = setTimeout(() => { if ($('#shotSheet').classList.contains('on')) renderShot(); else { renderSections(); renderDash(); } }, 30);
+}
+async function libFetch(force) {
+  if (!navigator.onLine || (shotLib.ok === false && !force)) return;
+  libAt = Date.now();
+  try { const r = await run('getShotLib', force ? '' : shotLib.stamp); if (r && !r.same) libSet(r); else if (shotLib.ok !== true) { shotLib.ok = true; libChanged(); } }
+  catch (e) { if (/알 수 없는 요청|not found|is not a function|getShotLib/i.test(errMsg(e))) { shotLib.ok = false; libChanged(); } }
+}
+setInterval(() => {
+  if (document.visibilityState !== 'visible' || !navigator.onLine || !state.svc) return;
+  const open = $('#shotSheet') && $('#shotSheet').classList.contains('on');
+  if (Date.now() - libAt >= (open ? 5000 : 30000)) libFetch();
+}, 2500);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') libFetch(); });
+async function libOp(p, label) {
+  p = Object.assign({ user: me() }, p);
+  if (p.op === 'addCap' || p.op === 'addFilter') p.tmp = 'tmp' + uid();
+  const r = await runSave('shotLibOp', [p], { label: label || '촬영 캡션' });
+  if (r && !r._queued && r.stamp) libSet(r); else libChanged();
+  return r;
+}
+/** 예전 방식(이 기기에만)으로 추가해 둔 캡션 → 공용 목록으로 한 번 옮김 (그 점검의 공종 필터로) */
+async function libMigrate(insp) {
+  if (shotLib.ok !== true) return;
+  const k = shotKey(insp), local = (await KV.cget(k)) || [];
+  if (!local.length) return;
+  const sec = shotGroup(insp) || '공통', v = libView();
+  for (const t of local) {
+    const n = shotNorm(t);
+    if ((SHOT_CAPS[sec] || []).concat(SHOT_CAPS['공통']).some(x => shotNorm(x) === n) || v.caps.some(c => shotNorm(c.t) === n)) continue;
+    await libOp({ op: 'addCap', sec, t: n }, `촬영 캡션 옮기기 · ${n}`);
+  }
+  await KV.cset(k, []); shotCustomCache[k] = [];
+}
+/** 이 기기에서 추가한 캡션 (예전 방식 — 공용 목록을 쓰면 비어 있음) */
 function shotCustomOf(insp) {
+  if (shotLib.ok === true) return [];
   const k = shotKey(insp);
   if (k in shotCustomCache) return shotCustomCache[k];
   shotCustomCache[k] = [];
@@ -4197,7 +4257,10 @@ async function openShot(insp) {
   shot.insp = insp; shot.tab = 'all'; shot.adding = false;
   if (shot.floor == null) shot.floor = lastFloor || '';
   if (shot.floor && !floorList().includes(shot.floor)) shot.floor = '';
-  shotCustom = (await KV.cget(shotKey(insp))) || []; shotCustomCache[shotKey(insp)] = shotCustom;
+  if (shotLib.ok !== false && Date.now() - libAt > 3000) await libFetch();
+  await libMigrate(insp);
+  shotCustom = shotLib.ok === true ? [] : ((await KV.cget(shotKey(insp))) || []); shotCustomCache[shotKey(insp)] = shotCustom;
+  shot.newSec = '';
   $('#shotSheet').classList.add('on'); $('#shotSheet').scrollTop = 0;
   renderShot();
 }
@@ -4217,7 +4280,8 @@ const SHOT_CAPS = {   // 캡션 작성 규칙(11/26): 뭉뚱그린 캡션 대신
   '합벽지지대': ['수직재 규격 확인','경사재 규격 확인','수평연결재 규격 확인','앵커볼트 규격 확인','설치간격 측정','설치높이 측정','거푸집 설치상태','수평연결재 설치상태','자재 손상상태','앵커볼트 체결상태','지지대 연결부 설치상태','지지대 수직도','지지대 변형'],
   '거푸집 및 동바리': ['수직재·수평재 체결상태','수직재 규격 확인','수평재 규격 확인','가새재 규격 확인','U헤드잭','상부 멍에','거푸집 설치상태','잭베이스 지면 이격거리','잭베이스 설치상태','가새재 설치상태','수직재 설치상태','수평재 설치상태','설치간격 측정','수직·수평도 측정','설치높이 측정','하부 지반 상태','받침목 및 깔판','연결핀 체결상태','U헤드잭 고정상태'],
   '천공기 및 항타기': ['번호판','운전실 조작부','건설기계실명제카드','무한궤도 트랙','하부 누유','상부 리더','와이어로프','드럼','천공상태','C.I.P 시공상태','천공 시 수직도 점검','제원 확인','백스테이','방진막 설치','각종 볼트류 점검','전도방지 철판','신호수 배치','작업반경 출입통제','유압호스 및 연결부','리더 연결핀','장비 하부 지반상태'],
-  '1.2종 시설물': ['태양광 설비','옥상 난간','태양광 설비 기초','내부 마감재','외부 마감재']
+  '1.2종 시설물': ['태양광 설비','옥상 난간','태양광 설비 기초','내부 마감재','외부 마감재'],
+  '해체공사': ['해체 대상 건축물 전경','해체 장비 제원 확인','해체 장비(압쇄기·브레이커) 작업상태','해체 순서 준수상태','살수 설비 가동상태','방진막·방음벽 설치상태','낙하물 방지망 설치상태','해체 작업구간 출입통제','신호수 배치','작업반경 내 근로자 접근통제','잭서포트(보강) 설치상태','장비 탑재 슬래브 보강상태','외벽 전도방지 조치','잔재물 적치상태','잔재물 반출상태','석면 해체 완료 확인','인접 건축물 보호조치']
 };
 /** 이름을 바꾼 캡션: 예전 이름으로 찍은 사진도 그대로 「찍음」으로 셈 (새 이름 ← 예전 이름들) */
 const SHOT_ALIAS = {
@@ -4253,19 +4317,22 @@ function shotSpecVal(cap, grp) {
 /** 점검유형(없으면 점검항목 이름)으로 공종 찾기 */
 function shotGroup(insp) {
   const m = meta(insp), t = (m.type || '') + ' ' + insp;
-  return /흙막이/.test(t) ? '흙막이지보공' : /합벽/.test(t) ? '합벽지지대' : /동바리|거푸집|갱폼/.test(t) ? '거푸집 및 동바리'
+  return /흙막이/.test(t) ? '흙막이지보공' : /합벽/.test(t) ? '합벽지지대' : /해체/.test(t) ? '해체공사' : /동바리|거푸집|갱폼/.test(t) ? '거푸집 및 동바리'
     : /천공|항타|항발/.test(t) ? '천공기 및 항타기' : /[12]종\s*시설물/.test(t) ? '1.2종 시설물' : '';
 }
 function shotEntries(insp = shot.insp, custom = shotCustom) {
   const grp = shotGroup(insp), plan = [];
-  const add = (t, src, sec, base) => { if (!plan.some(x => shotNorm(x.t) === shotNorm(t))) plan.push({ t, src, sec, base: base || t }); };
+  const add = (t, src, sec, base, lib, uf) => { if (!plan.some(x => shotNorm(x.t) === shotNorm(t))) plan.push({ t, src, sec, base: base || t, lib, uf }); };
   const withSpec = (t, g) => { const v = shotSpecVal(t, g); return v ? `${t} (${v})` : t; };
+  const lib = shotLib.ok === true ? libView() : null, libOf = sec => lib ? lib.caps.filter(c => c.sec === sec) : [];
   SHOT_CAPS['공통'].forEach(t => add(t, 'plan', '공통'));
-  if (grp) SHOT_CAPS[grp].forEach(t => add(withSpec(t, grp), 'plan', grp, t));
+  libOf('공통').forEach(c => add(c.t, 'lib', '공통', c.t, c));
+  if (grp) { SHOT_CAPS[grp].forEach(t => add(withSpec(t, grp), 'plan', grp, t)); libOf(grp).forEach(c => add(c.t, 'lib', grp, c.t, c)); }
+  if (lib) lib.filters.forEach(f => libOf(f.name).forEach(c => add(c.t, 'lib', f.name, c.t, c, true)));
   custom.forEach(t => add(t, 'custom', '직접 추가'));
   const items = srv.items.filter(o => o.insp === insp && o.kind === '현황' && !o.del), used = new Set();
   plan.forEach(e => {                                     // 설계 규격이 바뀌었거나 예전 이름으로 찍은 사진도 같은 캡션으로 셈
-    const keys = new Set([e.t, e.base].concat(SHOT_ALIAS[e.base] || []).map(shotNorm)), b = shotNorm(e.base);
+    const keys = new Set([e.t, e.base].concat(SHOT_ALIAS[e.base] || [], (e.lib && e.lib.old) || []).map(shotNorm)), b = shotNorm(e.base);
     e.os = items.filter(o => !used.has(o.id) && (keys.has(shotNorm(o.caption)) || (e.base !== e.t && shotNorm(o.caption).startsWith(b + ' ('))));
     e.os.forEach(o => used.add(o.id)); });
   const rest = items.filter(o => !used.has(o.id)), byCap = {};
@@ -4295,20 +4362,27 @@ function renderShot() {
   $('#shotN').innerHTML = `<b>${nDone}</b> / ${list.length}`;
   $('#shotPick').innerHTML = state.sel.length > 1 ? `<div class="shot-pick">${state.sel.map(s => `<button class="${s.item === insp ? 'on' : ''}" onclick="openShot('${esc(s.item)}')">${esc(s.item)}</button>`).join('')}</div>` : '';
   // 공통 / 공종 / 기타 묶음 필터
-  const secOf = e => e.sec === '공통' ? 'com' : (e.sec === '직접 추가' || e.sec === '그 밖에 찍은 사진') ? 'etc' : 'grp';
-  const secs = [['', '전체'], ['com', '공통'], ['grp', grp || '공종별'], ['etc', '기타']].filter(([k]) => !k || list.some(e => secOf(e) === k));
+  const secOf = e => e.sec === '공통' ? 'com' : e.uf ? 'f:' + e.sec : (e.sec === '직접 추가' || e.sec === '그 밖에 찍은 사진') ? 'etc' : 'grp';
+  const ufs = shotLib.ok === true ? libView().filters.map(f => ['f:' + f.name, f.name]) : [];
+  const secs = [['', '전체'], ['com', '공통'], ['grp', grp || '공종별']].concat(ufs, [['etc', '기타']]).filter(([k]) => !k || list.some(e => secOf(e) === k));
   if (shot.sec && !secs.some(([k]) => k === shot.sec)) shot.sec = '';
   const fl = shot.sec ? list.filter(e => secOf(e) === shot.sec) : list;
   $('#shotSec').innerHTML = secs.length > 2 ? secs.map(([k, l]) => { const sub = k ? list.filter(e => secOf(e) === k) : list;
-    return `<button class="${(shot.sec || '') === k ? 'on' : ''}" onclick="shot.sec='${k}';renderShot()">${esc(l)} <em>${sub.filter(e => e.st === 'done').length}/${sub.length}</em></button>`; }).join('') : '';
+    return `<button class="${(shot.sec || '') === k ? 'on' : ''}" data-k="${esc(k)}" onclick="shot.sec=this.dataset.k;renderShot()">${esc(l)} <em>${sub.filter(e => e.st === 'done').length}/${sub.length}</em></button>`; }).join('') : '';
   const fDone = fl.filter(e => e.st === 'done').length;
   $('#shotTabs').innerHTML = [['all', '전체', fl.length], ['todo', '미촬영', fl.length - fDone], ['done', '완료', fDone]]
     .map(([k, l, n]) => `<button class="${shot.tab === k ? 'on' : ''}" onclick="shot.tab='${k}';renderShot()">${l} (${n})</button>`).join('');
   const show = list.map((e, i) => ({ e, i })).filter(({ e }) => (!shot.sec || secOf(e) === shot.sec) && (shot.tab === 'all' || (shot.tab === 'done' ? e.st === 'done' : e.st !== 'done')));
   window._shot = list;
-  { const k = list.findIndex(e => e.st === 'todo' && !e.o && (!shot.sec || (e.sec === '공통' ? 'com' : (e.sec === '직접 추가' || e.sec === '그 밖에 찍은 사진') ? 'etc' : 'grp') === shot.sec)); if (k >= 0) list[k].nx = true; }
+  { const k = list.findIndex(e => e.st === 'todo' && !e.o && (!shot.sec || secOf(e) === shot.sec)); if (k >= 0) list[k].nx = true; }
   let lastSec = '';
+  const keepT = $('#shotNewT') ? $('#shotNewT').value : '', keepF = $('#shotNewF') ? $('#shotNewF').value : '';   // 자동 반영 때 입력 중인 글자 유지
+  const nsec = shotNewSec(grp);
   $('#shotList').innerHTML = (shot.adding ? `<div class="shot-new"><input id="shotNewT" type="text" placeholder="새 캡션 (예: 3층 슬래브 거푸집 설치 상태)" maxlength="80">
+      ${shotLib.ok === true ? `<div class="sn-f"><span class="lb">필터</span>${shotSecChoices(grp).map(([k, l, del]) => `<span class="sn-c"><button type="button" class="${nsec === k ? 'on' : ''}" data-k="${esc(k)}" onclick="shotPickSec(this.dataset.k)">${esc(l)}</button>${del ? `<button type="button" class="sn-x" aria-label="${esc(k)} 필터 지우기" data-id="${esc(del)}" onclick="shotDelFilter(this.dataset.id)">×</button>` : ''}</span>`).join('')}<button type="button" class="${nsec === '__new' ? 'on' : ''} sn-add" onclick="shotPickSec('__new')">+ 새 필터</button></div>
+      <input id="shotNewF" type="text" placeholder="새 필터 이름 (예: 가설전기) — 모든 사람이 같이 씁니다" maxlength="20" ${nsec === '__new' ? '' : 'hidden'}>
+      <div class="hint" style="margin:0">추가한 캡션과 필터는 모든 사용자에게 바로 보입니다.</div>`
+        : shotLib.ok === false ? '<div class="hint" style="margin:0">서버(Code.gs)를 새 버전으로 바꾸면 추가한 캡션을 모든 사용자가 같이 씁니다. 지금은 이 기기에만 저장됩니다.</div>' : ''}
       <div class="row"><button class="btn ghost sm" onclick="shot.adding=false;renderShot()">취소</button><button class="btn sm" onclick="shotAddSave(false)">목록에 추가</button><button class="btn acc sm" onclick="shotAddSave(true)">추가하고 바로 촬영</button></div></div>` : '')
     + (show.map(({ e, i }) => {
       const no = '#' + String(i + 1).padStart(2, '0'), o = e.o, src = o ? slotSrc(o, photoSlots(o)[0] || 'b') : '';
@@ -4325,11 +4399,12 @@ function renderShot() {
       const floors = [...new Set(e.os.map(x => x.floor).filter(Boolean))];
       return head + `<div class="sh-card ${e.st} ${e.nx ? 'nx' : ''}" data-i="${i}" onclick="shotTap(${i})">
         <div class="sh-m"><div class="sh-t">${badge}<span class="sh-no">${no}</span><span class="sh-cap">${esc(e.t)}</span></div>
-        ${tag || o || e.src === 'custom' ? `<div class="sh-sub">${tag}${floors.length ? `<span class="sh-loc">${esc(floors.join(' · '))}</span>` : ''}${o && e.src !== 'item' ? `<button class="sh-more" onclick="event.stopPropagation();shotQuick(${i})">+ 다른 층 추가 촬영</button><button class="sh-more" onclick="event.stopPropagation();shotQuick(${i},true)">+ 앨범에서</button>` : ''}${e.src === 'custom' && !o ? `<button class="sh-del" onclick="event.stopPropagation();shotDel(${i})">목록에서 빼기</button>` : ''}</div>` : ''}</div>
+        ${tag || o || e.src === 'custom' || e.src === 'lib' ? `<div class="sh-sub">${tag}${floors.length ? `<span class="sh-loc">${esc(floors.join(' · '))}</span>` : ''}${o && e.src !== 'item' ? `<button class="sh-more" onclick="event.stopPropagation();shotQuick(${i})">+ 다른 층 추가 촬영</button><button class="sh-more" onclick="event.stopPropagation();shotQuick(${i},true)">+ 앨범에서</button>` : ''}${e.src === 'custom' && !o ? `<button class="sh-del" onclick="event.stopPropagation();shotDel(${i})">목록에서 빼기</button>` : ''}${e.src === 'lib' ? `<button class="sh-del" onclick="event.stopPropagation();shotLibEdit(${i})">수정</button>${o ? '' : `<button class="sh-del" onclick="event.stopPropagation();shotLibDel(${i})">목록에서 빼기</button>`}` : ''}</div>` : ''}</div>
         ${right}</div>`;
     }).join('') || `<div class="empty">${shot.tab === 'done' ? '아직 찍은 사진이 없습니다.' : shot.tab === 'todo' ? '모두 찍었습니다.' : '찍을 캡션이 없습니다. 아래 「새 캡션 항목 추가」를 누르거나 기본캡션에 현황 문구를 넣어 주세요.'}</div>`);
   fetchThumbs(list.filter(e => e.o).map(e => e.o));
-  if (shot.adding) setTimeout(() => { const el = $('#shotNewT'); el && el.focus(); }, 30);
+  if (shot.adding) { if (keepT) $('#shotNewT').value = keepT; if (keepF && $('#shotNewF')) $('#shotNewF').value = keepF;
+    if (!keepT && !keepF) setTimeout(() => { const el = $('#shotNewT'); el && el.focus(); }, 30); }
 }
 /** 카드 누르기: 미촬영 → 바로 카메라 / 찍은 것 → 내용 · 사진 고치기 */
 function shotTap(i) { const e = window._shot[i]; if (!e) return; if (e.o) openEdit(e.o.id); else shotTake(i); }
@@ -4398,8 +4473,66 @@ function shotAgain() {
   const inp = $('#shotCam'); inp.value = ''; inp.click();
 }
 function shotAdd() { shot.adding = true; shot.tab = 'all'; renderShot(); $('#shotSheet').scrollTop = 0; }
+/** 추가 화면 필터 목록: [값, 이름, 지울 수 있는 사용자 필터 id] */
+function shotSecChoices(grp) {
+  const v = libView(), out = [['공통', '공통']];
+  if (grp) out.push([grp, grp]);
+  v.filters.forEach(f => out.push([f.name, f.name, !f.tmp && !v.caps.some(c => c.sec === f.name) ? f.id : '']));
+  return out;
+}
+function shotNewSec(grp) {
+  if (shot.newSec) return shot.newSec;
+  return shot.sec === 'com' ? '공통' : shot.sec && shot.sec.startsWith('f:') ? shot.sec.slice(2) : (grp || '공통');
+}
+function shotPickSec(k) {
+  shot.newSec = k;
+  document.querySelectorAll('.sn-f button[data-k]').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+  const a = $('.sn-f .sn-add'); a && a.classList.toggle('on', k === '__new');
+  const f = $('#shotNewF'); if (f) { f.hidden = k !== '__new'; if (k === '__new') f.focus(); }
+}
+async function shotDelFilter(id) {
+  const f = libView().filters.find(x => x.id === id); if (!f) return;
+  if (!confirm(`「${f.name}」 필터를 지울까요? (모든 사용자 목록에서 사라집니다)`)) return;
+  try { await libOp({ op: 'delFilter', id }, `촬영 필터 삭제 · ${f.name}`); if (shot.newSec === f.name) shot.newSec = ''; }
+  catch (e) { alert(errMsg(e)); }
+}
+async function shotLibEdit(i) {
+  const e = window._shot[i]; if (!e || !e.lib) return;
+  if (e.lib.tmp) { toast('아직 서버로 보내는 중입니다. 잠시 뒤 고쳐 주세요'); return; }
+  const nt = shotNorm(prompt('캡션 고치기 (모든 사용자 목록이 같이 바뀝니다)', e.t) || '');
+  if (!nt || nt === shotNorm(e.t)) return;
+  if (window._shot.some(x => x !== e && x.src !== 'item' && shotNorm(x.t) === nt)) { toast(`「${nt}」는 이미 목록에 있습니다`); return; }
+  try { await libOp({ op: 'editCap', id: e.lib.id, sec: e.lib.sec, t: nt }, `촬영 캡션 수정 · ${nt}`); } catch (x) { alert(errMsg(x)); }
+}
+async function shotLibDel(i) {
+  const e = window._shot[i]; if (!e || !e.lib) return;
+  if (e.lib.tmp) { toast('아직 서버로 보내는 중입니다. 잠시 뒤 다시 눌러 주세요'); return; }
+  if (!confirm(`「${e.t}」를 목록에서 뺄까요? (모든 사용자 목록에서 빠집니다)`)) return;
+  try { await libOp({ op: 'delCap', id: e.lib.id }, `촬영 캡션 빼기 · ${e.t}`); } catch (x) { alert(errMsg(x)); }
+}
 async function shotAddSave(go) {
   const t = shotNorm($('#shotNewT').value); if (!t) { toast('캡션을 입력하세요'); return; }
+  if (shotLib.ok === true) {                            // 공용 목록에 추가 (필터 고르기 · 새 필터)
+    const grp = shotGroup(shot.insp); let sec = shotNewSec(grp);
+    if (sec === '__new') {
+      const nm = shotNorm($('#shotNewF').value); if (!nm) { toast('새 필터 이름을 입력하세요'); return; }
+      if (['전체', '기타', '직접 추가', '그 밖에 찍은 사진'].includes(nm)) { toast(`「${nm}」은 필터 이름으로 쓸 수 없습니다`); return; }
+      if (!(nm in SHOT_CAPS) && !libView().filters.some(f => f.name === nm)) {
+        try { await libOp({ op: 'addFilter', name: nm }, `촬영 필터 추가 · ${nm}`); } catch (e) { alert(errMsg(e)); return; }
+      }
+      sec = nm;
+    }
+    const v = libView(), inGrp = (SHOT_CAPS[sec] || []).concat(sec === '공통' ? [] : SHOT_CAPS['공통']);
+    const dup = inGrp.find(x => shotNorm(x) === t) || (v.caps.find(c => (c.sec === sec || c.sec === '공통') && shotNorm(c.t) === t) || {}).t
+      || (window._shot.find(e => e.src !== 'item' && shotNorm(e.t) === t) || {}).t;
+    if (dup) { toast(`「${dup}」는 이미 목록에 있습니다`); return; }
+    try { await libOp({ op: 'addCap', sec, t }, `촬영 캡션 추가 · ${sec} · ${t}`); } catch (e) { alert(errMsg(e)); return; }
+    shot.adding = false; shot.newSec = '';
+    if (shot.sec && shot.sec !== (sec === '공통' ? 'com' : sec === grp ? 'grp' : 'f:' + sec)) shot.sec = '';
+    renderShot();
+    if (go) { const i = window._shot.findIndex(e => shotNorm(e.t) === t && !e.o); if (i >= 0) shotTake(i); }
+    return;
+  }
   const dup = window._shot.find(e => e.src !== 'item' && shotNorm(e.t) === t);
   if (dup) { toast(`「${dup.t}」는 이미 목록에 있습니다`); return; }
   if (!shotCustom.includes(t)) shotCustom.push(t);
@@ -6455,7 +6588,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261126-1525';
+window.APP_VER = '20261128-1014';
 </script>
 </body>
 </html>
