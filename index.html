@@ -13,6 +13,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
 <script src="config.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 :root{--bg:#f3f5f8;--card:#fff;--ink:#1d2733;--muted:#6b7785;--line:#dde3ea;--pri:#1f5fbf;--bad:#c0392b;--ok:#2e8b57;--warn:#d9822b}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -1015,6 +1016,175 @@ body[data-pg="home"] .nav-back{display:none}
 .shot-sec button em{font-style:normal;font-weight:600;font-size:12px;color:var(--muted);margin-left:2px}
 .shot-sec button.on{background:var(--navy);border-color:var(--navy);color:#fff}
 .shot-sec button.on em{color:#c4d2e0}
+
+/* ==== 모바일 개편 (11/28 D): 토스 디자인 시스템 참고 — 배경 #F2F4F6 · 카드 #FFF · 포인트 #3182F6 · 글자 #191F28 ==== */
+body,input,select,textarea,button{font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+.hm4,.m-menu{display:none}.m-more,.m-site{display:none!important}
+@media (max-width:1023px){
+  :root{--bg:#F2F4F6;--card:#FFFFFF;--ink:#191F28;--muted:#6B7684;--line:#E5E8EB;--navy:#3182F6;--navy2:#1B64DA;--pri:#3182F6;--acc:#3182F6;--acc2:#1B64DA;--sh:none;--sh2:none}
+  body{background:var(--bg);color:var(--ink);padding-bottom:calc(24px + env(safe-area-inset-bottom));letter-spacing:-.01em}
+  .bnav{display:none!important}
+  .hw-only{display:none!important}
+  header{background:var(--bg);color:var(--ink);box-shadow:none;border:0;padding:calc(8px + env(safe-area-inset-top)) 12px 8px 16px;font-size:20px;font-weight:700}
+  header .logo.m-only{display:none}
+  header .ttl small{display:none}
+  header button{border:0;background:transparent;color:var(--ink)}
+  header .nav-back{margin-left:-8px}
+  #adminBtn{display:none}
+  header button.on{background:#E8F3FF;color:var(--navy)}
+  .m-menu{display:flex;width:40px;height:40px;align-items:center;justify-content:center;padding:0!important;border-radius:12px!important}
+  .m-menu .ic{width:24px;height:24px}
+  .savest.ing{background:#E8F3FF;color:#1B64DA}.savest.ok{background:#E5F8EE;color:#0A8F55}
+  .topbar,body[data-pg="home"] .topbar{background:#fff;color:var(--ink);margin:0 0 12px;padding:20px;border-radius:20px;border:0}
+  .topbar .srch input,.topbar select,.tb2 input,.tb2 .who-box{background:#F2F4F6;border:0;color:var(--ink);border-radius:12px;min-height:48px}
+  .topbar select{font-weight:700;font-size:17px;background-image:linear-gradient(45deg,transparent 50%,#8B95A1 50%),linear-gradient(135deg,#8B95A1 50%,transparent 50%)}
+  .topbar .srch input::placeholder,.topbar .srch .ic,.topbar .hint#svcInfo{color:#8B95A1}
+  .topbar label{color:#6B7684}
+  .tb2 input{color-scheme:light}
+  .card{border:0;border-radius:20px;box-shadow:none}
+  .btn{border-radius:14px;min-height:50px}
+  .btn.sm{min-height:40px;border-radius:12px}
+  .btn.xs{border-radius:10px}
+  body[data-pg="home"]:not(.hm-dash) .hm>:not(.hm4){display:none}
+  body[data-pg="home"].hm-dash .hm4{display:none!important}
+  body[data-pg="home"] .hm-hero{margin-top:0}
+  .hm4{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .hm4 button{position:relative;aspect-ratio:1/1;max-height:200px;width:100%;border:0;border-radius:20px;background:#fff;padding:20px;text-align:left;font:inherit;font-size:19px;font-weight:700;color:#191F28;letter-spacing:-.02em;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s ease,background .12s ease}
+  .hm4 button:active{transform:scale(.97);background:#F9FAFB}
+  .hm4 button span{position:absolute;left:20px;top:20px;right:20px;line-height:1.35}
+  .hm4 button svg{position:absolute;right:16px;bottom:16px;width:64px;height:64px}
+  .moregrid button{border:0;border-radius:16px;background:#F2F4F6;height:56px}
+  .phm{border-radius:24px 24px 0 0}
+  .view .vh h2{font-size:22px}
+  .bar{border-radius:20px 20px 0 0}
+  .topbar select{background-color:#F2F4F6;background-position:calc(100% - 22px) 50%,calc(100% - 16px) 50%;background-size:6px 6px;background-repeat:no-repeat;-webkit-appearance:none;appearance:none;padding-right:36px}
+  .view[data-v="insp"]>.vh,.view[data-v="insp"]>.menu.m3{background:transparent;margin:0;padding:4px 4px 0}
+  .view[data-v="insp"]>.menu.m3{padding:12px 0 16px;gap:12px}
+  .view[data-v="insp"]>.vh h2{color:var(--ink)}
+  .view[data-v="insp"]>.vh small{color:var(--muted)}
+  .view[data-v="insp"]>.menu.m3 button{background:#fff;border:0;color:var(--ink);border-radius:20px;min-height:88px}
+  .view[data-v="insp"]>.menu.m3 button .ic{color:var(--navy)}
+  .menu button,.menu a.mlink,.kpi button,.drow{border-color:var(--line)}
+  .menu button,.menu a.mlink{border:0;border-radius:16px}
+  #buildXBtn{flex:1;background:var(--navy);border:0;color:#fff}
+  #buildXBtn:disabled{background:#E5E8EB;color:#B0B8C1}
+  .sg-card{border-radius:20px;padding:20px;box-shadow:none}
+  .shot-addbtn{border-radius:16px}
+  /* 11/28 D-2: 하위 화면 간소화 */
+  body:not([data-pg="home"]) .topbar{display:none}
+  body:not([data-pg="home"]) .m-site{display:block!important}
+  .m-site{display:none;border:0;background:none;padding:0!important;margin-top:1px;font:inherit;font-size:13px;font-weight:600;color:var(--muted)!important;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+  .m-hide,.view>.vh small,.view>.hint,#inspPick>label{display:none}
+  .view:not([data-v="insp"])>.vh{display:none}
+  .mx-wrap:not(.open) .mx,.mx0{display:none!important}
+  .m-more{display:flex!important;color:var(--muted)!important}
+  .mx-wrap.open .m-more{order:9}
+  .view[data-v="insp"]>.menu.m3{display:flex;padding:0 0 12px;gap:8px;flex-wrap:wrap}
+  .view[data-v="insp"]>.menu.m3 button{min-height:44px;flex:1 1 30%;border-radius:14px;flex-direction:row;justify-content:center;font-size:14px;padding:0 12px}
+  .view[data-v="insp"]>.menu.m3 button .ic{width:18px;height:18px}
+  .view[data-v="insp"]>.menu.m3 .m-more{flex:0 0 auto;margin-left:auto;background:transparent!important;min-height:36px}
+  .view[data-v="insp"]>.menu.m3:not(.open){justify-content:flex-end;padding-bottom:4px}
+  .sp-menu{display:flex;flex-direction:column;gap:0;background:#fff;border-radius:20px;padding:8px 0;overflow:hidden}
+  .view[data-v="insp"]>.vh{display:none}
+  .sp-menu button .ml small{display:none}
+  .sp-menu button{display:flex!important;flex-direction:row!important;align-items:center;justify-content:flex-start!important;gap:14px;text-align:left;width:100%;min-height:60px;border-radius:0;background:#fff;padding:0 20px;font-size:17px;font-weight:600;box-shadow:none}
+  .sp-menu button.pri{background:#fff!important;color:var(--ink)!important;box-shadow:none!important;border:0!important}
+  .sp-menu button.pri .ic{color:var(--navy)!important}
+  .sp-menu button .ic{color:var(--navy);width:24px;height:24px}
+  .sp-menu button.m-more{font-size:15px;min-height:52px}
+  #moreGrid [data-v="insp"],#moreGrid [data-v="spec"],#moreGrid [data-v="survey"]{display:none}
+  .sh-card,.sh-card.ing{border:0;border-radius:16px;box-shadow:none;padding:12px 12px 12px 16px}
+  .sh-card.nx{box-shadow:inset 0 0 0 2px var(--navy)}
+  .sh-tag.todo{display:none}
+  .sh-dot{background:#D1D6DB}
+  .sh-card.nx .sh-dot{background:var(--navy)}
+  .sh-alb{border:0;background:#F2F4F6;border-radius:12px}
+  .sh-cam,.sh-th{border:0;border-radius:12px}
+  .sh-card.nx .sh-cam{background:var(--navy);color:#fff}
+  .shot-new{border:0;border-radius:20px;padding:20px}
+  .shot-new input{border:0;background:#F2F4F6;border-radius:12px}
+  .shot-again .sa-go{background:var(--navy);border-radius:16px}
+  .shot-top{box-shadow:none}
+}
+
+/* ==== 11/28 D-3: TDS 공통 컴포넌트 (휴대폰) — 토큰 → Top · ListRow · Chip · Segmented · BottomSheet · BottomCTA · Toast ==== */
+@media (max-width:1023px){
+  :root{--t-gx:20px;--t-r:20px;--t-r2:14px;--t-row:56px;--t-fill:#F2F4F6;--t-fill2:#E8F3FF;--t-sub:#4E5968;--t-hint:#8B95A1;--t-div:#F2F4F6}
+  main{padding:0 var(--t-gx) 24px}
+  body:not([data-pg="home"]) main{background:#fff;min-height:calc(100vh - 72px)}
+  /* Top */
+  header{background:#fff;padding:calc(10px + env(safe-area-inset-top)) 12px 10px var(--t-gx)}
+  body[data-pg="home"] header{background:var(--bg)}
+  #pageTitle{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1.25}
+  .m-site{font-size:14px!important;margin-top:2px}
+  /* 홈: 현장 선택 축소 */
+  .topbar .srch,.topbar #svcInfo{display:none}
+  .topbar,body[data-pg="home"] .topbar{padding:16px;border-radius:var(--t-r)}
+  .topbar select{min-height:52px;font-size:18px;background-color:transparent!important;padding-left:4px}
+  .tb2{margin-top:4px;gap:8px}.tb2 label{display:none}
+  .tb2 input,.tb2 .who-box{min-height:40px!important;font-size:15px;background:var(--t-fill)!important;display:flex;align-items:center}
+  /* Chip (한 줄 가로 스크롤) */
+  .chips,.chips.wrapc{flex-wrap:nowrap!important;overflow-x:auto!important;scrollbar-width:none;gap:8px;padding:4px 0 12px}
+  main .view .chips{margin:0 calc(-1*var(--t-gx));padding-left:var(--t-gx);padding-right:var(--t-gx)}
+  .chips::-webkit-scrollbar{display:none}
+  .chip,.shot-floor button,.shot-sec button,.sn-f button{flex:0 0 auto;height:36px;min-height:36px;padding:0 14px;border:0!important;border-radius:18px;background:var(--t-fill)!important;color:var(--t-sub)!important;font-size:15px;font-weight:600;opacity:1!important}
+  .chip.on,.shot-floor button.on,.shot-sec button.on,.sn-f button.on{background:#191F28!important;color:#fff!important}
+  .shot-sec button em{color:inherit;opacity:.6}
+  /* ListRow */
+  #inspPick{background:transparent;padding:0;margin:0}
+  .ichips{display:flex!important;flex-direction:column;gap:0;margin:0 calc(-1*var(--t-gx))}
+  .ichip{display:grid;grid-template-columns:minmax(0,1fr) auto 12px;align-items:center;gap:8px;min-height:var(--t-row);padding:12px var(--t-gx);border:0!important;border-radius:0;background:#fff!important;color:var(--ink)!important}
+  .ichip+.ichip{box-shadow:inset 0 1px 0 var(--t-div)}
+  .ichip b{font-size:17px;font-weight:600;color:var(--ink)}
+  .ichip small{grid-column:2;grid-row:1;margin:0;font-size:14px;color:var(--t-hint)!important}
+  .ichip i{position:static;grid-column:2;grid-row:1;display:none}
+  .ichip::after{content:'';grid-column:3;width:8px;height:8px;border-right:2px solid #B0B8C1;border-top:2px solid #B0B8C1;transform:rotate(45deg)}
+  .ichip.fin:not(.on) b{color:var(--t-hint)}
+  .ichip.on{background:var(--t-fill2)!important}.ichip.on b{color:var(--navy)}.ichip.on small{color:var(--navy)!important}
+  .add-row{background:none!important;color:var(--navy)!important;border:0!important;min-height:48px;width:100%;justify-content:flex-start;padding:0;font-size:16px}
+  .sec-h{font-size:20px;font-weight:700;margin:24px 0 8px}
+  #sections .card{background:#fff;box-shadow:inset 0 0 0 1px var(--line)}
+  /* Button */
+  .btn.ghost{background:var(--t-fill2);color:var(--navy);border:0}
+  .btn{font-size:16px}
+  /* BottomCTA */
+  .bar{background:#fff;box-shadow:none;border-top:1px solid var(--t-div);padding:12px var(--t-gx) calc(12px + env(safe-area-inset-bottom))}
+  #buildXBtn{min-height:56px;border-radius:16px;font-size:17px}
+  /* BottomSheet + 메뉴(ListRow) */
+  .phmenu{background:rgba(0,0,0,.4)}
+  .phm{padding:12px 0 calc(16px + env(safe-area-inset-bottom));border-radius:24px 24px 0 0}
+  .phm>.ch{padding:4px var(--t-gx) 8px}.phm>.ch b{font-size:20px}
+  .moregrid{grid-template-columns:1fr!important;gap:0}
+  .moregrid button{height:var(--t-row);border-radius:0;background:#fff!important;padding:0 var(--t-gx);gap:14px;font-size:17px;font-weight:500;justify-content:flex-start}
+  .moregrid button .ic{width:36px;height:36px;padding:8px;border-radius:12px;background:var(--t-fill);color:var(--t-sub);box-sizing:border-box}
+  .moregrid button:active{background:var(--t-fill)!important}
+  /* Toast: 검은 팝업 대신 밝은 알림 */
+  .toast{width:max-content;max-width:calc(100% - 40px);box-sizing:border-box;word-break:keep-all;background:#fff;color:var(--ink);border-radius:var(--t-r2);box-shadow:0 4px 16px rgba(0,0,0,.12);padding:14px 18px;font-size:15px;font-weight:500;bottom:calc(24px + env(safe-area-inset-bottom))}
+  /* 현장사진: 층 · 분류 · 촬영 상태 한 덩어리 */
+  .shot-top{background:#fff}
+  .shot-head{padding-left:8px}
+  #shotT{font-size:20px}
+  .shot-floor{padding:0 var(--t-gx) 8px;gap:8px}.shot-floor .lb{display:none}
+  .shot-sec{border:0;padding:0 var(--t-gx) 10px;gap:8px;background:#fff}
+  .shot-tabs{display:flex;margin:4px var(--t-gx) 10px;background:var(--t-fill);border:0;border-radius:12px;padding:3px}
+  .shot-tabs button{flex:1;padding:8px 4px;font-size:14px;border:0;border-radius:10px;color:var(--t-sub)}
+  .shot-tabs button::before{display:none}
+  .shot-tabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  #shotSheet .panel.shot{background:#fff}
+  .shot-list{padding:0 var(--t-gx)!important;gap:0!important}
+  .sh-card,.sh-card.ing{border-radius:0;padding:12px 0;min-height:76px;background:#fff;box-shadow:inset 0 -1px 0 var(--t-div)}
+  .sh-card.nx{box-shadow:inset 0 -1px 0 var(--t-div)}
+  .sh-card.nx .sh-cap{color:var(--navy)}
+  .sh-sec{padding:20px 0 4px;font-size:14px;color:var(--t-hint)}
+  .sh-cap{font-size:17px;font-weight:600}
+  .sh-alb,.sh-cam{width:52px;height:52px}
+  .shot-foot{background:#fff;border-top:1px solid var(--t-div);padding:12px var(--t-gx) calc(12px + env(safe-area-inset-bottom))}
+  /* 현장 시험 창: 밝은 머리 */
+  .sg-top{background:#fff;color:var(--ink);border-bottom:1px solid var(--t-div)}
+  .sg-back{background:var(--t-fill);color:var(--ink)}
+  .sg-new{color:var(--navy)}
+  #sgSheet{background:#fff}
+}
 </style>
 </head>
 <body>
@@ -1071,9 +1241,10 @@ body[data-pg="home"] .nav-back{display:none}
     <header>
       <button id="navBack" class="nav-back" aria-label="뒤로" onclick="navBack()"><svg class="ic"><use href="#i-back"/></svg></button>
       <span class="logo m-only"><svg class="ic"><use href="#i-shield"/></svg></span>
-      <div class="ttl"><span id="pageTitle">안전점검 통합관리</span><small id="hdrSub">현장 점검 · 사진 → 엑셀 자동 작성</small></div>
+      <div class="ttl"><span id="pageTitle">안전점검 통합관리</span><small id="hdrSub">현장 점검 · 사진 → 엑셀 자동 작성</small><button class="m-site" id="hdrSite" onclick="go('home')"></button></div>
       <span class="savest" id="saveSt"></span>
       <button id="calBack" style="display:none" onclick="backToCal()">← 달력</button>
+      <button class="m-menu" aria-label="메뉴" onclick="openMore()"><svg class="ic"><use href="#i-grid"/></svg></button>
       <button id="adminBtn" onclick="toggleAdmin()"><svg class="ic sm"><use href="#i-lock"/></svg><span>관리자</span></button>
     </header>
 
@@ -1094,6 +1265,12 @@ body[data-pg="home"] .nav-back{display:none}
       <!-- ① 대시보드 -->
       <section class="view" data-v="home">
         <div class="hm">
+          <div class="hm4">
+            <button onclick="go('insp')"><span>점검항목</span><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="8" width="44" height="52" rx="9" fill="#3182F6"/><rect x="17" y="17" width="30" height="36" rx="4" fill="#fff"/><rect x="22" y="4" width="20" height="10" rx="5" fill="#1B64DA"/><path d="M23 35l6 6 12-13" fill="none" stroke="#3182F6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button onclick="hmShoot()"><span>현장사진</span><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="22" y="10" width="20" height="10" rx="4" fill="#4E5968"/><rect x="5" y="16" width="54" height="40" rx="11" fill="#333D4B"/><circle cx="32" cy="36" r="13" fill="#fff"/><circle cx="32" cy="36" r="8" fill="#3182F6"/><circle cx="49" cy="25" r="3" fill="#FFC342"/></svg></button>
+            <button onclick="go('spec')"><span>현장제원</span><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="22" width="56" height="22" rx="6" fill="#FFC342" transform="rotate(-30 32 33)"/><g fill="#B7791F" transform="rotate(-30 32 33)"><rect x="12" y="22" width="3" height="9" rx="1.5"/><rect x="20" y="22" width="3" height="6" rx="1.5"/><rect x="28" y="22" width="3" height="9" rx="1.5"/><rect x="36" y="22" width="3" height="6" rx="1.5"/><rect x="44" y="22" width="3" height="9" rx="1.5"/></g></svg></button>
+            <button onclick="$('#sgLink').click()"><span>현장시험</span><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="22" y="5" width="20" height="8" rx="4" fill="#0A8F55"/><path d="M26 11h12v15l15 23a7 7 0 0 1-6 11H17a7 7 0 0 1-6-11l15-23z" fill="#E5F8EE"/><path d="M18 40h28l7 9a7 7 0 0 1-6 11H17a7 7 0 0 1-6-11z" fill="#03B26C"/><circle cx="28" cy="50" r="3" fill="#fff"/><circle cx="37" cy="45" r="2" fill="#fff"/></svg></button>
+          </div>
           <div class="card hm-hero" id="dHero"></div>
           <div class="hm-act">
             <button class="hm-shoot" onclick="hmShoot()"><span class="hs-ic"><svg class="ic"><use href="#i-camera"/></svg></span><span class="hs-t"><b>현장 사진 촬영</b><small id="hmShotSub"></small><span class="hs-bar" id="hmShotBar"></span></span><span class="hs-go">›</span></button>
@@ -1101,7 +1278,7 @@ body[data-pg="home"] .nav-back{display:none}
               <button onclick="openMeasurePick()"><svg class="ic"><use href="#i-ruler"/></svg><span>현장 실측</span></button>
               <button onclick="go('insp')"><svg class="ic"><use href="#i-check"/></svg><span>결과 입력</span></button>
               <button onclick="quickDefect()"><svg class="ic"><use href="#i-alert"/></svg><span>지적 사항</span></button>
-              <button onclick="go('insp');buildAll()"><svg class="ic"><use href="#i-file"/></svg><span>사진대지</span></button>
+              <button class="hw-only" onclick="go('insp');buildAll()"><svg class="ic"><use href="#i-file"/></svg><span>사진대지</span></button>
               <button onclick="go('report')"><svg class="ic"><use href="#i-download"/></svg><span>보고서</span></button>
             </div>
           </div>
@@ -1165,16 +1342,17 @@ body[data-pg="home"] .nav-back{display:none}
       <!-- ③ 안전점검 관리 (점검 결과 입력) -->
       <section class="view" data-v="insp">
         <div class="vh"><h2>안전점검 관리 <span class="badge0" title="진행 중 점검"><b id="stIng">0</b> 진행 중</span></h2><small id="catInspSub">공종별 점검 선택</small></div>
-        <div class="menu m3">
-          <button onclick="document.getElementById('inspPick').scrollIntoView({behavior:'smooth'})"><svg class="ic"><use href="#i-layers"/></svg>공종별 점검</button>
-          <button onclick="ckFirst()"><svg class="ic"><use href="#i-check"/></svg>체크리스트</button>
-          <button onclick="openMismatch()"><svg class="ic"><use href="#i-alert"/></svg>불일치 항목</button>
+        <div class="menu m3 mx-wrap">
+          <button class="m-more" onclick="this.parentNode.classList.toggle('open')"><svg class="ic"><use href="#i-grid"/></svg>더보기</button>
+          <button class="mx0" onclick="document.getElementById('inspPick').scrollIntoView({behavior:'smooth'})"><svg class="ic"><use href="#i-layers"/></svg>공종별 점검</button>
+          <button class="mx" onclick="ckFirst()"><svg class="ic"><use href="#i-check"/></svg>체크리스트</button>
+          <button class="mx" onclick="openMismatch()"><svg class="ic"><use href="#i-alert"/></svg>불일치 항목</button>
         </div>
         <div class="card" id="inspPick">
           <div class="chips wrapc" id="catChips"></div>
-          <label>점검항목 <span class="muted">(누르면 바로 아래 「진행 중인 점검」에 열림 · 여러 개 가능)</span></label>
+          <label>점검항목 <span class="muted m-hide">(누르면 바로 아래 「진행 중인 점검」에 열림 · 여러 개 가능)</span></label>
           <div class="ichips" id="inspChips"></div>
-          <button class="btn ghost sm" style="margin-top:10px" onclick="addManual()">＋ 점검항목 직접 추가</button>
+          <button class="btn ghost sm add-row" style="margin-top:10px" onclick="addManual()">＋ 점검항목 직접 추가</button>
         </div>
         <div id="inspTodo"></div>
         <div id="inspArea">
@@ -1189,19 +1367,20 @@ body[data-pg="home"] .nav-back{display:none}
           <h3 class="sec-h" id="secH" style="display:none">진행 중인 점검</h3>
           <div id="sections"></div>
         </div>
-        <div class="bar"><button class="btn" id="buildBtn" onclick="buildAll()" disabled>사진대지 만들기</button><button class="btn ghost" id="buildXBtn" onclick="buildAll('xlsx')" disabled>엑셀·PDF</button></div>
+        <div class="bar"><button class="btn hw-only" id="buildBtn" onclick="buildAll()" disabled>사진대지 만들기</button><button class="btn ghost" id="buildXBtn" onclick="buildAll('xlsx')" disabled>엑셀·PDF</button></div>
       </section>
 
       <!-- ④ 제원 및 실측 관리 -->
       <section class="view" data-v="spec">
         <div class="vh"><h2>제원 및 실측 관리</h2><small id="catSpecSub">사전 제원 · 현장 실측 · 기준값 비교</small></div>
-        <div class="menu">
-          <button onclick="openSpecNew()"><svg class="ic"><use href="#i-plus"/></svg>사전 제원 등록</button>
+        <div class="menu mx-wrap sp-menu">
+          <button class="mx" onclick="openSpecNew()"><svg class="ic"><use href="#i-plus"/></svg>사전 제원 등록</button>
           <button onclick="openSpecList()"><svg class="ic"><use href="#i-folder"/></svg><span class="ml">사전 제원<small>공종별 조회</small></span></button>
           <button class="pri" onclick="openMeasurePick()"><svg class="ic"><use href="#i-ruler"/></svg>현장 실측 입력</button>
           <button onclick="openMsList()"><svg class="ic"><use href="#i-scale"/></svg>기준값 비교</button>
-          <button onclick="openMismatch()"><svg class="ic"><use href="#i-alert"/></svg>불일치 항목 조회</button>
-          <button onclick="openSpecCopy()"><svg class="ic"><use href="#i-copy"/></svg>다른 현장 제원 복사</button>
+          <button class="mx" onclick="openMismatch()"><svg class="ic"><use href="#i-alert"/></svg>불일치 항목 조회</button>
+          <button class="mx" onclick="openSpecCopy()"><svg class="ic"><use href="#i-copy"/></svg>다른 현장 제원 복사</button>
+          <button class="m-more" onclick="this.parentNode.classList.toggle('open')"><svg class="ic"><use href="#i-grid"/></svg>더보기</button>
         </div>
       </section>
 
@@ -1234,7 +1413,7 @@ body[data-pg="home"] .nav-back{display:none}
       <section class="view" data-v="report">
         <div class="vh"><h2>보고서 및 출력 관리</h2><small>점검 결과 정리 · 사진대지 · 비교 결과표 · 엑셀/PDF</small></div>
         <div class="menu">
-          <button class="pri" onclick="go('insp');buildAll()"><svg class="ic"><use href="#i-file"/></svg><span class="ml">사진대지 만들기<small>한글(HWPX) · 드라이브 저장</small></span></button>
+          <button class="pri hw-only" onclick="go('insp');buildAll()"><svg class="ic"><use href="#i-file"/></svg><span class="ml">사진대지 만들기<small>한글(HWPX) · 드라이브 저장</small></span></button>
           <button onclick="go('insp');buildAll('xlsx')"><svg class="ic"><use href="#i-download"/></svg><span class="ml">엑셀 · PDF 만들기<small>체크리스트 · 제원 비교 포함</small></span></button>
           <button onclick="openReportWait()"><svg class="ic"><use href="#i-list"/></svg><span class="ml">점검 결과 정리<small>작성 대기 · 완료</small></span></button>
           <button onclick="exportCompareUI()"><svg class="ic"><use href="#i-scale"/></svg><span class="ml">비교 결과표<small>엑셀 · PDF</small></span></button>
@@ -1258,7 +1437,7 @@ body[data-pg="home"] .nav-back{display:none}
           <button onclick="openSync()"><svg class="ic"><use href="#i-refresh"/></svg>통합관리 자동 반영</button>
         </div>
         <div class="card"><div class="ch"><b>등록된 사용자</b></div><div id="sysUsers"></div></div>
-        <div class="hint" style="text-align:center">화면 버전 <b>20261128-1943 · 2026-11-28 C</b></div>
+        <div class="hint" style="text-align:center">화면 버전 <b>20261128-2015 · 2026-11-28 E</b></div>
       </section>
     </main>
   </div>
@@ -2181,7 +2360,9 @@ function renderSvc() {
   renderSys();
   $('#hdrSub').textContent = me() ? `${me()}${isAdmin() ? ' · 관리자 모드' : ''} · 여러 명 동시 작업` : '현장 점검 · 사진 → 엑셀 자동 작성';
 }
+function hdrSite() { const e = $('#hdrSite'); if (!e) return; const s = state.svc && (boot && boot.svc || []).find(x => x.code === state.svc); e.textContent = s ? s.name : '현장을 선택하세요'; }
 function onSvcChange(v) {
+  setTimeout(hdrSite, 0);
   if (v === state.svc) return;
   state.svc = v; state.sel = [];
   if (v) { const r = (lsGet(LS_RECENT) || []).filter(x => x !== v); r.unshift(v); lsSet(LS_RECENT, r.slice(0, 6)); }
@@ -3381,7 +3562,8 @@ function go(v, opt) {
     navStack.push(curView); if (navStack.length > 40) navStack.shift();
     if (!GAS) try { history.pushState({ v }, ''); } catch (e) {}
   }
-  curView = v;
+  curView = v; hdrSite();
+  document.body.classList.toggle('hm-dash', !!(opt && opt.dash) && v === 'home');   // 휴대폰: 메뉴 「대시보드」는 예전 홈(일정·현황), 기본 홈은 4칸
   document.querySelectorAll('.view').forEach(el => el.classList.toggle('on', el.dataset.v === v));
   document.querySelectorAll('#sideNav [data-v], #bNav [data-v]').forEach(b => b.classList.toggle('on', b.dataset.v === v));
   const m = VIEWS.find(x => x.v === v);
@@ -3399,14 +3581,15 @@ function go(v, opt) {
 }
 function renderNav() {
   $('#sideNav').innerHTML = VIEWS.map(x => `<button data-v="${x.v}" class="${x.v === curView ? 'on' : ''}">${icon(x.i)}<span>${esc(x.t)}</span></button>`).join('');
-  $('#moreGrid').innerHTML = VIEWS.map(x => `<button data-v="${x.v}">${icon(x.i)}<span>${esc(x.t)}</span></button>`).join('')
-    + `<button onclick="openCal()">${icon('cal')}<span>점검 달력</span></button>`;
+  $('#moreGrid').innerHTML = VIEWS.map(x => `<button data-v="${x.v}"${x.v === 'home' ? ' data-dash="1"' : ''}>${icon(x.i)}<span>${esc(x.t)}</span></button>`).join('')
+    + `<button onclick="openCal()">${icon('cal')}<span>점검 달력</span></button>`
+    + `<button class="m-only2" onclick="$('#moreMenu').classList.remove('on');toggleAdmin()">${icon('lock')}<span>관리자</span></button>`;
 }
 document.addEventListener('click', e => {
   const b = e.target.closest('#sideNav [data-v], #bNav [data-v], #moreGrid [data-v]');
   if (!b || b.dataset.v === 'more') return;
   if (!closeSheetsForNav()) return;
-  go(b.dataset.v);
+  go(b.dataset.v, b.dataset.dash ? { dash: 1 } : undefined);
 });
 /** 메뉴를 누르면 열려 있던 화면(조사 입력 · 목록 등)을 닫고 이동 — 저장 안 한 새 사진이 있으면 먼저 물어봄 */
 /** 위 「‹」 뒤로: 바로 전 화면 (없으면 홈) */
@@ -3553,7 +3736,7 @@ function renderSiteDetail() {
   } else if (t === 'ana') {
     renderAnaTab(); setTimeout(anAfterSetup, 0);
   } else if (t === 'report') {
-    B.innerHTML = `<div class="menu" style="margin-bottom:12px"><button class="pri" onclick="go('insp');buildAll()"><svg class="ic"><use href="#i-file"/></svg>사진대지 만들기 (한글)</button>
+    B.innerHTML = `<div class="menu" style="margin-bottom:12px"><button class="pri hw-only" onclick="go('insp');buildAll()"><svg class="ic"><use href="#i-file"/></svg>사진대지 만들기 (한글)</button>
       <button onclick="go('insp');buildAll('xlsx')"><svg class="ic"><use href="#i-download"/></svg>엑셀 · PDF</button>
       <button onclick="exportCompareUI()"><svg class="ic"><use href="#i-scale"/></svg><span class="ml">비교 결과표<small>엑셀 · PDF</small></span></button></div>
       <div class="card"><div class="ch"><b>보고서 작성 현황</b><small class="muted">점검별 자료 준비 상태</small></div>${reportRows(false)}</div>`;
@@ -3628,7 +3811,7 @@ function rpPreview() {
   const bad = ck ? ck.rows.filter(r2 => /부적정|미시행/.test(res[r2.no] || '')).length : 0;
   const ms = (srv.measures || []).filter(m => m.insp === item), sv = surveysOf(item);
   const th = (o, s2) => slotSrc(o, s2) ? `<img src="${slotSrc(o, s2)}" loading="lazy" alt="">` : '<span class="noimg"></span>';
-  P.innerHTML = `<div class="ch"><button class="lnk rpback" onclick="rp.item='';renderReport()">◀ 목록</button><b>${esc(item)}</b><span class="rp-acts">${hwReady[item] ? hwBtn(item) : ''}<button class="btn acc xs" onclick="buildOne('${esc(item)}')">사진대지 (한글)</button><button class="btn ghost xs" onclick="buildOne('${esc(item)}','xlsx')">엑셀·PDF</button></span></div>
+  P.innerHTML = `<div class="ch"><button class="lnk rpback" onclick="rp.item='';renderReport()">◀ 목록</button><b>${esc(item)}</b><span class="rp-acts">${hwReady[item] ? hwBtn(item) : ''}<button class="btn acc xs hw-only" onclick="buildOne('${esc(item)}')">사진대지 (한글)</button><button class="btn ghost xs" onclick="buildOne('${esc(item)}','xlsx')">엑셀·PDF</button></span></div>
     <div class="shstat"><div><b>${cur.length}</b><small>현황</small></div><div><b>${def.length}</b><small>지적</small></div><div><b>${ck ? Object.keys(res).length + '/' + ck.rows.length : '-'}</b><small>체크리스트</small></div><div class="${bad ? 'r' : ''}"><b>${bad}</b><small>부적정·미시행</small></div></div>
     ${cur.length ? `<h4 class="rph">현황 사진 (사진대지 순서)</h4><div class="rpg">${cur.map(o => `<button onclick="openViewer('${esc(o.id)}','b')">${th(o, 'b')}<span>${esc(o.caption || '')}</span></button>`).join('')}</div>` : ''}
     ${def.length ? `<h4 class="rph">지적사항 (조치 전 | 조치 후)</h4>${def.map((o, i) => `<div class="rpd"><button onclick="openViewer('${esc(o.id)}','b')">${th(o, 'b')}</button><button onclick="openViewer('${esc(o.id)}','a')">${th(o, 'a')}</button>
@@ -3661,6 +3844,7 @@ function renderInspTodo() {
 }
 /** 한 점검만 사진대지 */
 async function buildOne(item, mode) {
+  if (!mode && isMob()) mode = 'xlsx';
   const keep = state.sel.slice();
   if (!selOf(item)) state.sel.push({ item, tag: '', ck: null });
   const one = selOf(item); if (!keep.includes(one)) keep.push(one);
@@ -3685,10 +3869,23 @@ const AN_RES = ['적합', '보완 필요', '해당 없음'];
 const AN_LIB = GAS ? 'https://inseon10342-alt.github.io/anjeon/' : '';
 if (GAS && $('#sgLink')) { $('#sgLink').href = AN_LIB + 'sigeom/'; $('#sgNew').href = AN_LIB + 'sigeom/'; }
 /** 현장 시험·조사 앱: 안전점검 앱 안에 띄우고 위 「‹ 안전점검」으로 돌아옴 (한 번 연 화면은 그대로 유지) */
+/** 시험 앱 화면을 전체 앱과 같은 밝은 테마로 (시험 앱 파일은 그대로, 열 때 스타일만 덧씌움) */
+function sgLight() {
+  try {
+    const d = $('#sgFrame').contentDocument; if (!d || d.getElementById('tdsLight')) return;
+    const st = d.createElement('style'); st.id = 'tdsLight';
+    st.textContent = ':root{color-scheme:light;--k0:#F2F4F6;--k1:#FFFFFF;--k2:#FFFFFF;--k3:#F9FAFB;--k4:#F2F4F6;--kl:#E5E8EB;--kl2:#D1D6DB;--tx:#191F28;--tx2:#4E5968;--mu:#8B95A1;--dim:#B0B8C1;--acc:#3182F6;--acc2:#1B64DA;--cy:#3182F6;--ok:#03B26C;--wa:#FF9F0A;--er:#F04452;--navy:#FFFFFF;--navy2:#F9FAFB;--bg:#F2F4F6;--line:#E5E8EB;--muted:#8B95A1;--ink:#191F28;--in:#FFFFFF;--inb:#D1D6DB;--calc:#F9FAFB;--res:#E8F3FF}'
+      + 'html,body{font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif!important}.kv div{background:#F9FAFB}'
+      + '.brand b,.nav.on,.btn:hover,.home h1,.basis b,.mod .mt b,.wp h5,.rw b,.toolbar:before,.tool:hover,.empty-dwg b,.sph h2,.sec>h5,.inp.t,select.inp,.result .big,details.sec summary,.modal h3,.msub b{color:#191F28!important}'
+      + '.btn.dark{background:#3182F6;border-color:#3182F6;color:#fff}.inp,.inp:focus,.pinbar input{background:#fff;color:#191F28;border-color:#D1D6DB;border-bottom-color:#3182F6}.inp:focus{box-shadow:0 0 0 2px rgba(49,130,246,.2)}'
+      + '.result{background:#E8F3FF;border-color:#C9E2FF}.sbar,.bbar{background:#fff;border-top-color:#E5E8EB}.toast{background:#fff;color:#191F28;border-color:#E5E8EB;box-shadow:0 4px 16px rgba(0,0,0,.12)}.modal{background:rgba(0,0,0,.4)}.stage{background-color:#F9FAFB}.btn.pri,.btn.acc,.btn.pri:hover,.btn.acc:hover,.seg button.on,.sb-save{color:#fff!important}.btn.pri:hover,.btn.acc:hover{background:#1B64DA}::selection{background:rgba(49,130,246,.2)}*{scrollbar-color:#D1D6DB transparent}';
+    d.head.appendChild(st);
+  } catch (e) {}
+}
 function openSg(ev) {
   if (GAS) return true;                                   // 구글 주소로 열면 주소가 달라 새 창으로
   if (ev) ev.preventDefault();
-  const f = $('#sgFrame'); if (!f.src) f.src = 'sigeom/';
+  const f = $('#sgFrame'); if (!f.src) { f.onload = sgLight; f.src = 'sigeom/'; }
   $('#sgSheet').classList.add('on');
   try { history.pushState({ v: curView, sg: 1 }, ''); } catch (e) {}
   return false;
@@ -4288,23 +4485,23 @@ const SHOT_CAPS = {   // 캡션 작성 규칙(11/26): 뭉뚱그린 캡션 대신
   '해체공사': ['해체 대상 건축물 전경','해체 장비 제원 확인','해체 장비(압쇄기·브레이커) 작업상태','해체 순서 준수상태','살수 설비 가동상태','방진막·방음벽 설치상태','낙하물 방지망 설치상태','해체 작업구간 출입통제','신호수 배치','작업반경 내 근로자 접근통제','잭서포트(보강) 설치상태','장비 탑재 슬래브 보강상태','외벽 전도방지 조치','잔재물 적치상태','잔재물 반출상태','석면 해체 완료 확인','인접 건축물 보호조치']
 };
 /** 보고서 구성(11/28) 「구분」 = 사진대지·촬영 목록의 대제목. 캡션 → 구분은 아래 규칙으로 정함 (위에서부터 먼저 맞는 것) */
-const GUBUN = ['안전관리계획의 적정성', '주요 부재별 외관조사 결과의 분석', '조사, 시험 및 측정자료의 검토',
+// 11/28: 보고서 사진 구성 5개 항목 (안전관리계획의 적정성은 사진 없음 → 계획서 캡션은 「건설공사 안전관리 검토」로)
+const GUBUN = ['주요 부재별 외관조사 결과의 분석', '조사, 시험 및 측정자료의 검토',
   '인접건축물 또는 구조물 등 공사장 주변 안전조치의 적정성', '임시시설 및 가설공법의 안전성', '건설공사 안전관리 검토'];
 const GUBUN_RULES = [
-  [0, /안전관리계획|계획서 승인|시공계획서/],
-  [5, /안전교육|교육일지|CCTV|모니터링|비상|소방시설|지적사항|시정조치|시정 완료|자체 ?점검|안전관리조직|안전현수막|출입통제|접근통제|신호수|작업반경/],
-  [2, /측정|시험|계측|경사계|수위계|변형률계|하중계|침하계|수직도|품질/],
-  [1, /규격 확인|제원 확인/],
-  [3, /현장 전경|주변도로|인접 건축물|인접건축물|공사안내판|세륜|가설울타리|안전표지판|보행자|교통|미세먼지|소음|진동|분진|방진|방음|살수|균열|침하|지반|매설물|토사|누수|용수|지하수|인접 건축물 보호/],
-  [4, /설치상태 전경|계단|난간|분전반|위험물|개구부|추락|임시|낙하물|안전망|비계|발판|가설/]
+  [4, /안전관리계획|계획서 승인|시공계획서|안전교육|교육일지|CCTV|모니터링|비상|소방시설|지적사항|시정조치|시정 완료|자체 ?점검|안전관리조직|안전현수막|출입통제|접근통제|신호수|작업반경/],
+  [1, /측정|시험|계측|경사계|수위계|변형률계|하중계|침하계|수직도|품질/],
+  [0, /규격 확인|제원 확인/],
+  [2, /현장 전경|주변도로|인접 건축물|인접건축물|공사안내판|세륜|가설울타리|안전표지판|보행자|교통|미세먼지|소음|진동|분진|방진|방음|살수|균열|침하|지반|매설물|토사|누수|용수|지하수|인접 건축물 보호/],
+  [3, /설치상태 전경|계단|난간|분전반|위험물|개구부|추락|임시|낙하물|안전망|비계|발판|가설/]
 ];
 function gubunOf(caption, insp) {
   const c = String(caption || '');
   for (const [k, re] of GUBUN_RULES) if (re.test(c)) return GUBUN[k];
-  if (SHOT_CAPS['공통'].includes(c)) return GUBUN[4];
+  if (SHOT_CAPS['공통'].includes(c)) return GUBUN[3];
   const lib = shotLib.ok === true ? libView().caps.find(x => shotNorm(x.t) === shotNorm(c)) : null;
-  if (lib && lib.sec === '공통') return GUBUN[4];
-  return GUBUN[1];                                       // 그 밖에(공종 부재·설치상태 등) = 주요 부재별 외관조사
+  if (lib && lib.sec === '공통') return GUBUN[3];
+  return GUBUN[0];                                       // 그 밖에(공종 부재·설치상태 등) = 주요 부재별 외관조사
 }
 /** 이름을 바꾼 캡션: 예전 이름으로 찍은 사진도 그대로 「찍음」으로 셈 (새 이름 ← 예전 이름들) */
 const SHOT_ALIAS = {
@@ -5776,7 +5973,7 @@ const hwReady = {};
 const hwSig = item => itemsOf(item).filter(o => o.kind === '현황').map(o => [o.id, o.bId, o.floor, o.location, o.caption].join('|')).join('§');
 const hwBtnText = item => hwReady[item] && hwReady[item].sig === hwSig(item) ? '한글 파일 저장' : '한글(HWPX)';
 function hwBtns() { document.querySelectorAll('[data-hw]').forEach(b => { b.lastChild.textContent = hwBtnText(b.dataset.hw); }); }
-function hwBtn(item, cls) { return `<button class="${cls || 'btn ghost xs'}" data-hw="${esc(item)}" onclick="hwpxMake(this.dataset.hw)"><svg class="ic sm"><use href="#i-download"/></svg><span>${hwBtnText(item)}</span></button>`; }
+function hwBtn(item, cls) { return `<button class="${cls || 'btn ghost xs'} hw-only" data-hw="${esc(item)}" onclick="hwpxMake(this.dataset.hw)"><svg class="ic sm"><use href="#i-download"/></svg><span>${hwBtnText(item)}</span></button>`; }
 /** 「■ 공종 N회차」 · 「제N차 정기안전점검 사진」 */
 function hwMeta(item) {
   const m = meta(item) || {}, grp = shotGroup(item) || m.type || item, n = (String(item).match(/(\d+)\s*차$/) || [])[1];
@@ -5862,7 +6059,9 @@ async function hwpxSave(item) {
 }
 
 /* ---------- 사진대지 만들기 ---------- */
+const isMob = () => { try { return matchMedia('(max-width:1023px)').matches; } catch (e) { return false; } };   // 11/28 D: 한글 파일은 PC에서만
 async function buildAll(mode) {
+  if (!mode && isMob()) mode = 'xlsx';
   const xl = mode === 'xlsx';                                   // 11/28: 기본은 한글(HWPX)만 드라이브에, 엑셀·PDF는 따로
   if (!state.svc) { toast('용역을 선택하세요'); return; }
   if (!requireUser()) return;
@@ -6630,7 +6829,7 @@ if ('serviceWorker' in navigator) {
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && !edit && !Object.values(uploads).some(u => u.status === '업로드 중')) { reloaded = true; toast('새 버전을 받았습니다 — 다음에 열 때 적용됩니다'); } });
 }
-window.APP_VER = '20261128-1943';
+window.APP_VER = '20261128-2015';
 </script>
 </body>
 </html>
